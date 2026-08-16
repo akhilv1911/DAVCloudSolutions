@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DAV Cloud Solutions - Premier IT Services, Custom Web Applications, ML Models, and Startup MVPs founded by V Akhil.">
+    <title>{% block title %}DAV Cloud Solutions | IT Services & Projects{% endblock %}</title>
+
+    <!-- Instant Theme Loader (Prevents Page Flicker) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/cloud-bolt.svg">
+
+    <!-- Custom CSS Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+
+    {% block extra_head %}{% endblock %}
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-main text-main">
+
+    <!-- ========================================================= -->
+    <!-- MAIN NAVIGATION BAR                                       -->
+    <!-- ========================================================= -->
+    <header class="navbar-header" id="header">
+        <nav class="nav-container">
+            <!-- Brand Logo -->
+            <a href="{% if session.get('user_id') %}{{ url_for('dashboard') }}{% else %}{{ url_for('home') }}{% endif %}" class="brand-logo">
+                <span class="logo-accent">DAV</span> Cloud Solutions
+            </a>
+
+            {% if session.get('user_id') %}
+                <!-- ============================================= -->
+                <!-- LOGGED-IN NAVIGATION (USER & ADMIN)           -->
+                <!-- ============================================= -->
+                <ul class="nav-links" id="nav-links">
+                    <li>
+                        <a href="{{ url_for('dashboard') }}" class="nav-item {% if request.path.startswith('/dashboard') %}active{% endif %}">
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-controls">
+                    <!-- Dark / Light Theme Toggle Button -->
+                    <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
+                        <i class="fa-solid fa-moon" id="theme-icon"></i>
+                    </button>
+
+                    <!-- Logout Button -->
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+
+            {% else %}
+                <!-- ============================================= -->
+                <!-- PUBLIC VISITOR NAVIGATION                     -->
+                <!-- ============================================= -->
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="{{ url_for('home') }}#hero" class="nav-item">Home</a></li>
+                    <li><a href="{{ url_for('home') }}#services" class="nav-item">Services</a></li>
+                    <li><a href="{{ url_for('about_page') }}" class="nav-item {% if request.endpoint == 'about_page' %}active{% endif %}">About</a></li>
+                    <li><a href="{{ url_for('team_page') }}" class="nav-item {% if request.endpoint == 'team_page' %}active{% endif %}">Team</a></li>
+                    <li><a href="{{ url_for('projects_page') }}" class="nav-item {% if request.endpoint == 'projects_page' %}active{% endif %}">Projects List</a></li>
+                    <li><a href="{{ url_for('business_catalog') }}" class="nav-item {% if request.endpoint == 'business_catalog' %}active{% endif %}">Business Catalog</a></li>
+                    <li><a href="{{ url_for('home') }}#contact" class="nav-item">Contact</a></li>
+                </ul>
+
+                <div class="nav-controls">
+                    <!-- Dark / Light Theme Toggle Button -->
+                    <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
+                        <i class="fa-solid fa-moon" id="theme-icon"></i>
+                    </button>
+
+                    <!-- Guest Authentication Actions -->
+                    <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Log In</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Get Started</a>
+
+                    <!-- Mobile Navigation Toggle Button -->
+                    <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- ========================================================= -->
+    <!-- FLASH MESSAGES SYSTEM                                     -->
+    <!-- ========================================================= -->
+    <div class="flash-messages-container" id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-toast flash-{{ category }}" role="alert">
+                        <div class="flash-content">
+                            <i class="fa-solid {% if category == 'success' %}fa-circle-check{% elif category == 'danger' %}fa-circle-xmark{% elif category == 'warning' %}fa-triangle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+                            <span>{{ message }}</span>
+                        </div>
+                        <button type="button" class="flash-close-btn" onclick="this.parentElement.remove();">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- DYNAMIC BODY CONTENT BLOCK                                -->
+    <!-- ========================================================= -->
+    <main class="main-content-wrapper">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ========================================================= -->
+    <!-- GLOBAL FOOTER                                             -->
+    <!-- ========================================================= -->
+    <footer class="footer-wrapper">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3><span class="logo-accent">DAV</span> Cloud Solutions</h3>
+                <p>Empowering Students, Small Businesses, and Tech Startups with high-performance IT Services, Web Applications, and Custom Solutions.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/v-akhil" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/akhilv1911" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://x.com/Akhil42329344" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-nav">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('about_page') }}">About Founder & Company</a></li>
+                    <li><a href="{{ url_for('projects_page') }}">Projects Gallery</a></li>
+                    <li><a href="{{ url_for('team_page') }}">Core Team</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-services">
+                <h4>Services & Support</h4>
+                <ul>
+                    <li><a href="{{ url_for('home') }}#services">Student Project Guidance</a></li>
+                    <li><a href="{{ url_for('home') }}#services">Small Business Digital Setup</a></li>
+                    <li><a href="{{ url_for('home') }}#services">Startup MVP Development</a></li>
+                    <li><a href="{{ url_for('business_catalog') }}">Verified Business Catalog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Founder Details</h4>
+                <p><i class="fa-solid fa-user-tie"></i> Founder: <strong>V Akhil</strong></p>
+                <p><i class="fa-solid fa-envelope"></i> contactdavcloudsolutions@gmail.com</p>
+                <p><i class="fa-solid fa-shield-halved"></i> Secure Verification Protocol Enabled</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; {{ current_year if current_year else '2026' }} <strong>DAV Cloud Solutions</strong>. All Rights Reserved. Engineered with Flask & MongoDB.</p>
+        </div>
+    </footer>
+
+    <!-- Global JavaScript (Controls Theme Toggle, Mobile Menu, Web3Forms) -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

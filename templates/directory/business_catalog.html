@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Client Portfolio & Delivered Work | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<!-- ========================================================= -->
+<!-- 1. PORTFOLIO HERO SECTION                                 -->
+<!-- ========================================================= -->
+<section class="directory-hero-section section-padding text-center">
+    <div class="section-container">
+        <div class="badge-pill">
+            <i class="fa-solid fa-briefcase"></i> Real Client Deliverables
+        </div>
+        <h1 class="hero-title">
+            Projects Successfully <span class="gradient-text">Delivered</span>
+        </h1>
+        <p class="hero-subtitle max-w-700">
+            Real software solutions engineered and delivered across Smart Agriculture, EdTech Platforms, and Data Analytics.
+        </p>
+
+        <!-- Search & Filter Controls -->
+        <div class="catalog-controls-container margin-top-lg">
+            <div class="search-bar-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input 
+                    type="text" 
+                    id="business-search" 
+                    class="form-input search-input" 
+                    placeholder="Search deliverables by project title, domain, or tech stack..."
+                >
+            </div>
+
+            <!-- Domain Filter Badges -->
+            <div class="filter-tabs-wrapper margin-top-md">
+                <button class="filter-tab active" data-industry="all">
+                    <i class="fa-solid fa-layer-group"></i> All Projects
+                </button>
+                <button class="filter-tab" data-industry="agriculture">
+                    <i class="fa-solid fa-wheat-awn"></i> Agriculture & ML
+                </button>
+                <button class="filter-tab" data-industry="edtech">
+                    <i class="fa-solid fa-graduation-cap"></i> EdTech
+                </button>
+                <button class="filter-tab" data-industry="data science">
+                    <i class="fa-solid fa-chart-line"></i> Data Science
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 2. REVENUE & DELIVERABLES STATS                           -->
+<!-- ========================================================= -->
+<section class="stats-section section-padding-sm">
+    <div class="section-container">
+        <div class="grid-3-col">
+            <div class="glass-card text-center">
+                <h2 class="gradient-text fs-xxl">₹14,200</h2>
+                <p class="text-muted fs-sm">Total Revenue Generated</p>
+            </div>
+            <div class="glass-card text-center">
+                <h2 class="gradient-text fs-xxl">3</h2>
+                <p class="text-muted fs-sm">Projects Delivered</p>
+            </div>
+            <div class="glass-card text-center">
+                <h2 class="gradient-text fs-xxl">100%</h2>
+                <p class="text-muted fs-sm">Successful Completion</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 3. REAL DELIVERED PROJECTS GRID                           -->
+<!-- ========================================================= -->
+<section class="directory-grid-section section-padding bg-alt">
+    <div class="section-container">
+        <div class="projects-grid-3col" id="business-container">
+
+            {% if projects %}
+                {% for p in projects %}
+                    <div class="project-card glass-card business-card" data-industry="{{ p.category | lower }}">
+                        <div class="project-header">
+                            <span class="project-category">
+                                <i class="fa-solid fa-code"></i> {{ p.category }}
+                            </span>
+                            <span class="status-pill status-completed">
+                                <i class="fa-solid fa-check-circle"></i> Delivered
+                            </span>
+                        </div>
+
+                        <h3>{{ p.title }}</h3>
+                        <p class="fs-sm text-muted margin-top-xs">{{ p.description }}</p>
+
+                        {% if p.tech_stack %}
+                            <div class="founder-skills-tags margin-top-xs">
+                                {% for tech in p.tech_stack %}
+                                    <span class="tag">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
+                            <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Client Cost</span>
+                            <strong class="text-primary fs-lg">₹{{ p.amount_charged }}</strong>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Project 1: AgriSmart Naa Panta -->
+                <div class="project-card glass-card business-card" data-industry="agriculture">
+                    <div class="project-header">
+                        <span class="project-category"><i class="fa-solid fa-wheat-awn"></i> Agriculture & ML</span>
+                        <span class="status-pill status-completed"><i class="fa-solid fa-check-circle"></i> Delivered</span>
+                    </div>
+                    <h3>AgriSmart Naa Panta</h3>
+                    <p class="fs-sm text-muted margin-top-xs">
+                        Comprehensive agricultural prediction and smart crop management platform built for regional farming needs.
+                    </p>
+                    <div class="founder-skills-tags margin-top-xs">
+                        <span class="tag">Python</span>
+                        <span class="tag">Flask</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">Machine Learning</span>
+                    </div>
+                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
+                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Amount Charged</span>
+                        <strong class="text-primary fs-lg">₹6,000</strong>
+                    </div>
+                </div>
+
+                <!-- Project 2: Streamlit E-Learning -->
+                <div class="project-card glass-card business-card" data-industry="edtech">
+                    <div class="project-header">
+                        <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> EdTech</span>
+                        <span class="status-pill status-completed"><i class="fa-solid fa-check-circle"></i> Delivered</span>
+                    </div>
+                    <h3>Streamlit E-Learning Platform</h3>
+                    <p class="fs-sm text-muted margin-top-xs">
+                        Interactive learning management web application built using Streamlit for seamless course delivery and student engagement.
+                    </p>
+                    <div class="founder-skills-tags margin-top-xs">
+                        <span class="tag">Python</span>
+                        <span class="tag">Streamlit</span>
+                        <span class="tag">Data Processing</span>
+                    </div>
+                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
+                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Amount Charged</span>
+                        <strong class="text-primary fs-lg">₹3,200</strong>
+                    </div>
+                </div>
+
+                <!-- Project 3: Apple Stock Prediction (EDA) -->
+                <div class="project-card glass-card business-card" data-industry="data science">
+                    <div class="project-header">
+                        <span class="project-category"><i class="fa-solid fa-chart-line"></i> Data Science</span>
+                        <span class="status-pill status-completed"><i class="fa-solid fa-check-circle"></i> Delivered</span>
+                    </div>
+                    <h3>Apple Stock Price Prediction & EDA</h3>
+                    <p class="fs-sm text-muted margin-top-xs">
+                        In-depth Exploratory Data Analysis (EDA) and predictive machine learning models for Apple stock market forecasting.
+                    </p>
+                    <div class="founder-skills-tags margin-top-xs">
+                        <span class="tag">Python</span>
+                        <span class="tag">Pandas</span>
+                        <span class="tag">Scikit-Learn</span>
+                        <span class="tag">Matplotlib</span>
+                    </div>
+                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
+                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Amount Charged</span>
+                        <strong class="text-primary fs-lg">₹5,000</strong>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 4. SUBMIT NEW PROJECT CALLOUT                             -->
+<!-- ========================================================= -->
+<section class="cta-section section-padding">
+    <div class="section-container text-center">
+        <div class="glass-card highlight-border-card max-w-800 margin-auto">
+            <h2>Have a Project You Need Built?</h2>
+            <p class="margin-top-xs">
+                From academic research projects to custom machine learning models and web portals, work directly with Founder <strong>V Akhil</strong> and the DAV Cloud engineering team.
+            </p>
+            <div class="cta-actions margin-top-md">
+                <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg">
+                    <i class="fa-solid fa-paper-plane"></i> Request Project Quote
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const businessCards = document.querySelectorAll('.business-card');
+        const searchInput = document.getElementById('business-search');
+
+        let currentDomain = 'all';
+
+        // Tab Filter Trigger
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                currentDomain = this.getAttribute('data-industry').toLowerCase();
+                filterCatalog();
+            });
+        });
+
+        // Search Input Trigger
+        if (searchInput) {
+            searchInput.addEventListener('input', filterCatalog);
+        }
+
+        // Filter Execution
+        function filterCatalog() {
+            const query = searchInput.value.toLowerCase().trim();
+
+            businessCards.forEach(card => {
+                const cardDomain = card.getAttribute('data-industry').toLowerCase();
+                const cardText = card.textContent.toLowerCase();
+
+                const matchesDomain = (currentDomain === 'all' || cardDomain.includes(currentDomain));
+                const matchesSearch = (query === '' || cardText.includes(query));
+
+                if (matchesDomain && matchesSearch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

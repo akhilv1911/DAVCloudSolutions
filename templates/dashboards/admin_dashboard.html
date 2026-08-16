@@ -1,0 +1,814 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Command Center | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<section class="dashboard-section section-padding">
+    <div class="dashboard-container">
+        
+        <!-- ========================================================= -->
+        <!-- 1. ADMIN HEADER & SYSTEM METRICS                          -->
+        <!-- ========================================================= -->
+        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg">
+            <div class="flex-between align-center wrap-mobile">
+                <div class="welcome-text">
+                    <span class="badge-pill"><i class="fa-solid fa-user-shield"></i> Master Admin Control Panel</span>
+                    <h1 class="margin-top-xs">Founder Command Center: <span class="gradient-text">V Akhil</span></h1>
+                    <p class="text-muted">Platform management, user verification, team project dispatch, and live DAV AI intelligence.</p>
+                </div>
+                <div class="welcome-actions margin-top-mobile flex-between gap-sm">
+                    <span class="status-pill status-completed"><i class="fa-solid fa-server"></i> System Normal</span>
+                    <span class="status-pill status-in-progress"><i class="fa-solid fa-brain"></i> DAV AI Live</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Master Analytics Grid -->
+        <div class="grid-4-col margin-bottom-lg">
+            <div class="glass-card metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="metric-info">
+                    <h3>{{ users | length if users else 0 }}</h3>
+                    <p>Registered Users</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-success"><i class="fa-solid fa-building-circle-check"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% if users %}
+                            {{ users | selectattr('role', 'equalto', 'business') | list | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+                    <p>Verified Businesses</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-warning"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="metric-info">
+                    <h3>{{ projects | length if projects else 0 }}</h3>
+                    <p>Active System Projects</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon" style="color: var(--accent-emerald);"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% set total_revenue = namespace(value=0) %}
+                        {% if projects %}
+                            {% for p in projects %}
+                                {% set total_revenue.value = total_revenue.value + (p.amount_charged | default(0) | int) %}
+                            {% endfor %}
+                        {% endif %}
+                        ₹{{ "{:,}".format(total_revenue.value) }}
+                    </h3>
+                    <p>Total Project Value</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 2. LIVE ENGINE: DAV AI COMMAND CENTER (GEMINI POWERED)     -->
+        <!-- ========================================================= -->
+        <div class="glass-card margin-bottom-lg dav-ai-command-box highlight-border-card">
+            <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
+                <div>
+                    <h2><i class="fa-solid fa-robot text-primary"></i> DAV AI Core Engine (Live Agent Console)</h2>
+                    <p class="text-muted fs-sm">Powered by Gemini AI for lead assessment, technical architecture, and automated code review.</p>
+                </div>
+                <span class="badge-tech"><i class="fa-solid fa-bolt text-warning"></i> V Akhil Live Access</span>
+            </div>
+
+            <div class="grid-3-col margin-top-md">
+                <!-- AI Lead Analysis Agent -->
+                <div class="glass-card ai-subcard">
+                    <h4><i class="fa-solid fa-magnifying-glass-chart text-primary"></i> Lead Analysis Agent</h4>
+                    <p class="fs-sm text-muted margin-top-xs">Scores prospective client/student inquiries, assesses stack feasibility, and suggests pricing quotes.</p>
+                    <button class="btn btn-sm btn-primary margin-top-md" onclick="openAIAgentModal('lead')">
+                        <i class="fa-solid fa-play"></i> Run Lead Analysis
+                    </button>
+                </div>
+
+                <!-- AI Scope & Blueprint Agent -->
+                <div class="glass-card ai-subcard">
+                    <h4><i class="fa-solid fa-wand-magic-sparkles text-primary"></i> Scope & Blueprint Agent</h4>
+                    <p class="fs-sm text-muted margin-top-xs">Generates multi-layer software architecture, MongoDB collection schemas, and academic viva defense questions.</p>
+                    <button class="btn btn-sm btn-primary margin-top-md" onclick="openAIAgentModal('scope')">
+                        <i class="fa-solid fa-drafting-compass"></i> Generate Scope
+                    </button>
+                </div>
+
+                <!-- AI Code Quality Auditor -->
+                <div class="glass-card ai-subcard">
+                    <h4><i class="fa-solid fa-shield-halved text-primary"></i> Code Quality & Audit Agent</h4>
+                    <p class="fs-sm text-muted margin-top-xs">Inspects Python Flask routes and ML pipelines for security vulnerabilities and performance bottlenecks.</p>
+                    <button class="btn btn-sm btn-primary margin-top-md" onclick="openAIAgentModal('audit')">
+                        <i class="fa-solid fa-bug-slash"></i> Audit Code Snippet
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Output Drawer Container -->
+            <div id="ai-live-output-container" class="glass-card margin-top-md" style="display: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(99, 102, 241, 0.35); padding: 20px;">
+                <div class="flex-between align-center border-bottom-glass padding-bottom-sm">
+                    <h4 id="ai-output-title" style="color: var(--accent-cyan);"><i class="fa-solid fa-terminal"></i> Live DAV AI Output</h4>
+                    <div class="flex-align-center gap-xs">
+                        <button type="button" class="btn btn-sm btn-ghost" onclick="copyAIOutput()"><i class="fa-solid fa-copy"></i> Copy</button>
+                        <button type="button" class="btn btn-sm btn-ghost" onclick="document.getElementById('ai-live-output-container').style.display='none'"><i class="fa-solid fa-xmark"></i> Close</button>
+                    </div>
+                </div>
+                <div id="ai-output-body" style="white-space: pre-wrap; font-family: monospace; font-size: 0.88rem; line-height: 1.6; margin-top: 14px; max-height: 380px; overflow-y: auto; color: #f8fafc;">
+                    <!-- Real-time AI response rendered here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 3. TEAM ROSTER MANAGEMENT SECTION                         -->
+        <!-- ========================================================= -->
+        <div class="glass-card margin-bottom-lg highlight-border-card">
+            <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
+                <div>
+                    <h2><i class="fa-solid fa-users-gear"></i> Core Engineering & Team Directory</h2>
+                    <p class="text-muted fs-sm">Manage dynamic team members displayed on the public Team page.</p>
+                </div>
+                <div class="flex-align-center gap-sm">
+                    <input type="text" id="team-search" class="form-input" placeholder="🔍 Search team..." style="padding: 6px 14px; font-size: 0.85rem; max-width: 180px;">
+                    <button class="btn btn-sm btn-primary" onclick="toggleModal('admin-add-team-modal')">
+                        <i class="fa-solid fa-user-plus"></i> Add Team Member
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive margin-top-md">
+                <table class="data-table" id="team-table">
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Member Name</th>
+                            <th>Assigned Role</th>
+                            <th>LinkedIn URL</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if team %}
+                            {% for member in team %}
+                                <tr>
+                                    <td>
+                                        {% if member.image_filename %}
+                                            <img src="{{ url_for('static', filename='images/team/' + member.image_filename) }}" alt="{{ member.name }}" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color);" onerror="this.onerror=null; this.src='/static/images/team/akhil.jpeg';">
+                                        {% else %}
+                                            <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--bg-card); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color);">
+                                                <i class="fa-solid fa-user-astronaut text-primary"></i>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td><strong>{{ member.name }}</strong></td>
+                                    <td><span class="badge-tech">{{ member.role }}</span></td>
+                                    <td>
+                                        {% if member.linkedin_url %}
+                                            <a href="{{ member.linkedin_url }}" target="_blank" class="text-primary fs-sm"><i class="fa-brands fa-linkedin"></i> View Profile</a>
+                                        {% else %}
+                                            <span class="text-muted fs-sm">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <form action="{{ url_for('admin_delete_team_member', member_id=member._id) }}" method="POST" onsubmit="return confirm('Are you sure you want to remove this team member?');" style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-ghost" style="color: var(--accent-rose);">
+                                                <i class="fa-solid fa-trash-can"></i> Remove
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted padding-md">
+                                    No custom team members registered in MongoDB. Default team configuration active on public page.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 4. PROJECT DISPATCH & DELIVERABLES ENGINE                 -->
+        <!-- ========================================================= -->
+        <div class="glass-card margin-bottom-lg">
+            <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
+                <h2><i class="fa-solid fa-list-check"></i> Active Client & Student Projects Management</h2>
+                <div class="flex-align-center gap-sm">
+                    <input type="text" id="project-search" class="form-input" placeholder="🔍 Search projects..." style="padding: 6px 14px; font-size: 0.85rem; max-width: 200px;">
+                    <button class="btn btn-sm btn-primary" onclick="toggleModal('admin-add-project-modal')">
+                        <i class="fa-solid fa-plus"></i> Add Project
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive margin-top-md">
+                <table class="data-table" id="projects-table">
+                    <thead>
+                        <tr>
+                            <th>Project Title</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Assigned Specialist</th>
+                            <th>Deliverable Link</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if projects %}
+                            {% for proj in projects %}
+                                <tr>
+                                    <td><strong>{{ proj.title }}</strong></td>
+                                    <td><span class="badge-tech">{{ proj.category }}</span></td>
+                                    <td><strong class="text-primary">₹{{ proj.amount_charged | default(0) }}</strong></td>
+                                    <td>
+                                        <span class="status-pill status-{{ proj.status | lower | replace(' ', '-') }}">
+                                            {{ proj.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if proj.assigned_to_name %}
+                                            <span class="badge-pill" style="font-size: 0.75rem; background: rgba(59, 130, 246, 0.15); color: var(--primary);">
+                                                <i class="fa-solid fa-user-check"></i> {{ proj.assigned_to_name }}
+                                            </span>
+                                        {% else %}
+                                            <span class="text-muted fs-sm">Unassigned</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if proj.deliverables_link %}
+                                            <a href="{{ proj.deliverables_link }}" target="_blank" class="btn-link" style="color: var(--primary);">
+                                                View File <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted fs-sm">Pending Link</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline btn-edit-proj" 
+                                                data-id="{{ proj._id }}"
+                                                data-title="{{ proj.title }}"
+                                                data-category="{{ proj.category }}"
+                                                data-status="{{ proj.status }}"
+                                                data-amount="{{ proj.amount_charged | default(0) }}"
+                                                data-link="{{ proj.deliverables_link | default('') }}"
+                                                data-assigned="{{ proj.assigned_to_id | default('') }}">
+                                            <i class="fa-solid fa-pen"></i> Update
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted padding-md">
+                                    No active projects found in the MongoDB database.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 5. USER & BUSINESS VERIFICATION DIRECTORY PANEL           -->
+        <!-- ========================================================= -->
+        <div class="glass-card">
+            <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
+                <h2><i class="fa-solid fa-users-gear"></i> User Accounts & Business Verification Status</h2>
+                <input type="text" id="user-search" class="form-input" placeholder="🔍 Search users/email..." style="padding: 6px 14px; font-size: 0.85rem; max-width: 220px;">
+            </div>
+
+            <div class="table-responsive margin-top-md">
+                <table class="data-table" id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Company / Details</th>
+                            <th>Email Verified</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if users %}
+                            {% for u in users %}
+                                <tr>
+                                    <td><strong>{{ u.full_name }}</strong></td>
+                                    <td>{{ u.email }}</td>
+                                    <td><span class="badge-tech">{{ u.role | capitalize }}</span></td>
+                                    <td>
+                                        {% if u.role == 'business' and u.business_info %}
+                                            {{ u.business_info.company_name }} ({{ u.business_info.industry }})
+                                        {% elif u.institution %}
+                                            {{ u.institution }}
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if u.is_verified %}
+                                            <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Verified</span>
+                                        {% else %}
+                                            <span class="status-pill status-pending"><i class="fa-solid fa-clock"></i> Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-ghost btn-manage-user"
+                                                data-id="{{ u._id }}"
+                                                data-name="{{ u.full_name }}"
+                                                data-email="{{ u.email }}"
+                                                data-role="{{ u.role }}"
+                                                data-verified="{{ 'true' if u.is_verified else 'false' }}">
+                                            <i class="fa-solid fa-gear"></i> Manage
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted padding-md">
+                                    No registered user accounts found.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 6. MODAL: LIVE DAV AI AGENT RUNNER                        -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="dav-ai-runner-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 3100; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 620px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 id="dav-ai-modal-title" style="font-size: 1.25rem;"><i class="fa-solid fa-robot"></i> Run Live DAV AI</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('dav-ai-runner-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+
+        <div id="ai-input-form-container">
+            <!-- Dynamic inputs rendered via JavaScript -->
+        </div>
+
+        <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+            <button type="button" class="btn btn-ghost" onclick="toggleModal('dav-ai-runner-modal')">Cancel</button>
+            <button type="button" id="btn-execute-ai" class="btn btn-primary" onclick="executeLiveAIAgent()">
+                <i class="fa-solid fa-bolt"></i> Execute Live Analysis
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- 7. MODAL: ADD TEAM MEMBER                                 -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="admin-add-team-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 560px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-user-plus"></i> Add Team Member to Roster</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('admin-add-team-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+        <form action="{{ url_for('admin_add_team_member') }}" method="POST">
+            <div class="form-group">
+                <label for="team-member-name" class="fs-sm">Full Name <span style="color: var(--accent-rose);">*</span></label>
+                <input type="text" name="name" id="team-member-name" class="form-input" placeholder="e.g. A Mohammad Awais" required>
+            </div>
+
+            <div class="form-group">
+                <label for="team-member-role" class="fs-sm">Role & Technical Designation <span style="color: var(--accent-rose);">*</span></label>
+                <input type="text" name="role" id="team-member-role" class="form-input" placeholder="e.g. UI/UX Designer & Product Specialist" required>
+            </div>
+
+            <div class="grid-2-col" style="gap: 14px;">
+                <div class="form-group">
+                    <label for="team-member-image" class="fs-sm">Photo Filename</label>
+                    <input type="text" name="image_filename" id="team-member-image" class="form-input" placeholder="awais.jpg">
+                    <span class="text-muted fs-sm" style="font-size: 0.72rem;">File must exist in <code>static/images/team/</code></span>
+                </div>
+                <div class="form-group">
+                    <label for="team-member-linkedin" class="fs-sm">LinkedIn URL</label>
+                    <input type="url" name="linkedin_url" id="team-member-linkedin" class="form-input" placeholder="https://linkedin.com/in/...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="team-member-desc" class="fs-sm">Short Bio & Contribution Summary</label>
+                <textarea name="description" id="team-member-desc" class="form-input" rows="2" placeholder="Describe their main technical responsibilities at DAV Cloud Solutions..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="team-member-responsibilities" class="fs-sm">Key Responsibilities (One per line)</label>
+                <textarea name="responsibilities" id="team-member-responsibilities" class="form-input" rows="3" placeholder="Translates product requirements into modern UI wireframes&#10;Standardizes component design tokens&#10;Builds user walkthrough guides"></textarea>
+            </div>
+
+            <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('admin-add-team-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Add to Team</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- 8. MODAL: CREATE / DISPATCH NEW PROJECT                   -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="admin-add-project-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 540px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-plus-circle"></i> Dispatch New Project Record</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('admin-add-project-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+        <form action="{{ url_for('admin_add_project') }}" method="POST">
+            <div class="form-group">
+                <label for="admin-proj-title">Project Title <span style="color: var(--accent-rose);">*</span></label>
+                <input type="text" name="title" id="admin-proj-title" class="form-input" placeholder="e.g. Smart Leave Management App" required>
+            </div>
+
+            <div class="grid-2-col" style="gap: 14px;">
+                <div class="form-group">
+                    <label for="admin-proj-category">Domain Track <span style="color: var(--accent-rose);">*</span></label>
+                    <select name="category" id="admin-proj-category" class="form-input form-select" required>
+                        <option value="Student Academic Project">Student Academic Project</option>
+                        <option value="Small Business Solution">Small Business Solution</option>
+                        <option value="Startup MVP Build">Startup MVP Architecture</option>
+                        <option value="Data Science & ML">Data Science & ML</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="admin-proj-amount">Amount Charged (₹)</label>
+                    <input type="number" name="amount_charged" id="admin-proj-amount" class="form-input" placeholder="5000" min="0" value="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="admin-proj-status">Initial Status <span style="color: var(--accent-rose);">*</span></label>
+                <select name="status" id="admin-proj-status" class="form-input form-select" required>
+                    <option value="Under Review">Under Review</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Testing">Testing / Staging</option>
+                    <option value="Completed">Completed / Delivered</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="admin-proj-link">Deliverable Google Drive / GitHub ZIP Link</label>
+                <input type="url" name="deliverables_link" id="admin-proj-link" class="form-input" placeholder="https://drive.google.com/...">
+            </div>
+
+            <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('admin-add-project-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save & Dispatch</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- 9. MODAL: EDIT / UPDATE PROJECT RECORD                    -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="admin-edit-project-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 540px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-pen-to-square"></i> Update Project Details</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('admin-edit-project-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+        <form id="edit-project-form" method="POST">
+            <div class="form-group">
+                <label>Project Title</label>
+                <input type="text" id="edit-proj-title" class="form-input" readonly style="opacity: 0.75;">
+            </div>
+
+            <div class="grid-2-col" style="gap: 14px;">
+                <div class="form-group">
+                    <label for="edit-proj-status">Execution Status <span style="color: var(--accent-rose);">*</span></label>
+                    <select name="status" id="edit-proj-status" class="form-input form-select" required>
+                        <option value="Under Review">Under Review</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Testing">Testing / Staging</option>
+                        <option value="Completed">Completed / Delivered</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-proj-amount">Amount Charged (₹)</label>
+                    <input type="number" name="amount_charged" id="edit-proj-amount" class="form-input" min="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-proj-assigned">Assign to Team Specialist</label>
+                <select name="assigned_to_id" id="edit-proj-assigned" class="form-input form-select">
+                    <option value="">-- Unassigned (Founder Owned) --</option>
+                    {% if team_users %}
+                        {% for tm in team_users %}
+                            <option value="{{ tm._id }}">{{ tm.full_name }} ({{ tm.email }})</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-proj-link">Deliverables / Source ZIP Link</label>
+                <input type="url" name="deliverables_link" id="edit-proj-link" class="form-input" placeholder="https://drive.google.com/...">
+            </div>
+
+            <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('admin-edit-project-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Update Record</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- 10. MODAL: MANAGE USER STATUS & ROLE                      -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="admin-manage-user-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 480px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-user-gear"></i> User Account Controls</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('admin-manage-user-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+        <form id="manage-user-form" method="POST">
+            <div class="form-group">
+                <label>User Name</label>
+                <input type="text" id="manage-user-name" class="form-input" readonly style="opacity: 0.75;">
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="text" id="manage-user-email" class="form-input" readonly style="opacity: 0.75;">
+            </div>
+
+            <div class="grid-2-col" style="gap: 14px;">
+                <div class="form-group">
+                    <label for="manage-user-role">System Role</label>
+                    <select name="role" id="manage-user-role" class="form-input form-select" required>
+                        <option value="student">Student</option>
+                        <option value="team">Team Member / Specialist</option>
+                        <option value="business">Business</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="manage-user-verified">Email Verified Status</label>
+                    <select name="is_verified" id="manage-user-verified" class="form-input form-select" required>
+                        <option value="true">Verified (Active)</option>
+                        <option value="false">Pending</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('admin-manage-user-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            const isVisible = modal.style.display === 'flex';
+            modal.style.display = isVisible ? 'none' : 'flex';
+        }
+    }
+
+    let currentAgent = 'lead';
+
+    function openAIAgentModal(agentType) {
+        currentAgent = agentType;
+        const formContainer = document.getElementById('ai-input-form-container');
+        const modalTitle = document.getElementById('dav-ai-modal-title');
+
+        if (agentType === 'lead') {
+            modalTitle.innerHTML = '<i class="fa-solid fa-magnifying-glass-chart text-primary"></i> Run Live Lead Analysis Agent';
+            formContainer.innerHTML = `
+                <div class="form-group">
+                    <label class="fs-sm">Client / Lead Name</label>
+                    <input type="text" id="ai-lead-name" class="form-input" placeholder="e.g. Ramesh Reddy">
+                </div>
+                <div class="form-group">
+                    <label class="fs-sm">Category Track</label>
+                    <select id="ai-lead-cat" class="form-input form-select">
+                        <option value="Student Final Year Project">Student Final Year Project</option>
+                        <option value="Small Business Web Portal">Small Business Web Portal</option>
+                        <option value="Startup MVP Architecture">Startup MVP Architecture</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="fs-sm">Requirements / Inquired Project Scope</label>
+                    <textarea id="ai-lead-msg" class="form-input" rows="4" placeholder="e.g. Need an Agri Machine Learning prediction portal with crop recommendation, MongoDB, and Flask backend in 5 days."></textarea>
+                </div>
+            `;
+        } else if (agentType === 'scope') {
+            modalTitle.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-primary"></i> Project Scope & Viva Blueprint';
+            formContainer.innerHTML = `
+                <div class="form-group">
+                    <label class="fs-sm">Project Title</label>
+                    <input type="text" id="ai-scope-title" class="form-input" placeholder="e.g. AgriPredict ML Platform">
+                </div>
+                <div class="form-group">
+                    <label class="fs-sm">Domain Track</label>
+                    <select id="ai-scope-cat" class="form-input form-select">
+                        <option value="Data Science & ML">Data Science & ML</option>
+                        <option value="Full-Stack Web (Flask/MongoDB)">Full-Stack Web (Flask/MongoDB)</option>
+                        <option value="Cloud & Microservices">Cloud & Microservices</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="fs-sm">Scope Description / Base Idea</label>
+                    <textarea id="ai-scope-req" class="form-input" rows="4" placeholder="Describe the desired core features, target algorithms, and database expectations..."></textarea>
+                </div>
+            `;
+        } else if (agentType === 'audit') {
+            modalTitle.innerHTML = '<i class="fa-solid fa-shield-halved text-primary"></i> Code Quality & Security Audit';
+            formContainer.innerHTML = `
+                <div class="form-group">
+                    <label class="fs-sm">Python / Flask Code Snippet</label>
+                    <textarea id="ai-audit-code" class="form-input" rows="7" style="font-family: monospace;" placeholder="Paste Flask route, ML inference function, or MongoDB query snippet to audit..."></textarea>
+                </div>
+            `;
+        }
+
+        toggleModal('dav-ai-runner-modal');
+    }
+
+    async function executeLiveAIAgent() {
+        const btn = document.getElementById('btn-execute-ai');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing with Gemini...';
+
+        let endpoint = '';
+        let payload = {};
+
+        if (currentAgent === 'lead') {
+            endpoint = '/api/dav-ai/analyze-lead';
+            payload = {
+                name: document.getElementById('ai-lead-name')?.value || 'Guest Lead',
+                user_category: document.getElementById('ai-lead-cat')?.value || 'Student Project',
+                message: document.getElementById('ai-lead-msg')?.value || ''
+            };
+        } else if (currentAgent === 'scope') {
+            endpoint = '/api/dav-ai/generate-scope';
+            payload = {
+                title: document.getElementById('ai-scope-title')?.value || '',
+                category: document.getElementById('ai-scope-cat')?.value || '',
+                requirements: document.getElementById('ai-scope-req')?.value || ''
+            };
+        } else if (currentAgent === 'audit') {
+            endpoint = '/api/dav-ai/code-audit';
+            payload = {
+                code: document.getElementById('ai-audit-code')?.value || ''
+            };
+        }
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            toggleModal('dav-ai-runner-modal');
+
+            const outputContainer = document.getElementById('ai-live-output-container');
+            const outputBody = document.getElementById('ai-output-body');
+            outputContainer.style.display = 'block';
+
+            if (data.success) {
+                outputBody.innerText = data.analysis || data.scope || data.audit || 'No response generated.';
+            } else {
+                outputBody.innerText = 'Error: ' + (data.error || 'Failed to process request.');
+            }
+
+            outputContainer.scrollIntoView({ behavior: 'smooth' });
+        } catch (err) {
+            alert('Execution error: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Execute Live Analysis';
+        }
+    }
+
+    function copyAIOutput() {
+        const text = document.getElementById('ai-output-body').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('DAV AI Output copied to clipboard!');
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Project Update Buttons
+        document.querySelectorAll('.btn-edit-proj').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const title = this.dataset.title;
+                const status = this.dataset.status;
+                const amount = this.dataset.amount;
+                const link = this.dataset.link;
+                const assigned = this.dataset.assigned;
+
+                document.getElementById('edit-proj-title').value = title;
+                document.getElementById('edit-proj-status').value = status;
+                document.getElementById('edit-proj-amount').value = amount;
+                document.getElementById('edit-proj-link').value = link;
+                
+                const assignSelect = document.getElementById('edit-proj-assigned');
+                if (assignSelect) {
+                    assignSelect.value = assigned || '';
+                }
+                
+                const form = document.getElementById('edit-project-form');
+                form.action = '/admin/update-project/' + id;
+                
+                toggleModal('admin-edit-project-modal');
+            });
+        });
+
+        // User Manage Buttons
+        document.querySelectorAll('.btn-manage-user').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const name = this.dataset.name;
+                const email = this.dataset.email;
+                const role = this.dataset.role;
+                const isVerified = this.dataset.verified;
+
+                document.getElementById('manage-user-name').value = name;
+                document.getElementById('manage-user-email').value = email;
+                document.getElementById('manage-user-role').value = role;
+                document.getElementById('manage-user-verified').value = isVerified;
+                
+                const form = document.getElementById('manage-user-form');
+                form.action = '/admin/update-user/' + id;
+                
+                toggleModal('admin-manage-user-modal');
+            });
+        });
+
+        // Live Team Member Search Filter
+        const teamSearch = document.getElementById('team-search');
+        if (teamSearch) {
+            teamSearch.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#team-table tbody tr');
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(query) ? '' : 'none';
+                });
+            });
+        }
+
+        // Live Project Search Filter
+        const projSearch = document.getElementById('project-search');
+        if (projSearch) {
+            projSearch.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#projects-table tbody tr');
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(query) ? '' : 'none';
+                });
+            });
+        }
+
+        // Live User Search Filter
+        const userSearch = document.getElementById('user-search');
+        if (userSearch) {
+            userSearch.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#users-table tbody tr');
+                rows.forEach(row => {
+                    const text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(query) ? '' : 'none';
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

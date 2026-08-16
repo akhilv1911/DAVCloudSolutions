@@ -1,0 +1,480 @@
+{% extends "base.html" %}
+
+{% block title %}DAV Cloud Solutions | Home - IT Services, Web Apps & Startup MVPs{% endblock %}
+
+{% block content %}
+<!-- ========================================================= -->
+<!-- 1. HERO SECTION                                           -->
+<!-- ========================================================= -->
+<section id="hero" class="hero-section">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="badge-pill">
+                <i class="fa-solid fa-rocket"></i> Next-Gen IT Services & Platform
+            </div>
+            <h1 class="hero-title">
+                Building Scalable IT Solutions for <span class="gradient-text">Students, Startups & Businesses</span>
+            </h1>
+            <p class="hero-subtitle">
+                At <strong>DAV Cloud Solutions</strong>, we deliver custom web applications, machine learning integration, portfolio builds, and MVP engineering designed for rapid growth and reliability.
+            </p>
+            
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary btn-lg">
+                    <i class="fa-solid fa-paper-plane"></i> Request Service
+                </a>
+                <a href="#estimator" class="btn btn-outline btn-lg">
+                    <i class="fa-solid fa-calculator"></i> Estimate Project Cost
+                </a>
+            </div>
+
+            <!-- Trust Metrics -->
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <h3>100%</h3>
+                    <p>Verified Profiles</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Flask & Mongo</h3>
+                    <p>Modern Stack</p>
+                </div>
+                <div class="stat-card">
+                    <h3>24/7</h3>
+                    <p>Project Tracking</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="glass-card hero-code-card">
+                <div class="card-header-bar">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="card-title-sm">dav_cloud_core.py</span>
+                </div>
+                <pre class="code-block"><code><span class="k">class</span> <span class="nc">DAVCloudSolutions</span>:
+    <span class="k">def</span> <span class="nf">__init__</span>(<span class="bp">self</span>):
+        <span class="bp">self</span>.founder = <span class="s2">"V Akhil"</span>
+        <span class="bp">self</span>.stack = [<span class="s2">"Flask"</span>, <span class="s2">"MongoDB"</span>, <span class="s2">"Python"</span>, <span class="s2">"AI"</span>]
+        <span class="bp">self</span>.clients = [<span class="s2">"Students"</span>, <span class="s2">"Small Business"</span>, <span class="s2">"Startups"</span>]
+
+    <span class="k">def</span> <span class="nf">deliver_project</span>(<span class="bp">self</span>, reqs):
+        <span class="k">return</span> {<span class="s2">"status"</span>: <span class="s2">"Production Ready"</span>, <span class="s2">"verified"</span>: <span class="kc">True</span>}</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 2. SERVICES SECTION                                       -->
+<!-- ========================================================= -->
+<section id="services" class="services-section section-padding">
+    <div class="section-container">
+        <div class="section-header text-center">
+            <span class="section-tag">Core Offerings</span>
+            <h2>Tailored Solutions for Every Growth Stage</h2>
+            <p>From academic projects to full-scale enterprise software.</p>
+        </div>
+
+        <div class="services-grid">
+            <!-- Service 1: Students -->
+            <div class="service-card glass-card">
+                <div class="service-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <h3>Students & Freelancers</h3>
+                <p>Academic project development, Flask/Django web apps, Machine Learning models, and personal portfolio hosting.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> Source code & ZIP deliverables</li>
+                    <li><i class="fa-solid fa-check"></i> 1-on-1 Mentorship & explanation</li>
+                    <li><i class="fa-solid fa-check"></i> Student budget friendly pricing</li>
+                </ul>
+            </div>
+
+            <!-- Service 2: Small Businesses -->
+            <div class="service-card glass-card active-card">
+                <div class="service-icon"><i class="fa-solid fa-store"></i></div>
+                <h3>Small Businesses</h3>
+                <p>Custom business portals, client management tools, inventory trackers, and SEO-optimized web setups.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> Verified Company Directory listing</li>
+                    <li><i class="fa-solid fa-check"></i> High uptime & database backup</li>
+                    <li><i class="fa-solid fa-check"></i> Automated client email verification</li>
+                </ul>
+            </div>
+
+            <!-- Service 3: Tech Startups -->
+            <div class="service-card glass-card">
+                <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Tech Startups</h3>
+                <p>Rapid Minimum Viable Product (MVP) engineering, custom API architecture, and scalable MongoDB databases.</p>
+                <ul class="service-features">
+                    <li><i class="fa-solid fa-check"></i> Staging Sandbox preview URLs</li>
+                    <li><i class="fa-solid fa-check"></i> NDA & Secure Document Vault</li>
+                    <li><i class="fa-solid fa-check"></i> Dedicated account management</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 3. ABOUT SECTION                                          -->
+<!-- ========================================================= -->
+<section id="about" class="about-section section-padding bg-alt">
+    <div class="section-container">
+        <div class="grid-2-col align-center">
+            <div class="about-image-wrapper">
+                <div class="glass-card founder-profile-card text-center">
+                    <div class="avatar-circle">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <h3>V Akhil</h3>
+                    <span class="role-badge">Founder & Lead Engineer</span>
+                    <p class="founder-quote">"Building accessible, high-performance IT solutions that bridge the gap between academic ideas and production-grade software."</p>
+                </div>
+            </div>
+
+            <div class="about-text-content">
+                <span class="section-tag">About DAV Cloud Solutions</span>
+                <h2>Driven by Innovation, Built for Scale</h2>
+                <p>
+                    Founded by <strong>V Akhil</strong>, DAV Cloud Solutions specializes in delivering robust web software, custom workflows, and dynamic platform tools.
+                </p>
+                <p>
+                    Whether you are a student launching your first application or a business looking to digitize operations, our structured verification, role-based dashboards, and custom backend engineering ensure seamless execution.
+                </p>
+                <div class="about-actions">
+                    <a href="{{ url_for('about_page') }}" class="btn btn-outline">Read Full Story</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 4. FEATURED PROJECTS SHOWCASE                             -->
+<!-- ========================================================= -->
+<section id="projects" class="projects-section section-padding">
+    <div class="section-container">
+        <div class="section-header flex-between">
+            <div>
+                <span class="section-tag">Portfolio Showcase</span>
+                <h2>Recent Works & Delivered Builds</h2>
+            </div>
+            <a href="{{ url_for('projects_page') }}" class="btn btn-ghost">View All Projects <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="projects-grid">
+            {% if projects %}
+                {% for proj in projects %}
+                    <div class="project-card glass-card">
+                        <div class="project-header">
+                            <span class="project-category">{{ proj.category }}</span>
+                            <span class="status-pill status-completed">Delivered</span>
+                        </div>
+                        <h3>{{ proj.title }}</h3>
+                        <p>{{ proj.description | truncate(110) }}</p>
+                        <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
+                            <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Amount</span>
+                            <strong class="text-primary fs-md">₹{{ proj.amount_charged }}</strong>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Project 1: AgriSmart Naa Panta -->
+                <div class="project-card glass-card">
+                    <div class="project-header">
+                        <span class="project-category"><i class="fa-solid fa-wheat-awn"></i> Agriculture & ML</span>
+                        <span class="status-pill status-completed">Delivered</span>
+                    </div>
+                    <h3>AgriSmart Naa Panta</h3>
+                    <p>Smart agricultural prediction and crop management web portal engineered for regional farming logic.</p>
+                    <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
+                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Client Cost</span>
+                        <strong class="text-primary fs-md">₹6,000</strong>
+                    </div>
+                </div>
+
+                <!-- Project 2: Streamlit E-Learning -->
+                <div class="project-card glass-card">
+                    <div class="project-header">
+                        <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> EdTech</span>
+                        <span class="status-pill status-completed">Delivered</span>
+                    </div>
+                    <h3>Streamlit E-Learning Platform</h3>
+                    <p>Interactive web application built with Streamlit for seamless digital learning and interactive module delivery.</p>
+                    <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
+                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Client Cost</span>
+                        <strong class="text-primary fs-md">₹3,200</strong>
+                    </div>
+                </div>
+
+                <!-- Project 3: Apple Stock Prediction (EDA) -->
+                <div class="project-card glass-card">
+                    <div class="project-header">
+                        <span class="project-category"><i class="fa-solid fa-chart-line"></i> Data Science</span>
+                        <span class="status-pill status-completed">Delivered</span>
+                    </div>
+                    <h3>Apple Stock Price Prediction & EDA</h3>
+                    <p>Exploratory Data Analysis and machine learning predictive modeling for Apple financial stock forecasting.</p>
+                    <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
+                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Client Cost</span>
+                        <strong class="text-primary fs-md">₹5,000</strong>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 5. TEAM PREVIEW SECTION                                   -->
+<!-- ========================================================= -->
+<section id="team" class="team-section section-padding bg-alt">
+    <div class="section-container">
+        <div class="section-header text-center">
+            <span class="section-tag">Leadership & Execution</span>
+            <h2>Meet the Core Team</h2>
+            <p>Empowering DAV Cloud Solutions with technical rigor.</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card glass-card text-center">
+                <div class="team-avatar">
+                    <i class="fa-solid fa-user-ninja"></i>
+                </div>
+                <h3>V Akhil</h3>
+                <span class="team-role">Founder & Lead Engineer</span>
+                <p>Full-Stack Architect specializing in Flask, MongoDB, and System Architecture.</p>
+            </div>
+
+            <div class="team-card glass-card text-center placeholder-card">
+                <div class="team-avatar">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <h3>Core Engineering Team</h3>
+                <span class="team-role">AI, UI/UX & Documentation</span>
+                <p>Awais (UI/UX), Harsha (AI/ML), Huzaifa (PPT/Docs) & Malik (PPT/Docs).</p>
+            </div>
+        </div>
+
+        <div class="text-center margin-top-lg">
+            <a href="{{ url_for('team_page') }}" class="btn btn-outline">Explore Full Team Directory</a>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 6. PROJECT COST ESTIMATOR WIDGET                          -->
+<!-- ========================================================= -->
+<section id="estimator" class="estimator-section section-padding">
+    <div class="section-container">
+        <div class="glass-card estimator-box">
+            <div class="section-header text-center">
+                <span class="section-tag">Interactive Calculator</span>
+                <h2>Instant Project Estimator</h2>
+                <p>Get a quick estimate range for your custom IT requirements.</p>
+            </div>
+
+            <div class="estimator-controls">
+                <div class="form-group">
+                    <label for="calc-type">Select Requirement Type:</label>
+                    <select id="calc-type" class="form-input">
+                        <option value="student">Student Academic Project / Portfolio</option>
+                        <option value="business">Small Business Portal / Web App</option>
+                        <option value="startup">Startup MVP / Scalable Architecture</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Key Modules:</label>
+                    <div class="checkbox-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px;">
+                        <label><input type="checkbox" class="calc-addon" value="2000"> Database Integration (MongoDB)</label>
+                        <label><input type="checkbox" class="calc-addon" value="3000"> Machine Learning Model Integration</label>
+                        <label><input type="checkbox" class="calc-addon" value="1500"> Email Verification & Auth</label>
+                        <label><input type="checkbox" class="calc-addon" value="2500"> Custom Business Directory Setup</label>
+                    </div>
+                </div>
+
+                <div class="estimator-result text-center margin-top-md">
+                    <h4>Estimated Investment Range:</h4>
+                    <div class="price-display" id="estimated-price" style="font-size: 1.8rem; font-weight: 800; color: var(--primary); margin: 10px 0;">₹3,000 - ₹4,050</div>
+                    <p class="text-muted fs-sm">*Final pricing confirmed upon scope review by V Akhil.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 7. DIRECT CONTACT & INQUIRY SECTION                       -->
+<!-- ========================================================= -->
+<section id="contact" class="contact-section section-padding bg-alt">
+    <div class="section-container">
+        <div class="grid-2-col">
+            <div class="contact-info">
+                <span class="section-tag">Get in Touch</span>
+                <h2>Start Your Project with DAV Cloud Solutions</h2>
+                <p>Send an instant inquiry. Our system routes your request directly to Founder V Akhil for scope analysis and delivers an alert to our inbox.</p>
+                
+                <div class="info-list margin-top-md">
+                    <div class="info-item flex-align-center gap-sm margin-bottom-sm">
+                        <i class="fa-solid fa-envelope fs-lg text-primary"></i>
+                        <div>
+                            <strong>Email Inquiries:</strong>
+                            <p class="text-muted">contactdavcloudsolutions@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="info-item flex-align-center gap-sm margin-bottom-sm">
+                        <i class="fa-brands fa-whatsapp fs-lg" style="color: var(--accent-emerald);"></i>
+                        <div>
+                            <strong>WhatsApp Support:</strong>
+                            <p class="text-muted">+91 9948685064</p>
+                        </div>
+                    </div>
+                    <div class="info-item flex-align-center gap-sm">
+                        <i class="fa-solid fa-user-shield fs-lg text-primary"></i>
+                        <div>
+                            <strong>Direct Founder Support:</strong>
+                            <p class="text-muted">V Akhil (Lead Architect)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-card glass-card">
+                <h3>Send Quick Message</h3>
+                
+                <form id="main-contact-form" class="margin-top-md">
+                    <!-- Web3Forms and Categorization Meta Inputs -->
+                    <input type="hidden" name="access_key" value="ec1c8cd8-2e7e-4ba1-9b6f-23b58a3db594">
+                    <input type="hidden" name="subject" value="New Website Client Inquiry - DAV Cloud Solutions">
+                    <input type="hidden" name="from_name" value="DAV Cloud Solutions Website">
+                    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                    <div class="form-group">
+                        <label for="contact-name">Full Name <span style="color: var(--accent-rose);">*</span></label>
+                        <input type="text" name="name" id="contact-name" class="form-input" placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="grid-2-col" style="gap: 14px;">
+                        <div class="form-group">
+                            <label for="contact-email">Email Address <span style="color: var(--accent-rose);">*</span></label>
+                            <input type="email" name="email" id="contact-email" class="form-input" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-phone">WhatsApp Number <span style="color: var(--accent-rose);">*</span></label>
+                            <input type="tel" name="phone" id="contact-phone" class="form-input" placeholder="+91 9876543210" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-role">I am a:</label>
+                        <select name="user_category" id="contact-role" class="form-input">
+                            <option value="Student">Student / Freelancer</option>
+                            <option value="Small Business Owner">Small Business Owner</option>
+                            <option value="Startup Founder">Startup Founder</option>
+                            <option value="Other">Other Inquiry</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-message">Project Requirement Details <span style="color: var(--accent-rose);">*</span></label>
+                        <textarea name="message" id="contact-message" class="form-input" rows="4" placeholder="Describe what software, architecture, or project you need..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Inquiry Directly to Founder
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Embedded Estimator Calculator Script
+        const typeSelect = document.getElementById('calc-type');
+        const checkboxes = document.querySelectorAll('.calc-addon');
+        const priceDisplay = document.getElementById('estimated-price');
+
+        const basePrices = {
+            'student': 3000,
+            'business': 8000,
+            'startup': 15000
+        };
+
+        function calculateEstimate() {
+            let base = basePrices[typeSelect.value] || 3000;
+            let addons = 0;
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    addons += parseInt(cb.value);
+                }
+            });
+
+            let minPrice = base + addons;
+            let maxPrice = Math.round(minPrice * 1.35);
+
+            if (priceDisplay) {
+                priceDisplay.textContent = `₹${minPrice.toLocaleString('en-IN')} - ₹${maxPrice.toLocaleString('en-IN')}`;
+            }
+        }
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', calculateEstimate);
+            checkboxes.forEach(cb => cb.addEventListener('change', calculateEstimate));
+        }
+
+        // Dual-Dispatch Handler: Web3Forms (Dashboard) + Local Flask/MongoDB
+        const contactForm = document.getElementById('main-contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = contactForm.querySelector('button[type="submit"]');
+                const origText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+                const formData = new FormData(contactForm);
+                const formJSON = Object.fromEntries(formData.entries());
+
+                try {
+                    // 1. Send to Web3Forms API to display on Web3Forms Dashboard
+                    const web3Response = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(formJSON)
+                    });
+                    const web3Data = await web3Response.json();
+
+                    // 2. Send to Flask Backend (Logs in MongoDB & triggers SMTP Email)
+                    await fetch('/api/submit-inquiry', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (web3Data.success) {
+                        alert('Inquiry successfully received! Founder V Akhil will review your scope and get in touch.');
+                        contactForm.reset();
+                    } else {
+                        alert(web3Data.message || 'Error submitting inquiry. Please try again.');
+                    }
+                } catch (err) {
+                    alert('Network error occurred. Please verify your connection.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = origText;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

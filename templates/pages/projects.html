@@ -1,0 +1,1073 @@
+{% extends "base.html" %}
+
+{% block title %}Projects Catalog | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<!-- ========================================================= -->
+<!-- 1. CATALOG HERO SECTION                                   -->
+<!-- ========================================================= -->
+<section class="projects-hero-section section-padding text-center">
+    <div class="section-container">
+        <div class="badge-pill">
+            <i class="fa-solid fa-diagram-project"></i> Project Showcase & Catalog
+        </div>
+        <h1 class="hero-title margin-top-xs">
+            Explore Our Comprehensive <span class="gradient-text">IT & Software Projects</span>
+        </h1>
+        <p class="hero-subtitle max-w-700 margin-auto">
+            Browse our catalog of 60+ engineered projects across Student Academic Domains, Small Business Portals, and Startup MVPs.
+        </p>
+
+        <!-- Search & Live Filter Controls -->
+        <div class="catalog-controls-container margin-top-lg max-w-800 margin-auto">
+            <div class="search-bar-wrapper" style="position: relative;">
+                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                <input 
+                    type="text" 
+                    id="project-search" 
+                    class="form-input" 
+                    placeholder="Search by title, tech stack (e.g., Flask, ML, OpenCV), or keyword..."
+                    style="padding-left: 44px; font-size: 1rem; border-radius: var(--radius-full);"
+                >
+            </div>
+
+            <!-- Domain Category Tabs -->
+            <div class="filter-tabs-wrapper margin-top-md" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+                <button class="btn btn-sm btn-primary filter-tab active" data-filter="all">
+                    <i class="fa-solid fa-layer-group"></i> All Projects
+                </button>
+                <button class="btn btn-sm btn-outline filter-tab" data-filter="student">
+                    <i class="fa-solid fa-graduation-cap"></i> Student & Academic
+                </button>
+                <button class="btn btn-sm btn-outline filter-tab" data-filter="business">
+                    <i class="fa-solid fa-store"></i> Small Business
+                </button>
+                <button class="btn btn-sm btn-outline filter-tab" data-filter="startup">
+                    <i class="fa-solid fa-rocket"></i> Startup MVPs
+                </button>
+            </div>
+
+            <!-- Quick Technology Pills -->
+            <div class="tech-pills-wrapper margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; font-size: 0.8rem;">
+                <span class="text-muted fs-sm" style="align-self: center; margin-right: 4px;">Quick Filter:</span>
+                <button type="button" class="tech-pill-btn" data-tech="flask">Flask</button>
+                <button type="button" class="tech-pill-btn" data-tech="mongodb">MongoDB</button>
+                <button type="button" class="tech-pill-btn" data-tech="machine learning">Machine Learning</button>
+                <button type="button" class="tech-pill-btn" data-tech="nlp">NLP / AI</button>
+                <button type="button" class="tech-pill-btn" data-tech="opencv">Computer Vision</button>
+                <button type="button" class="tech-pill-btn" data-tech="stripe">Payments / SaaS</button>
+            </div>
+
+            <!-- Dynamic Results Count -->
+            <div class="margin-top-sm text-muted fs-sm" id="results-count-bar">
+                Showing all projects
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 2. PROJECTS GRID CONTAINER                                -->
+<!-- ========================================================= -->
+<section class="projects-catalog-section section-padding bg-alt">
+    <div class="section-container">
+        
+        <div class="projects-grid-3col" id="projects-container">
+
+            <!-- ================================================= -->
+            <!-- DOMAIN 1: STUDENT & ACADEMIC PROJECTS             -->
+            <!-- ================================================= -->
+
+            <!-- Project 1 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb html5 css3 javascript">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> Student Project</span>
+                    <span class="badge-tech">Python Flask + MongoDB</span>
+                </div>
+                <h3 class="margin-top-xs">Student Leave Management System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Role-based portal for students to submit leave applications, view status logs, and allow faculty guides to approve/reject requests.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, HTML5, JavaScript
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Student%20Leave%20Management%20System" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);" title="Chat on WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Student Leave Management System', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask python machine learning scikit-learn pandas mongodb chartjs">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-brain"></i> Machine Learning</span>
+                    <span class="badge-tech">Flask + Scikit-Learn</span>
+                </div>
+                <h3 class="margin-top-xs">AgriPredict Crop Yield & Disease Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Agricultural ML system predicting optimal crops and plant diseases based on soil NPK parameters and weather data.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, Python ML (Scikit-Learn, Pandas), MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20AgriPredict%20Crop%20Yield" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AgriPredict Crop Yield & Disease Engine', 'Machine Learning')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask nlp nltk spacy mongodb bootstrap">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-shield-halved"></i> Cyber Security</span>
+                    <span class="badge-tech">Flask + NLP</span>
+                </div>
+                <h3 class="margin-top-xs">Political Security Threat Prediction Framework</h3>
+                <p class="text-muted fs-sm margin-top-xs">Text classification and sentiment analysis tool assessing security threat levels from news feeds and social posts.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, NLTK/SpaCy, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Political%20Security%20Threat%20Prediction" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Political Security Threat Prediction Framework', 'Cyber Security & NLP')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask pymongo mongodb html5 css3 reportlab">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-address-card"></i> Web App</span>
+                    <span class="badge-tech">Flask + MongoDB</span>
+                </div>
+                <h3 class="margin-top-xs">Smart Attendance & Performance Tracker</h3>
+                <p class="text-muted fs-sm margin-top-xs">Student attendance logger featuring performance charts, low attendance alerts, and downloadable PDF reports.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python Flask, PyMongo, ReportLab
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Smart%20Attendance%20Tracker" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Smart Attendance & Performance Tracker', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb gridfs javascript tailwind">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-book"></i> Academic Tool</span>
+                    <span class="badge-tech">Flask + MongoDB GridFS</span>
+                </div>
+                <h3 class="margin-top-xs">Research Paper Filing & Repository System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Centralized filing system for faculty guides and students to submit, archive, and peer-review research paper drafts.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB GridFS, JavaScript
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Research%20Paper%20Repository" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Research Paper Filing & Repository System', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask github rest api html5 css3">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-laptop-code"></i> Developer Tool</span>
+                    <span class="badge-tech">Flask + GitHub API</span>
+                </div>
+                <h3 class="margin-top-xs">Personal Developer Portfolio & Resume Generator</h3>
+                <p class="text-muted fs-sm margin-top-xs">Dynamic portfolio generator that automatically fetches GitHub repositories and builds downloadable PDF resumes.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, GitHub REST API
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 2–4 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Portfolio%20Generator" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Personal Developer Portfolio & Resume Generator', 'Developer Portfolio')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 7 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask scikit-learn machine learning mongodb chartjs">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-heart-pulse"></i> Healthcare ML</span>
+                    <span class="badge-tech">Flask + ML Models</span>
+                </div>
+                <h3 class="margin-top-xs">AI Disease Risk Predictor</h3>
+                <p class="text-muted fs-sm margin-top-xs">Early medical symptom checking engine calculating risk metrics for diabetes, heart conditions, and kidney disease.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, Scikit-Learn, MongoDB, Chart.js
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20AI%20Disease%20Risk%20Predictor" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AI Disease Risk Predictor', 'Machine Learning')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 8 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb jinja2 bootstrap">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-building-columns"></i> Campus App</span>
+                    <span class="badge-tech">Flask + WebSockets</span>
+                </div>
+                <h3 class="margin-top-xs">College Placement & Campus Interview Portal</h3>
+                <p class="text-muted fs-sm margin-top-xs">Coordinates company visits, student eligibility filtering, resume submissions, and interview schedule alerts.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python Flask, MongoDB, Jinja2
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20College%20Placement%20Portal" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('College Placement & Campus Interview Portal', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 9 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask nlp nltk spacy mongodb transformers">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-comments"></i> NLP App</span>
+                    <span class="badge-tech">Python + Transformers</span>
+                </div>
+                <h3 class="margin-top-xs">Automated Student Essay & Assignment Scorer</h3>
+                <p class="text-muted fs-sm margin-top-xs">NLP engine evaluating student essay submissions for grammar, relevance, keyword density, and plagiarism score.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, NLTK, SpaCy, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Essay%20Scorer" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Automated Student Essay & Assignment Scorer', 'Cyber Security & NLP')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 10 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb google maps api leaflet">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-bus"></i> IoT / Tracking</span>
+                    <span class="badge-tech">Flask + Google Maps API</span>
+                </div>
+                <h3 class="margin-top-xs">College Bus Route & GPS Tracker</h3>
+                <p class="text-muted fs-sm margin-top-xs">Real-time transit application showing campus bus locations, driver contacts, and expected arrival times.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, Leaflet.js
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Bus%20Route%20Tracker" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('College Bus Route & GPS Tracker', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 11 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb pycryptodome aes encryption">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-vault"></i> Security</span>
+                    <span class="badge-tech">Flask + Cryptography</span>
+                </div>
+                <h3 class="margin-top-xs">Encrypted Academic Document Storage System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Secure vault for storing degree certificates and marks memos using AES-256 encryption and link expiration.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, PyCryptodome
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Encrypted%20Document%20Storage" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Encrypted Academic Document Storage System', 'Cyber Security & NLP')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 12 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask pymongo vanilla js html5">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-gamepad"></i> EdTech</span>
+                    <span class="badge-tech">Flask + JavaScript</span>
+                </div>
+                <h3 class="margin-top-xs">Interactive Coding Quiz & Leaderboard Platform</h3>
+                <p class="text-muted fs-sm margin-top-xs">Gamified learning platform with timed programming quizzes, instant score compilation, and rank leaderboards.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python Flask, PyMongo, Vanilla JS
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Coding%20Quiz%20Platform" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Interactive Coding Quiz & Leaderboard Platform', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 13 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb css grid js">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-cart-flatbed"></i> Campus Marketplace</span>
+                    <span class="badge-tech">Flask + MongoDB</span>
+                </div>
+                <h3 class="margin-top-xs">Peer-to-Peer Campus Book Exchange</h3>
+                <p class="text-muted fs-sm margin-top-xs">Allows students to buy, sell, or trade used textbooks, lab coats, and electronics within their campus network.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, CSS Grid
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Book%20Exchange%20Platform" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Peer-to-Peer Campus Book Exchange', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 14 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask opencv face_recognition mongodb computer vision">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-camera"></i> Computer Vision</span>
+                    <span class="badge-tech">Flask + OpenCV</span>
+                </div>
+                <h3 class="margin-top-xs">Face Recognition Attendance System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Automated classroom attendance logger using webcam frames and OpenCV face embedding matches.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, OpenCV, Face_Recognition, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Face%20Recognition%20Attendance" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Face Recognition Attendance System', 'Machine Learning')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 15 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb nltk html5 nlp ai chatbot">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-robot"></i> AI Chatbot</span>
+                    <span class="badge-tech">Flask + NLP Engine</span>
+                </div>
+                <h3 class="margin-top-xs">Campus Helpdesk Assistant Bot</h3>
+                <p class="text-muted fs-sm margin-top-xs">AI-powered inquiry bot answering student questions regarding admission fees, exam schedules, and syllabus links.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, NLTK
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Campus%20Helpdesk%20Bot" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Campus Helpdesk Assistant Bot', 'Cyber Security & NLP')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 16 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb tailwind javascript">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-utensils"></i> Campus App</span>
+                    <span class="badge-tech">Flask + PyMongo</span>
+                </div>
+                <h3 class="margin-top-xs">Digital Canteen Token & Pre-Ordering System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Reduces canteen queues by enabling students to pre-order food items, pay online, and receive digital pickup tokens.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, Tailwind CSS
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Canteen%20Token%20System" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Digital Canteen Token & Pre-Ordering System', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 17 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask scikit-learn machine learning mongodb chartjs">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-cloud-sun"></i> IoT / ML</span>
+                    <span class="badge-tech">Flask + Weather API</span>
+                </div>
+                <h3 class="margin-top-xs">Smart Campus Energy Consumption Predictor</h3>
+                <p class="text-muted fs-sm margin-top-xs">Analyzes lab and classroom electricity usage patterns to recommend energy-saving schedules.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, Scikit-Learn, MongoDB, Chart.js
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Energy%20Predictor" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Smart Campus Energy Consumption Predictor', 'Machine Learning')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 18 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb bootstrap">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-handshake"></i> Management</span>
+                    <span class="badge-tech">Flask + MongoDB</span>
+                </div>
+                <h3 class="margin-top-xs">Alumni Network & Mentorship Connect</h3>
+                <p class="text-muted fs-sm margin-top-xs">Connects current students with graduated alumni for career guidance, mock interviews, and job referrals.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, Bootstrap 5
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Alumni%20Network%20Portal" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Alumni Network & Mentorship Connect', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 19 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask tensorflow keras opencv mongodb deep learning">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-laptop-medical"></i> ML App</span>
+                    <span class="badge-tech">Flask + TensorFlow/Keras</span>
+                </div>
+                <h3 class="margin-top-xs">Skin Disease Classification via Image Analysis</h3>
+                <p class="text-muted fs-sm margin-top-xs">Deep learning CNN model predicting skin conditions from user-uploaded dermatological images.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, TensorFlow, Keras, OpenCV, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–9 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Skin%20Disease%20Classification" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Skin Disease Classification via Image Analysis', 'Machine Learning')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 20 -->
+            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb chartjs html5 css3">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-chart-line"></i> FinTech Student</span>
+                    <span class="badge-tech">Flask + Finance API</span>
+                </div>
+                <h3 class="margin-top-xs">Student Personal Budget & Micro-Investment Planner</h3>
+                <p class="text-muted fs-sm margin-top-xs">Tracks daily expenses, categorizes spending, and provides savings goal suggestions for college students.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, Chart.js
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Budget%20Planner" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Student Personal Budget & Micro-Investment Planner', 'Student Academic Project')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- DOMAIN 2: SMALL BUSINESS SOLUTIONS                -->
+            <!-- ================================================= -->
+
+            <!-- Project 21 -->
+            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb whatsapp webhook api css grid">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-store"></i> Business Portal</span>
+                    <span class="badge-tech">Flask + WhatsApp API</span>
+                </div>
+                <h3 class="margin-top-xs">Local Retail Store Digital Catalog & Order Tracker</h3>
+                <p class="text-muted fs-sm margin-top-xs">Online product catalog for local shops allowing customers to browse inventory and send WhatsApp/Email orders.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, WhatsApp Webhook API
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Retail%20Digital%20Catalog" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Local Retail Store Digital Catalog & Order Tracker', 'Small Business Solution')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 22 -->
+            <div class="project-card glass-card" data-domain="business" data-stack="python flask mongodb datatables">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-boxes-stacked"></i> Operations</span>
+                    <span class="badge-tech">Flask + PyMongo</span>
+                </div>
+                <h3 class="margin-top-xs">Smart Inventory & Stock Alert Manager</h3>
+                <p class="text-muted fs-sm margin-top-xs">Tracks stock levels in real time, generates low-inventory email alerts, and logs supplier purchase orders.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, DataTables JS
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Inventory%20Manager" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Smart Inventory & Stock Alert Manager', 'Small Business Solution')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 23 -->
+            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb reportlab pdfkit billing">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-file-invoice-dollar"></i> Finance</span>
+                    <span class="badge-tech">Flask + PDF Billing</span>
+                </div>
+                <h3 class="margin-top-xs">Automated GST Billing & Invoice Portal</h3>
+                <p class="text-muted fs-sm margin-top-xs">Generates tax-compliant GST invoices, tracks pending client payments, and outputs downloadable PDF receipts.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, ReportLab / PDFKit
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20GST%20Billing%20Portal" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Automated GST Billing & Invoice Portal', 'Small Business Solution')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 24 -->
+            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb javascript tailwind crm">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-users"></i> CRM</span>
+                    <span class="badge-tech">Flask + MongoDB</span>
+                </div>
+                <h3 class="margin-top-xs">Small Business Customer Relationship Manager</h3>
+                <p class="text-muted fs-sm margin-top-xs">Centralizes customer contacts, lead status stages, service call logs, and automated follow-up reminders.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, JavaScript, Tailwind
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–10 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Business%20CRM" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Small Business Customer Relationship Manager', 'Small Business Solution')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 25 -->
+            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb fullcalendar flask-mail booking">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-calendar-check"></i> Booking</span>
+                    <span class="badge-tech">Flask + FullCalendar</span>
+                </div>
+                <h3 class="margin-top-xs">Salon & Clinic Appointment Scheduling System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Online calendar for customers to select time slots, choose staff members, and receive SMS/email confirmations.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, FullCalendar.js, Flask-Mail
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Appointment%20Scheduler" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Salon & Clinic Appointment Scheduling System', 'Small Business Solution')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- DOMAIN 3: TECH STARTUP MVPs                       -->
+            <!-- ================================================= -->
+
+            <!-- Project 41 -->
+            <div class="project-card glass-card" data-domain="startup" data-stack="flask mongodb atlas stripe api javascript jwt saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-cloud"></i> SaaS MVP</span>
+                    <span class="badge-tech">Flask + Stripe + Multi-Tenant</span>
+                </div>
+                <h3 class="margin-top-xs">Multi-Tenant Subscription SaaS Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Turnkey SaaS MVP with tenant isolation, tiered pricing plans, automated billing webhooks, and team management.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB Atlas, Stripe API, JWT
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 10–14 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20SaaS%20MVP%20Engine" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Multi-Tenant Subscription SaaS Engine', 'Startup MVP Architecture')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 42 -->
+            <div class="project-card glass-card" data-domain="startup" data-stack="flask mongodb razorpay stripe tailwind e-commerce">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-cart-shopping"></i> E-Commerce MVP</span>
+                    <span class="badge-tech">Flask + Multi-Vendor</span>
+                </div>
+                <h3 class="margin-top-xs">Multi-Vendor E-Commerce Marketplace MVP</h3>
+                <p class="text-muted fs-sm margin-top-xs">Complete multi-seller platform with commission calculations, vendor management dashboards, and checkout systems.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Flask, MongoDB, Razorpay / Stripe
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 12–16 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20E-Commerce%20Marketplace" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Multi-Vendor E-Commerce Marketplace MVP', 'Startup MVP Architecture')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 43 -->
+            <div class="project-card glass-card" data-domain="startup" data-stack="python flask openai api llm mongodb ai saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-microchip"></i> AI SaaS</span>
+                    <span class="badge-tech">Flask + OpenAI / LLM</span>
+                </div>
+                <h3 class="margin-top-xs">AI Content & Copywriting Generator SaaS</h3>
+                <p class="text-muted fs-sm margin-top-xs">Generates marketing copy, social media captions, and blog posts using LLM prompt pipelines and token credit billing.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python Flask, OpenAI API, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 8–12 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20AI%20Copywriting%20SaaS" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AI Content & Copywriting Generator SaaS', 'Startup MVP Architecture')">
+                            <i class="fa-solid fa-paper-plane"></i> Request Build
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DYNAMIC BACKEND DATABASE PROJECTS -->
+            {% if projects %}
+                {% for proj in projects %}
+                    <div class="project-card glass-card" data-domain="{{ proj.category | lower }}" data-stack="{{ proj.tech_stack | join(' ') | lower if proj.tech_stack is iterable and proj.tech_stack is not string else 'flask mongodb' }}">
+                        <div class="project-header flex-between align-center">
+                            <span class="project-category">{{ proj.category }}</span>
+                            <span class="badge-tech">Verified Build</span>
+                        </div>
+                        <h3 class="margin-top-xs">{{ proj.title }}</h3>
+                        <p class="text-muted fs-sm margin-top-xs">{{ proj.description }}</p>
+                        <div class="project-tech-stack margin-top-sm">
+                            <strong>Tech Stack:</strong> 
+                            {% if proj.tech_stack is iterable and proj.tech_stack is not string %}
+                                {{ proj.tech_stack | join(', ') }}
+                            {% else %}
+                                Flask, MongoDB, Python
+                            {% endif %}
+                        </div>
+                        <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                            <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> Custom Scope</span>
+                            <div class="flex-align-center gap-xs">
+                                <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20{{ proj.title | urlencode }}" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                                <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('{{ proj.title | escape }}', '{{ proj.category | escape }}')">
+                                    <i class="fa-solid fa-paper-plane"></i> Request Build
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+
+        <!-- No Results Fallback State -->
+        <div id="no-results-state" class="glass-card text-center padding-xl margin-top-lg" style="display: none; max-width: 500px; margin-left: auto; margin-right: auto;">
+            <i class="fa-solid fa-magnifying-glass fs-xl text-muted" style="font-size: 2.5rem;"></i>
+            <h3 class="margin-top-sm">No Matching Projects Found</h3>
+            <p class="text-muted fs-sm margin-top-xs">We didn't find any catalog projects matching your search criteria. Submit a custom request to Founder V Akhil.</p>
+            <button class="btn btn-primary margin-top-md" onclick="resetFilters()">
+                <i class="fa-solid fa-rotate-left"></i> Reset All Filters
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 3. PROJECT DIRECT REQUEST / INQUIRY MODAL                 -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="project-order-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 540px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-paper-plane"></i> Request Project Build & Quote</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('project-order-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+        
+        <form id="project-inquiry-form">
+            <!-- Web3Forms and Categorization Meta Inputs -->
+            <input type="hidden" name="access_key" value="ec1c8cd8-2e7e-4ba1-9b6f-23b58a3db594">
+            <input type="hidden" name="subject" value="New Catalog Project Inquiry - DAV Cloud Solutions">
+            <input type="hidden" name="from_name" value="DAV Cloud Solutions Catalog">
+            <input type="hidden" name="user_category" value="Project Catalog">
+
+            <div class="form-group">
+                <label for="order-proj-name" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">Selected Project</label>
+                <input type="text" name="project_name" id="order-proj-name" class="form-input" readonly style="opacity: 0.85;">
+            </div>
+
+            <div class="grid-2-col" style="gap: 14px;">
+                <div class="form-group">
+                    <label for="order-user-name" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">Your Full Name <span style="color: var(--accent-rose);">*</span></label>
+                    <input type="text" name="name" id="order-user-name" class="form-input" placeholder="e.g. Rahul Sharma" required>
+                </div>
+                <div class="form-group">
+                    <label for="order-user-phone" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">WhatsApp Number <span style="color: var(--accent-rose);">*</span></label>
+                    <input type="tel" name="phone" id="order-user-phone" class="form-input" placeholder="+91 9876543210" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="order-user-email" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">Email Address <span style="color: var(--accent-rose);">*</span></label>
+                <input type="email" name="email" id="order-user-email" class="form-input" placeholder="name@domain.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="order-custom-notes" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">Customization Notes (Optional)</label>
+                <textarea name="notes" id="order-custom-notes" class="form-input" rows="3" placeholder="Mention deadline, specific features or documentation requirements..."></textarea>
+            </div>
+
+            <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('project-order-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Send Inquiry to Founder</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- 4. CUSTOM PROJECT REQUEST CTA                             -->
+<!-- ========================================================= -->
+<section class="cta-section section-padding">
+    <div class="section-container text-center">
+        <div class="glass-card highlight-border-card max-w-800 margin-auto">
+            <h2>Don't See Your Exact Requirement?</h2>
+            <p class="margin-top-xs">
+                Founder <strong>V Akhil</strong> and the DAV Cloud Solutions team build fully customized, ground-up software tailored to your specific requirements.
+            </p>
+            <div class="cta-actions margin-top-md" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg">
+                    <i class="fa-solid fa-paper-plane"></i> Request Custom Scope & Quote
+                </a>
+                <a href="{{ url_for('register') }}" class="btn btn-outline btn-lg">
+                    <i class="fa-solid fa-user-plus"></i> Register to Start Project
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .tech-pill-btn {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        padding: 4px 12px;
+        border-radius: var(--radius-full);
+        font-size: 0.78rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .tech-pill-btn:hover, .tech-pill-btn.active {
+        background: hsla(var(--primary-hue), 90%, 56%, 0.15);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .btn-outline-primary {
+        background: transparent;
+        border: 1px solid var(--border-highlight);
+        color: var(--primary);
+    }
+    .btn-outline-primary:hover {
+        background: var(--primary);
+        color: #ffffff;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            const isVisible = modal.style.display === 'flex';
+            modal.style.display = isVisible ? 'none' : 'flex';
+        }
+    }
+
+    function openOrderModal(projectTitle, domainTrack) {
+        const input = document.getElementById('order-proj-name');
+        if (input) {
+            input.value = `${projectTitle} (${domainTrack})`;
+        }
+        toggleModal('project-order-modal');
+    }
+
+    let currentDomain = 'all';
+    let currentTech = '';
+
+    function resetFilters() {
+        document.getElementById('project-search').value = '';
+        document.querySelectorAll('.tech-pill-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.filter-tab').forEach(t => {
+            t.classList.remove('active');
+            t.classList.remove('btn-primary');
+            t.classList.add('btn-outline');
+        });
+        const defaultTab = document.querySelector('.filter-tab[data-filter="all"]');
+        if (defaultTab) {
+            defaultTab.classList.add('active');
+            defaultTab.classList.add('btn-primary');
+            defaultTab.classList.remove('btn-outline');
+        }
+        
+        currentDomain = 'all';
+        currentTech = '';
+        filterProjects();
+    }
+
+    function filterProjects() {
+        const searchInput = document.getElementById('project-search');
+        const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const cards = document.querySelectorAll('.project-card');
+        const noResults = document.getElementById('no-results-state');
+        const countBar = document.getElementById('results-count-bar');
+        
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const domain = card.getAttribute('data-domain') || '';
+            const stack = card.getAttribute('data-stack') || '';
+            const text = card.textContent.toLowerCase();
+
+            const matchesDomain = (currentDomain === 'all' || domain.includes(currentDomain));
+            const matchesTech = (currentTech === '' || stack.includes(currentTech));
+            const matchesSearch = (query === '' || text.includes(query) || stack.includes(query));
+
+            if (matchesDomain && matchesTech && matchesSearch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (noResults) {
+            noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
+
+        if (countBar) {
+            countBar.textContent = `Showing ${visibleCount} matching project${visibleCount === 1 ? '' : 's'}`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Domain Tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.remove('btn-primary');
+                    t.classList.add('btn-outline');
+                });
+                this.classList.add('active');
+                this.classList.add('btn-primary');
+                this.classList.remove('btn-outline');
+
+                currentDomain = this.getAttribute('data-filter');
+                filterProjects();
+            });
+        });
+
+        // Tech Pills
+        document.querySelectorAll('.tech-pill-btn').forEach(pill => {
+            pill.addEventListener('click', function() {
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    currentTech = '';
+                } else {
+                    document.querySelectorAll('.tech-pill-btn').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    currentTech = this.getAttribute('data-tech');
+                }
+                filterProjects();
+            });
+        });
+
+        // Search Input
+        const searchInput = document.getElementById('project-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', filterProjects);
+        }
+
+        // Dual-Dispatch Handler: Web3Forms (Dashboard) + Local Flask/MongoDB
+        const inquiryForm = document.getElementById('project-inquiry-form');
+        if (inquiryForm) {
+            inquiryForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = inquiryForm.querySelector('button[type="submit"]');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+                const formData = new FormData(inquiryForm);
+                const formJSON = Object.fromEntries(formData.entries());
+
+                try {
+                    // 1. Direct browser call to Web3Forms API
+                    const web3Response = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(formJSON)
+                    });
+                    const web3Data = await web3Response.json();
+
+                    // 2. Direct browser call to Local Flask Backend
+                    await fetch('/api/submit-inquiry', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (web3Data.success) {
+                        alert('Inquiry received! Founder V Akhil will contact you on WhatsApp/Email with the delivery schedule.');
+                        inquiryForm.reset();
+                        toggleModal('project-order-modal');
+                    } else {
+                        alert(web3Data.message || 'Error submitting inquiry. Please try again.');
+                    }
+                } catch (err) {
+                    alert('Network error occurred. Please verify your connection.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Register Account | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<section class="auth-section section-padding">
+    <div class="auth-container">
+        <div class="glass-card highlight-border-card" style="max-width: 620px; margin: 0 auto; padding: 36px 30px;">
+            
+            <!-- Auth Header -->
+            <div class="auth-header text-center" style="margin-bottom: 24px;">
+                <div class="auth-logo-badge" style="width: 58px; height: 58px; border-radius: 50%; background: hsla(var(--primary-hue), 90%, 56%, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; color: var(--primary); font-size: 1.5rem;">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h2 style="font-size: 1.8rem; margin-bottom: 6px;">Create Your DAV Account</h2>
+                <p class="text-muted fs-sm">Register to access customized IT solutions, AI models, and real-time project tracking.</p>
+            </div>
+
+            <!-- Registration Form -->
+            <form action="{{ url_for('register') }}" method="POST" class="auth-form" id="register-form">
+                
+                <!-- Role Selector Tabs -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">
+                        <i class="fa-solid fa-id-badge"></i> Select Account Type <span style="color: var(--accent-rose);">*</span>
+                    </label>
+                    <div style="display: flex; background: var(--bg-main); border-radius: var(--radius-sm); padding: 4px; border: 1px solid var(--border-color); gap: 6px;">
+                        <label id="tab-student" style="flex: 1; text-align: center; cursor: pointer; padding: 10px 8px; border-radius: 6px; font-weight: 600; font-size: 0.88rem; transition: all 0.2s; background: var(--primary); color: #ffffff;">
+                            <input type="radio" name="role" value="student" checked style="display: none;" onchange="switchRole('student')">
+                            <i class="fa-solid fa-graduation-cap"></i> Student / Learner
+                        </label>
+                        <label id="tab-business" style="flex: 1; text-align: center; cursor: pointer; padding: 10px 8px; border-radius: 6px; font-weight: 600; font-size: 0.88rem; transition: all 0.2s; background: transparent; color: var(--text-muted);">
+                            <input type="radio" name="role" value="business" style="display: none;" onchange="switchRole('business')">
+                            <i class="fa-solid fa-building"></i> Business / Startup
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Full Name & Email Grid -->
+                <div class="grid-2-col" style="gap: 16px; margin-bottom: 16px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="full_name" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">
+                            Full Name <span style="color: var(--accent-rose);">*</span>
+                        </label>
+                        <input type="text" name="full_name" id="full_name" class="form-input" placeholder="e.g. Rahul Sharma" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="email" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">
+                            Email Address <span style="color: var(--accent-rose);">*</span>
+                        </label>
+                        <input type="email" name="email" id="email" class="form-input" placeholder="name@domain.com" required>
+                    </div>
+                </div>
+
+                <!-- Phone & Institution Grid -->
+                <div class="grid-2-col" style="gap: 16px; margin-bottom: 16px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="phone" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">
+                            Phone Number <span style="color: var(--accent-rose);">*</span>
+                        </label>
+                        <input type="tel" name="phone" id="phone" class="form-input" placeholder="+91 9876543210" required>
+                    </div>
+
+                    <!-- Academic / Student Specific Input -->
+                    <div class="form-group" id="student-field" style="margin-bottom: 0;">
+                        <label for="institution" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">
+                            College / Institution (Optional)
+                        </label>
+                        <input type="text" name="institution" id="institution" class="form-input" placeholder="e.g. College / University">
+                    </div>
+                </div>
+
+                <!-- CONDITIONAL BUSINESS / COMPANY FIELDS -->
+                <div id="business-fields" style="display: none; margin-bottom: 16px; padding: 16px; background: rgba(255, 255, 255, 0.02); border: 1px dashed var(--border-color); border-radius: var(--radius-sm);">
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+                        <i class="fa-solid fa-briefcase"></i> Organization Details
+                    </div>
+
+                    <div class="grid-2-col" style="gap: 14px; margin-bottom: 12px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="company_name" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">Company Name <span style="color: var(--accent-rose);">*</span></label>
+                            <input type="text" name="company_name" id="company_name" class="form-input" placeholder="e.g. Apex Tech">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="industry" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">Industry Sector</label>
+                            <select name="industry" id="industry" class="form-input form-select">
+                                <option value="IT & Software">IT & Software</option>
+                                <option value="E-Commerce & Retail">E-Commerce & Retail</option>
+                                <option value="Healthcare & FinTech">Healthcare & FinTech</option>
+                                <option value="Agriculture & Tech">Agriculture & Tech</option>
+                                <option value="Other">Other Sector</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid-2-col" style="gap: 14px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="gst_number" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">GSTIN (Optional)</label>
+                            <input type="text" name="gst_number" id="gst_number" class="form-input" placeholder="36AAAAA0000A1Z5">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="website" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">Website (Optional)</label>
+                            <input type="url" name="website" id="website" class="form-input" placeholder="https://yourcompany.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Credentials Grid -->
+                <div class="grid-2-col" style="gap: 16px; margin-bottom: 16px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="password" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">
+                            Password <span style="color: var(--accent-rose);">*</span>
+                        </label>
+                        <div style="position: relative;">
+                            <input type="password" name="password" id="password" class="form-input" placeholder="Minimum 8 characters" required minlength="8" style="padding-right: 40px;">
+                            <button type="button" onclick="togglePass('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="confirm_password" style="display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600;">
+                            Confirm Password <span style="color: var(--accent-rose);">*</span>
+                        </label>
+                        <div style="position: relative;">
+                            <input type="password" name="confirm_password" id="confirm_password" class="form-input" placeholder="Re-enter password" required style="padding-right: 40px;">
+                            <button type="button" onclick="togglePass('confirm_password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="password-match-msg" style="font-size: 0.8rem; margin-bottom: 16px; display: none;"></div>
+
+                <!-- Terms & Verification Notice -->
+                <div class="form-group" style="margin-bottom: 22px;">
+                    <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer;">
+                        <input type="checkbox" name="terms" id="terms" required style="margin-top: 3px;">
+                        <span>I agree to the <a href="#" style="color: var(--primary);" onclick="alert('Account verification requires confirming your registered email address.'); return false;">Terms of Service</a> and understand an automated verification email will be dispatched.</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary btn-block" style="padding: 13px; font-size: 1rem;">
+                    <i class="fa-solid fa-paper-plane"></i> Register & Send Verification Link
+                </button>
+            </form>
+
+            <!-- Auth Footer Link -->
+            <div class="auth-footer text-center" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color); font-size: 0.88rem;">
+                <span class="text-muted">Already registered?</span> 
+                <a href="{{ url_for('login') }}" style="font-weight: 600; margin-left: 4px;">Log In Here</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function switchRole(role) {
+        const tabStudent = document.getElementById('tab-student');
+        const tabBusiness = document.getElementById('tab-business');
+        const studentField = document.getElementById('student-field');
+        const businessFields = document.getElementById('business-fields');
+        const companyNameInput = document.getElementById('company_name');
+
+        if (role === 'business') {
+            tabBusiness.style.background = 'var(--primary)';
+            tabBusiness.style.color = '#ffffff';
+            tabStudent.style.background = 'transparent';
+            tabStudent.style.color = 'var(--text-muted)';
+
+            businessFields.style.display = 'block';
+            if (studentField) studentField.style.display = 'none';
+            if (companyNameInput) companyNameInput.setAttribute('required', 'required');
+        } else {
+            tabStudent.style.background = 'var(--primary)';
+            tabStudent.style.color = '#ffffff';
+            tabBusiness.style.background = 'transparent';
+            tabBusiness.style.color = 'var(--text-muted)';
+
+            businessFields.style.display = 'none';
+            if (studentField) studentField.style.display = 'block';
+            if (companyNameInput) companyNameInput.removeAttribute('required');
+        }
+    }
+
+    function togglePass(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    // Live Password Match Check
+    document.addEventListener('DOMContentLoaded', function() {
+        const pass = document.getElementById('password');
+        const confirmPass = document.getElementById('confirm_password');
+        const msg = document.getElementById('password-match-msg');
+        const form = document.getElementById('register-form');
+
+        function checkMatch() {
+            if (!confirmPass.value) {
+                msg.style.display = 'none';
+                return;
+            }
+            msg.style.display = 'block';
+            if (pass.value === confirmPass.value) {
+                msg.style.color = 'var(--accent-emerald)';
+                msg.innerHTML = '<i class="fa-solid fa-check"></i> Passwords match';
+            } else {
+                msg.style.color = 'var(--accent-rose)';
+                msg.innerHTML = '<i class="fa-solid fa-xmark"></i> Passwords do not match';
+            }
+        }
+
+        pass.addEventListener('input', checkMatch);
+        confirmPass.addEventListener('input', checkMatch);
+
+        form.addEventListener('submit', function(e) {
+            if (pass.value !== confirmPass.value) {
+                e.preventDefault();
+                alert('Passwords do not match. Please re-check before submitting.');
+                confirmPass.focus();
+            }
+        });
+    });
+</script>
+{% endblock %}

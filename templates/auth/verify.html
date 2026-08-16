@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Email Verification | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<section class="auth-section section-padding">
+    <div class="auth-container">
+        <div class="glass-card auth-card text-center highlight-border-card" style="max-width: 520px; margin: 0 auto; padding: 40px 30px;">
+            
+            {% if status == 'success' %}
+                <!-- SUCCESS STATE -->
+                <div class="verify-icon-wrapper success-wrapper" style="width: 68px; height: 68px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; color: var(--accent-emerald); font-size: 2rem;">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2>Email Verified Successfully!</h2>
+                <p class="verify-message text-muted" style="margin-top: 8px;">
+                    Thank you for verifying your email address. Your account with <strong>DAV Cloud Solutions</strong> is now active.
+                </p>
+                <div class="verify-actions margin-top-lg">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg btn-block">
+                        <i class="fa-solid fa-right-to-bracket"></i> Log In to Your Dashboard
+                    </a>
+                </div>
+
+            {% elif status == 'expired' or status == 'invalid' %}
+                <!-- ERROR / EXPIRED STATE -->
+                <div class="verify-icon-wrapper danger-wrapper" style="width: 68px; height: 68px; border-radius: 50%; background: rgba(244, 63, 94, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; color: var(--accent-rose); font-size: 2rem;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h2>Verification Link Invalid or Expired</h2>
+                <p class="verify-message text-muted" style="margin-top: 8px;">
+                    The verification link you clicked is either invalid or has expired. Please log in to request a new link or register again.
+                </p>
+                <div class="verify-actions margin-top-lg" style="display: flex; gap: 12px; justify-content: center;">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary" style="flex: 1;">
+                        <i class="fa-solid fa-user-plus"></i> Register Again
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline" style="flex: 1;">
+                        <i class="fa-solid fa-right-to-bracket"></i> Log In
+                    </a>
+                </div>
+
+            {% else %}
+                <!-- PENDING VERIFICATION NOTICE -->
+                <div class="verify-icon-wrapper info-wrapper" style="width: 68px; height: 68px; border-radius: 50%; background: hsla(var(--primary-hue), 90%, 56%, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; color: var(--primary); font-size: 2rem;">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <h2>Check Your Inbox</h2>
+                <p class="verify-message text-muted" style="margin-top: 8px;">
+                    We have dispatched an automated email verification link to your registered email address.
+                </p>
+                
+                <div class="verify-instructions-card glass-card margin-top-md" style="background: rgba(255, 255, 255, 0.02); border: 1px dashed var(--border-color); border-radius: var(--radius-sm); padding: 18px; text-align: left;">
+                    <ul class="verify-steps-list" style="display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem; color: var(--text-muted);">
+                        <li style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-1" style="color: var(--primary); font-size: 0.8rem; width: 14px;"></i> Open your email client.
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-2" style="color: var(--primary); font-size: 0.8rem; width: 14px;"></i> Locate the email from <strong>DAV Cloud Solutions</strong>.
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-3" style="color: var(--primary); font-size: 0.8rem; width: 14px;"></i> Click the verification button/link inside to activate your role dashboard.
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="text-muted margin-top-md" style="font-size: 0.85rem;">
+                    Didn't receive the email? Check your <strong>Spam/Junk</strong> folder or wait a few minutes.
+                </p>
+
+                <div class="verify-actions margin-top-lg">
+                    <a href="{{ url_for('login') }}" class="btn btn-outline btn-block">
+                        <i class="fa-solid fa-arrow-left"></i> Return to Login Page
+                    </a>
+                </div>
+            {% endif %}
+
+            <div class="auth-footer margin-top-xl text-center" style="margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border-color); font-size: 0.85rem;">
+                <p class="text-muted">
+                    Need help? Contact Founder <strong>V Akhil</strong> at <a href="mailto:contactdavcloudsolutions@gmail.com" style="color: var(--primary);">contactdavcloudsolutions@gmail.com</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

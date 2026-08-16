@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Engineering & Specialist Workspace | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<section class="dashboard-section section-padding">
+    <div class="dashboard-container">
+        
+        <!-- 1. HEADER & SPECIALIST BADGE -->
+        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg">
+            <div class="flex-between align-center wrap-mobile">
+                <div class="welcome-text">
+                    <span class="badge-pill"><i class="fa-solid fa-code-branch"></i> Core Specialist Workspace</span>
+                    <h1 class="margin-top-xs">Welcome, <span class="gradient-text">{{ session.get('full_name', 'Team Member') }}</span></h1>
+                    <p class="text-muted">Manage your assigned builds, upload deliverables for Founder review, and track student walkthrough sessions.</p>
+                </div>
+                <div class="welcome-actions margin-top-mobile flex-between gap-sm">
+                    <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> Active Engineer</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="grid-4-col margin-bottom-lg">
+            <div class="glass-card metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-list-check"></i></div>
+                <div class="metric-info">
+                    <h3>{{ projects | length if projects else 0 }}</h3>
+                    <p>Assigned Builds</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-warning"><i class="fa-solid fa-gears"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% if projects %}
+                            {{ projects | selectattr('status', 'equalto', 'In Progress') | list | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+                    <p>In Active Development</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon" style="color: var(--accent-cyan);"><i class="fa-solid fa-flask"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% if projects %}
+                            {{ projects | selectattr('status', 'equalto', 'Testing') | list | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+                    <p>In Testing & Review</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-success"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% if projects %}
+                            {{ projects | selectattr('status', 'equalto', 'Completed') | list | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+                    <p>Delivered Builds</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. MAIN WORKSPACE GRID -->
+        <div class="grid-2-col" style="grid-template-columns: 2.2fr 1fr; gap: 28px;">
+            
+            <!-- Left Column: Assigned Builds -->
+            <div class="dashboard-main-col">
+                <div class="glass-card">
+                    <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
+                        <h2><i class="fa-solid fa-laptop-code"></i> Assigned Project Deliverables</h2>
+                        <span class="badge-tech">{{ projects | length if projects else 0 }} Active Tasks</span>
+                    </div>
+
+                    <div class="projects-list-wrapper margin-top-md">
+                        {% if projects %}
+                            {% for proj in projects %}
+                                <div class="glass-card margin-bottom-md" style="padding: 20px; background: rgba(255, 255, 255, 0.02);">
+                                    <div class="flex-between align-center wrap-mobile">
+                                        <div>
+                                            <span class="badge-tech">{{ proj.category }}</span>
+                                            <h3 class="margin-top-xs">{{ proj.title }}</h3>
+                                        </div>
+                                        <div class="status-badge-wrapper margin-top-mobile">
+                                            <span class="status-pill status-{{ proj.status | lower | replace(' ', '-') }}">
+                                                {{ proj.status }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <p class="text-muted fs-sm margin-top-xs">{{ proj.description }}</p>
+
+                                    <!-- Tech Stack -->
+                                    <div class="tech-tags-list margin-top-sm">
+                                        {% if proj.tech_stack %}
+                                            {% for t in proj.tech_stack %}
+                                                <span class="tag"><i class="fa-solid fa-code"></i> {{ t }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Update Task Form -->
+                                    <form action="{{ url_for('team_update_task', project_id=proj._id) }}" method="POST" class="margin-top-md padding-top-sm border-top-glass">
+                                        <div class="grid-2-col" style="gap: 12px;">
+                                            <div class="form-group">
+                                                <label class="fs-sm">Progress Status</label>
+                                                <select name="status" class="form-input form-select" required>
+                                                    <option value="In Progress" {% if proj.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                                                    <option value="Testing" {% if proj.status == 'Testing' %}selected{% endif %}>Testing / QA Review</option>
+                                                    <option value="Completed" {% if proj.status == 'Completed' %}selected{% endif %}>Completed & Ready</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="fs-sm">Deliverable ZIP / Drive Link</label>
+                                                <input type="url" name="deliverables_link" value="{{ proj.deliverables_link or '' }}" class="form-input" placeholder="https://drive.google.com/...">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group margin-top-xs">
+                                            <label class="fs-sm">Specialist Notes / Setup Remarks</label>
+                                            <input type="text" name="dev_notes" value="{{ proj.dev_notes or '' }}" class="form-input" placeholder="e.g. Model accuracy: 94.2%, requirements.txt verified, PPT slides added.">
+                                        </div>
+
+                                        <div class="flex-between align-center margin-top-sm">
+                                            {% if proj.deliverables_link %}
+                                                <a href="{{ proj.deliverables_link }}" target="_blank" class="fs-sm text-primary">
+                                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Current Deliverable
+                                                </a>
+                                            {% else %}
+                                                <span class="fs-sm text-muted">No deliverable uploaded yet</span>
+                                            {% endif %}
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fa-solid fa-floppy-disk"></i> Update Task Status
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state-card text-center padding-xl">
+                                <i class="fa-solid fa-mug-hot fs-xl text-muted" style="font-size: 2.5rem; margin-bottom: 14px;"></i>
+                                <h3>No Projects Assigned Currently</h3>
+                                <p class="text-muted fs-sm">When Founder V Akhil assigns a build to your profile, it will appear here for execution.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar: QA Checklist & Walkthroughs -->
+            <div class="dashboard-side-col">
+                <!-- Pre-Delivery QA Checklist -->
+                <div class="glass-card margin-bottom-lg">
+                    <h3><i class="fa-solid fa-clipboard-check text-primary"></i> Pre-Delivery Quality Gate</h3>
+                    <p class="text-muted fs-sm margin-top-xs">Verify these steps before setting project to <strong>Completed</strong>:</p>
+                    
+                    <ul style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px; font-size: 0.85rem; color: var(--text-muted);">
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Virtualenv tested with clean <code>pip install -r requirements.txt</code></li>
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> MongoDB schema collections dump included</li>
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Machine Learning metrics (accuracy/confusion matrix) verified</li>
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Presentation PPT & Documentation PDF enclosed</li>
+                    </ul>
+                </div>
+
+                <!-- Founder Escalation Card -->
+                <div class="glass-card">
+                    <h3><i class="fa-solid fa-shield-halved text-primary"></i> Founder Escalation</h3>
+                    <p class="text-muted fs-sm margin-top-xs">Need scope clarification, client deadline extension, or server access?</p>
+                    <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20have%20an%20engineering%20question%20regarding%20an%20assigned%20build." target="_blank" class="btn btn-outline btn-block btn-sm margin-top-md" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                        <i class="fa-brands fa-whatsapp"></i> Chat with Founder V Akhil
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}

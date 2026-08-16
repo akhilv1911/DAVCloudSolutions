@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+
+{% block title %}Business & Startup Portal | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<section class="dashboard-section section-padding">
+    <div class="dashboard-container">
+        
+        <!-- ========================================================= -->
+        <!-- 1. BUSINESS HEADER & COMPANY STATUS CARD                  -->
+        <!-- ========================================================= -->
+        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg">
+            <div class="flex-between align-center wrap-mobile">
+                <div class="welcome-text">
+                    <div class="flex-align-center gap-sm">
+                        <span class="badge-pill"><i class="fa-solid fa-building"></i> Business & Startup Client Portal</span>
+                        {% if user and user.is_verified %}
+                            <span class="status-pill status-completed"><i class="fa-solid fa-shield-check"></i> Verified Business</span>
+                        {% else %}
+                            <span class="status-pill status-pending"><i class="fa-solid fa-clock"></i> Verification Pending</span>
+                        {% endif %}
+                    </div>
+                    
+                    <h1 class="margin-top-xs">
+                        {{ user.business_info.company_name if (user and user.business_info and user.business_info.company_name) else session.get('full_name', 'Business Client') }}
+                    </h1>
+                    <p class="text-muted">
+                        Industry: <strong>{{ user.business_info.industry if (user and user.business_info and user.business_info.industry) else 'Technology & Services' }}</strong> | 
+                        Contact Representative: <strong>{{ session.get('full_name', 'Account Manager') }}</strong>
+                    </p>
+                </div>
+                <div class="welcome-actions margin-top-mobile flex-between gap-sm">
+                    <button class="btn btn-primary" onclick="toggleModal('mvp-builder-modal')">
+                        <i class="fa-solid fa-rocket"></i> Request Custom MVP
+                    </button>
+                    <a href="{{ url_for('business_catalog') }}" class="btn btn-outline">
+                        <i class="fa-solid fa-building-circle-check"></i> View Directory Listing
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="grid-3-col margin-bottom-lg">
+            <div class="glass-card metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="metric-info">
+                    <h3>{{ projects | length if projects else 0 }}</h3>
+                    <p>Active MVP & Enterprise Projects</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-success"><i class="fa-solid fa-server"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% if projects %}
+                            {{ projects | selectattr('status', 'equalto', 'Testing') | list | length + projects | selectattr('status', 'equalto', 'Completed') | list | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+                    <p>Live Staging Builds</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-warning"><i class="fa-solid fa-file-contract"></i></div>
+                <div class="metric-info">
+                    <h3>Secured</h3>
+                    <p>NDA & Contract Status</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2-col-wide">
+            <!-- ========================================================= -->
+            <!-- 2. ACTIVE MVP BUILDS & STAGING SANDBOX LINKS              -->
+            <!-- ========================================================= -->
+            <div class="dashboard-main-col">
+                <div class="glass-card margin-bottom-lg">
+                    <div class="card-header-bar flex-between align-center">
+                        <h2><i class="fa-solid fa-cubes"></i> Active Software Builds & Staging URLs</h2>
+                        <button class="btn btn-sm btn-ghost" onclick="location.reload();">
+                            <i class="fa-solid fa-rotate-right"></i> Refresh
+                        </button>
+                    </div>
+
+                    <div class="projects-list-wrapper margin-top-md">
+                        {% if projects %}
+                            {% for proj in projects %}
+                                <div class="dashboard-project-item glass-card margin-bottom-md">
+                                    <div class="flex-between align-center wrap-mobile">
+                                        <div>
+                                            <span class="badge-tech">{{ proj.category }}</span>
+                                            <h3 class="margin-top-xs">{{ proj.title }}</h3>
+                                        </div>
+                                        <div class="status-badge-wrapper margin-top-mobile">
+                                            <span class="status-pill status-{{ proj.status | lower | replace(' ', '-') }}">
+                                                <i class="fa-solid fa-circle-dot"></i> {{ proj.status }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <p class="text-muted margin-top-xs">{{ proj.description }}</p>
+
+                                    <!-- Visual Milestone Tracker -->
+                                    <div class="milestone-tracker margin-top-md">
+                                        <div class="tracker-step completed">
+                                            <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                                            <span>Requirement Scope</span>
+                                        </div>
+                                        <div class="tracker-step {% if proj.status in ['In Progress', 'Testing', 'Completed'] %}completed{% endif %}">
+                                            <div class="step-dot">
+                                                {% if proj.status in ['In Progress', 'Testing', 'Completed'] %}<i class="fa-solid fa-check"></i>{% else %}2{% endif %}
+                                            </div>
+                                            <span>Architecture & DB</span>
+                                        </div>
+                                        <div class="tracker-step {% if proj.status in ['Testing', 'Completed'] %}completed{% endif %}">
+                                            <div class="step-dot">
+                                                {% if proj.status in ['Testing', 'Completed'] %}<i class="fa-solid fa-check"></i>{% else %}3{% endif %}
+                                            </div>
+                                            <span>Staging Preview</span>
+                                        </div>
+                                        <div class="tracker-step {% if proj.status == 'Completed' %}completed{% endif %}">
+                                            <div class="step-dot">
+                                                {% if proj.status == 'Completed' %}<i class="fa-solid fa-check"></i>{% else %}4{% endif %}
+                                            </div>
+                                            <span>Production Release</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Staging Sandbox & Production Links -->
+                                    <div class="project-deliverable-bar margin-top-md flex-between align-center wrap-mobile">
+                                        {% if proj.deliverables_link %}
+                                            <a href="{{ proj.deliverables_link }}" target="_blank" class="btn btn-primary btn-sm">
+                                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Access Staging Sandbox
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted fs-sm">
+                                                <i class="fa-solid fa-spinner fa-spin"></i> Staging URL being provisioned by DAV Cloud Team.
+                                            </span>
+                                        {% endif %}
+
+                                        <button class="btn btn-outline btn-sm margin-top-mobile" onclick="openSupportModal('{{ proj.title }}')">
+                                            <i class="fa-solid fa-headset"></i> Contact Tech Lead
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <!-- Empty State -->
+                            <div class="empty-state-card text-center padding-xl">
+                                <i class="fa-solid fa-rocket fs-xl text-muted"></i>
+                                <h3>No Active MVP Requests</h3>
+                                <p class="text-muted">Ready to digitize your operations or launch a new product? Submit a custom scope to Founder Akhil V and the core engineering team.</p>
+                                <button class="btn btn-primary margin-top-md" onclick="toggleModal('mvp-builder-modal')">
+                                    <i class="fa-solid fa-plus"></i> Submit MVP Scope
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- 3. DOCUMENT & NDA VAULT                                   -->
+                <!-- ========================================================= -->
+                <div class="glass-card">
+                    <div class="card-header-bar flex-between align-center">
+                        <h2><i class="fa-solid fa-vault"></i> Secure Document & NDA Vault</h2>
+                        <span class="badge-tech">AES-256 Encrypted Storage</span>
+                    </div>
+
+                    <div class="table-responsive margin-top-md">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Document Title</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Non-Disclosure Agreement (NDA)</strong></td>
+                                    <td>Legal Contract</td>
+                                    <td><span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Executed</span></td>
+                                    <td><a href="#" onclick="alert('Downloading signed NDA copy...'); return false;" class="btn-link">Download Copy</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Master Service Agreement (MSA)</strong></td>
+                                    <td>Terms & SLA</td>
+                                    <td><span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active</span></td>
+                                    <td><a href="#" onclick="alert('Downloading SLA document...'); return false;" class="btn-link">Download Copy</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- 4. SIDEBAR: COMPANY DETAILS & SUPPORT                     -->
+            <!-- ========================================================= -->
+            <div class="dashboard-side-col">
+                <!-- Verified Business Profile Details -->
+                <div class="glass-card margin-bottom-lg">
+                    <h3><i class="fa-solid fa-id-card"></i> Company Profile</h3>
+                    <div class="company-info-list margin-top-sm fs-sm">
+                        <p><strong>Company Name:</strong> {{ user.business_info.company_name if (user and user.business_info and user.business_info.company_name) else 'N/A' }}</p>
+                        <p><strong>GST / Tax ID:</strong> {{ user.business_info.gst_number if (user and user.business_info and user.business_info.gst_number) else 'Unregistered / Exempt' }}</p>
+                        <p><strong>Industry Sector:</strong> {{ user.business_info.industry if (user and user.business_info and user.business_info.industry) else 'IT & Web Services' }}</p>
+                        <p><strong>Official Website:</strong> 
+                            {% if user and user.business_info and user.business_info.website %}
+                                <a href="{{ user.business_info.website }}" target="_blank" class="btn-link">{{ user.business_info.website }}</a>
+                            {% else %}
+                                Not Provided
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Technical Support & Ticket Form -->
+                <div class="glass-card">
+                    <h3><i class="fa-solid fa-headset"></i> Dedicated Support Line</h3>
+                    <p class="text-muted fs-sm margin-top-xs">Direct channel to Founder Akhil V and your dedicated account lead.</p>
+
+                    <form action="#" method="POST" id="business-support-form" class="margin-top-md">
+                        <div class="form-group">
+                            <label for="biz-ticket-subject" class="fs-sm">Subject / Module</label>
+                            <input type="text" id="biz-ticket-subject" class="form-input" placeholder="e.g. Staging API Feedback" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="biz-ticket-message" class="fs-sm">Message Details</label>
+                            <textarea id="biz-ticket-message" class="form-input" rows="3" placeholder="Describe requested modification or query..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-sm">
+                            <i class="fa-solid fa-paper-plane"></i> Send Priority Inquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 5. MODAL: CUSTOM MVP SCOPE BUILDER                        -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="mvp-builder-modal" style="display: none;">
+    <div class="modal-card glass-card">
+        <div class="modal-header flex-between align-center">
+            <h3><i class="fa-solid fa-rocket"></i> Submit Custom MVP Scope</h3>
+            <button type="button" class="close-btn" onclick="toggleModal('mvp-builder-modal')">&times;</button>
+        </div>
+        <form action="#" method="POST" class="margin-top-md">
+            <div class="form-group">
+                <label for="mvp-title">MVP Project Title <span class="required-asterisk">*</span></label>
+                <input type="text" name="title" id="mvp-title" class="form-input" placeholder="e.g. Multi-Vendor E-Commerce Platform" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mvp-category">Primary Category <span class="required-asterisk">*</span></label>
+                <select name="category" id="mvp-category" class="form-input form-select" required>
+                    <option value="Startup MVP Architecture">Startup MVP Architecture (Flask + MongoDB)</option>
+                    <option value="Small Business Web Portal">Small Business Portal / Directory Setup</option>
+                    <option value="Machine Learning Integration">Machine Learning / AI API Integration</option>
+                    <option value="Custom Enterprise Build">Custom Enterprise Web Application</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="mvp-desc">Project Requirements & Features <span class="required-asterisk">*</span></label>
+                <textarea name="description" id="mvp-desc" class="form-input" rows="4" placeholder="Detail required user roles, third-party APIs, database schemas, or deadline constraints..." required></textarea>
+            </div>
+
+            <div class="modal-actions flex-end gap-sm margin-top-md">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('mvp-builder-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit to Lead Architect</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            const isVisible = modal.style.display === 'flex';
+            modal.style.display = isVisible ? 'none' : 'flex';
+        }
+    }
+
+    function openSupportModal(projTitle) {
+        const subjectInput = document.getElementById('biz-ticket-subject');
+        if (subjectInput) {
+            subjectInput.value = `Feedback regarding: ${projTitle}`;
+            subjectInput.focus();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const bizSupportForm = document.getElementById('business-support-form');
+        if (bizSupportForm) {
+            bizSupportForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Priority support message transmitted to Founder Akhil V and core engineering team.');
+                bizSupportForm.reset();
+            });
+        }
+    });
+</script>
+{% endblock %}

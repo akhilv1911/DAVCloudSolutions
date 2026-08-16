@@ -1,0 +1,476 @@
+{% extends "base.html" %}
+
+{% block title %}Our Team | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<!-- Inline scoped styles guaranteeing instant rendering and dynamic glow -->
+<style>
+    /* ========================================================= */
+    /* GLOWING AVATAR RING & IMAGE CONTAINER                      */
+    /* ========================================================= */
+    .magic-avatar-container {
+        position: relative;
+        margin: 0 auto 1.5rem auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .magic-avatar-founder {
+        width: 140px;
+        height: 140px;
+    }
+
+    .magic-avatar-team {
+        width: 110px;
+        height: 110px;
+    }
+
+    /* Ambient Pulsing Backlight */
+    .magic-avatar-container::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary, #6366f1), #a855f7, var(--accent-cyan, #06b6d4));
+        opacity: 0.75;
+        filter: blur(10px);
+        z-index: 0;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .team-card:hover .magic-avatar-container::before,
+    .glass-card:hover .magic-avatar-container::before {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+
+    /* Inner Glass Frame */
+    .magic-avatar-frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        padding: 3px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    /* Standardized Circular Image */
+    .magic-avatar-img {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        object-position: center 15% !important;
+        display: block !important;
+        transition: transform 0.4s ease;
+    }
+
+    .team-card:hover .magic-avatar-img,
+    .glass-card:hover .magic-avatar-img {
+        transform: scale(1.06);
+    }
+
+    /* Fallback Icon Box */
+    .magic-avatar-fallback {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 23, 42, 0.85);
+        color: #f8fafc;
+        font-size: 2.2rem;
+    }
+
+    .magic-avatar-founder .magic-avatar-fallback {
+        font-size: 3rem;
+    }
+
+    /* Dynamic Card Elevation */
+    .team-card, .highlight-border-card {
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease !important;
+    }
+
+    .team-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(99, 102, 241, 0.4) !important;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    /* Role Responsibility Pill List */
+    .role-responsibilities {
+        text-align: left;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        list-style: none;
+        padding-left: 0;
+        font-size: 0.82rem;
+        color: var(--text-muted, #94a3b8);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .role-responsibilities li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        line-height: 1.4;
+    }
+
+    .role-responsibilities li i {
+        color: var(--primary, #3b82f6);
+        margin-top: 3px;
+        font-size: 0.75rem;
+    }
+</style>
+
+<!-- ========================================================= -->
+<!-- 1. TEAM HERO SECTION                                      -->
+<!-- ========================================================= -->
+<section class="team-hero-section section-padding text-center">
+    <div class="section-container">
+        <div class="badge-pill">
+            <i class="fa-solid fa-users-gear"></i> Leadership & Technical Excellence
+        </div>
+        <h1 class="hero-title">
+            The Minds Behind <span class="gradient-text">DAV Cloud Solutions</span>
+        </h1>
+        <p class="hero-subtitle max-w-700">
+            Engineered with technical rigor and a mission to empower students, small businesses, and startups with production-ready software.
+        </p>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 2. FOUNDER & LEADERSHIP SHOWCASE                          -->
+<!-- ========================================================= -->
+<section class="founder-section section-padding bg-alt">
+    <div class="section-container">
+        <div class="section-header text-center">
+            <span class="section-tag">Founder & Lead Architect</span>
+            <h2>Platform Vision & Technical Direction</h2>
+        </div>
+
+        <div class="max-w-800 margin-auto margin-top-lg">
+            <div class="glass-card highlight-border-card text-center padding-xl">
+                
+                <!-- Founder Circular Photo with Glowing Aura -->
+                <div class="magic-avatar-container magic-avatar-founder">
+                    <div class="magic-avatar-frame">
+                        <img 
+                            src="{{ url_for('static', filename='images/team/akhil.jpeg') }}" 
+                            alt="V Akhil" 
+                            class="magic-avatar-img"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <div class="magic-avatar-fallback" style="display: none;">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="margin-top-sm">V Akhil</h2>
+                <span class="role-badge">Founder & Lead Full-Stack Architect</span>
+                
+                <p class="margin-top-md text-main">
+                    Drives end-to-end software architecture, backend system design, and production deployments for DAV Cloud Solutions. Oversees core product roadmaps, cross-domain engineering quality, and direct technical mentorship for academic and business clients.
+                </p>
+
+                <ul class="role-responsibilities max-w-600 margin-auto margin-top-md">
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Core Engineering:</strong> Full-stack Python architectures (Flask/Django), scalable REST APIs, and database modeling with MongoDB.</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Client & Product Delivery:</strong> Technical review of student project scopes, MVP system delivery, and production infrastructure.</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Technical Mentorship:</strong> 1-on-1 code walkthroughs, viva review defense sessions, and software execution guidance.</li>
+                </ul>
+
+                <div class="founder-skills-tags margin-top-md justify-center">
+                    <span class="tag">Full-Stack Architecture</span>
+                    <span class="tag">Python (Flask / Django)</span>
+                    <span class="tag">MongoDB Atlas</span>
+                    <span class="tag">REST APIs</span>
+                    <span class="tag">DevOps & Cloud</span>
+                </div>
+
+                <div class="social-links margin-top-lg justify-center">
+                    <a href="https://www.linkedin.com/in/akhil-v-4b8899278/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" aria-label="GitHub" title="GitHub Repositories"><i class="fa-brands fa-github"></i></a>
+                    <a href="mailto:contactdavcloudsolutions@gmail.com" aria-label="Email" title="Direct Email"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 3. CORE ENGINEERING & SPECIALIST TEAM                     -->
+<!-- ========================================================= -->
+<section class="team-grid-section section-padding">
+    <div class="section-container">
+        <div class="section-header text-center">
+            <span class="section-tag">Core Organization</span>
+            <h2>Technical & Engineering Pillars</h2>
+            <p>Our multidisciplinary team drives frontend innovation, AI model design, UI/UX systems, and technical documentation.</p>
+        </div>
+
+        <div class="team-grid margin-top-xl">
+            
+            {% if team %}
+                <!-- Dynamic Team Loop: Fetches from MongoDB admin roster -->
+                {% for member in team %}
+                    <div class="team-card glass-card text-center">
+                        <div class="magic-avatar-container magic-avatar-team">
+                            <div class="magic-avatar-frame">
+                                {% if member.image_filename %}
+                                    <img 
+                                        src="{{ url_for('static', filename='images/team/' + member.image_filename) }}" 
+                                        alt="{{ member.name }}" 
+                                        class="magic-avatar-img"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                    >
+                                {% endif %}
+                                <div class="magic-avatar-fallback" {% if member.image_filename %}style="display: none;"{% endif %}>
+                                    <i class="fa-solid fa-user-astronaut"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>{{ member.name }}</h3>
+                        <span class="team-role">{{ member.role }}</span>
+                        <p>{{ member.description }}</p>
+
+                        {% if member.responsibilities %}
+                            <ul class="role-responsibilities">
+                                {% for resp in member.responsibilities %}
+                                    <li><i class="fa-solid fa-check"></i> {{ resp }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if member.linkedin_url %}
+                            <div class="social-links margin-top-sm justify-center">
+                                <a href="{{ member.linkedin_url }}" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                            </div>
+                        {% endif %}
+                        <div class="placeholder-status margin-top-sm">
+                            <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Core Team</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Default Static Fallback Roster if MongoDB is not populated yet -->
+
+                <!-- Core Member 1: UI/UX & Frontend Design -->
+                <div class="team-card glass-card text-center">
+                    <div class="magic-avatar-container magic-avatar-team">
+                        <div class="magic-avatar-frame">
+                            <img 
+                                src="{{ url_for('static', filename='images/team/awais.jpg') }}" 
+                                alt="A Mohammad Awais" 
+                                class="magic-avatar-img"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+                            <div class="magic-avatar-fallback" style="display: none;">
+                                <i class="fa-solid fa-palette"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>A Mohammad Awais</h3>
+                    <span class="team-role">UI/UX Designer & Product Specialist</span>
+                    <p>
+                        Designs intuitive interface layouts, responsive frontend themes, and clean visual hierarchies across company platforms and client web apps.
+                    </p>
+
+                    <ul class="role-responsibilities">
+                        <li><i class="fa-solid fa-check"></i> Translates product requirements into modern UI wireframes and responsive layouts.</li>
+                        <li><i class="fa-solid fa-check"></i> Standardizes design components, design tokens, and user experience flows.</li>
+                        <li><i class="fa-solid fa-check"></i> Collaborates on user-facing documentation and visual feature specs.</li>
+                    </ul>
+
+                    <div class="social-links margin-top-sm justify-center">
+                        <a href="https://www.linkedin.com/in/attarmohammadawais/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                    <div class="placeholder-status margin-top-sm">
+                        <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Core Team</span>
+                    </div>
+                </div>
+
+                <!-- Core Member 2: ML / AI Engineer -->
+                <div class="team-card glass-card text-center">
+                    <div class="magic-avatar-container magic-avatar-team">
+                        <div class="magic-avatar-frame">
+                            <img 
+                                src="{{ url_for('static', filename='images/team/harsha.jpg') }}" 
+                                alt="A E Harsha" 
+                                class="magic-avatar-img"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+                            <div class="magic-avatar-fallback" style="display: none;">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>A E Harsha</h3>
+                    <span class="team-role">AI / ML Engineer</span>
+                    <p>
+                        Develops predictive machine learning pipelines, dataset preprocessing flows, and AI algorithms integrated into backend web applications.
+                    </p>
+
+                    <ul class="role-responsibilities">
+                        <li><i class="fa-solid fa-check"></i> Trains, tunes, and evaluates supervised/unsupervised ML models (Scikit-Learn, Pandas).</li>
+                        <li><i class="fa-solid fa-check"></i> Builds inference pipelines for agricultural, financial, and classification projects.</li>
+                        <li><i class="fa-solid fa-check"></i> Validates model evaluation metrics (Accuracy, Confusion Matrix, Precision/Recall).</li>
+                    </ul>
+
+                    <div class="social-links margin-top-sm justify-center">
+                        <a href="https://www.linkedin.com/in/aluvala-ediga-harsha-vardhan-goud-83241a296/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                    <div class="placeholder-status margin-top-sm">
+                        <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Core Team</span>
+                    </div>
+                </div>
+
+                <!-- Core Member 3: Documentation & Presentation Specialist -->
+                <div class="team-card glass-card text-center">
+                    <div class="magic-avatar-container magic-avatar-team">
+                        <div class="magic-avatar-frame">
+                            <img 
+                                src="{{ url_for('static', filename='images/team/huzaifa.jpeg') }}" 
+                                alt="B Huzaifa" 
+                                class="magic-avatar-img"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+                            <div class="magic-avatar-fallback" style="display: none;">
+                                <i class="fa-solid fa-file-powerpoint"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>B Huzaifa</h3>
+                    <span class="team-role">Documentation & PPT Specialist</span>
+                    <p>
+                        Leads project presentation deck engineering, research documentation, and structured technical reporting for academic and client defense.
+                    </p>
+
+                    <ul class="role-responsibilities">
+                        <li><i class="fa-solid fa-check"></i> Crafts professional presentation slide decks for seminars and viva reviews.</li>
+                        <li><i class="fa-solid fa-check"></i> Compiles detailed project reports (Abstract, Literature Survey, System Architecture).</li>
+                        <li><i class="fa-solid fa-check"></i> Structures IEEE and institutional report templates for deliverable packages.</li>
+                    </ul>
+
+                    <div class="social-links margin-top-sm justify-center">
+                        <a href="https://www.linkedin.com/in/huzaifa-bairapuram-269366334/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                    <div class="placeholder-status margin-top-sm">
+                        <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Core Team</span>
+                    </div>
+                </div>
+
+                <!-- Core Member 4: Technical Documentation & Reports Specialist -->
+                <div class="team-card glass-card text-center">
+                    <div class="magic-avatar-container magic-avatar-team">
+                        <div class="magic-avatar-frame">
+                            <img 
+                                src="{{ url_for('static', filename='images/team/malik.jpeg') }}" 
+                                alt="Malik" 
+                                class="magic-avatar-img"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+                            <div class="magic-avatar-fallback" style="display: none;">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Malik</h3>
+                    <span class="team-role">Technical Documentation & Reports Specialist</span>
+                    <p>
+                        Oversees software requirement specifications (SRS), user manual generation, and system architecture walkthrough guides.
+                    </p>
+
+                    <ul class="role-responsibilities">
+                        <li><i class="fa-solid fa-check"></i> Formulates comprehensive Software Requirement Specifications (SRS) and data flow diagrams.</li>
+                        <li><i class="fa-solid fa-check"></i> Builds step-by-step local installation and virtual environment setup documentation.</li>
+                        <li><i class="fa-solid fa-check"></i> Designs clear executive project briefs and deliverable verification packages.</li>
+                    </ul>
+
+                    <div class="social-links margin-top-sm justify-center">
+                        <a href="https://www.linkedin.com/in/malik-shaik-9972b2240/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                    <div class="placeholder-status margin-top-sm">
+                        <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Core Team</span>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 4. OPERATIONAL UNITS & MENTORSHIP                         -->
+<!-- ========================================================= -->
+<section class="team-units-section section-padding bg-alt">
+    <div class="section-container">
+        <div class="section-header text-center">
+            <span class="section-tag">Operational Units</span>
+            <h2>Service & Support Pillars</h2>
+        </div>
+
+        <div class="team-grid margin-top-lg">
+            <!-- Unit 1: Backend & Systems -->
+            <div class="team-card glass-card text-center">
+                <div class="team-avatar">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <h3>Backend Systems</h3>
+                <span class="team-role">API & Database Operations</span>
+                <p>High-speed Flask/Django routing, MongoDB query performance, and secure authentication protocols.</p>
+            </div>
+
+            <!-- Unit 2: Academic Mentorship -->
+            <div class="team-card glass-card text-center">
+                <div class="team-avatar">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h3>Academic Guidance</h3>
+                <span class="team-role">Student Mentorship</span>
+                <p>Providing code walkthroughs, IEEE paper filing assistance, and technical seminar preparation.</p>
+            </div>
+
+            <!-- Unit 3: Startup MVP Solutions -->
+            <div class="team-card glass-card text-center">
+                <div class="team-avatar">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <h3>MVP Product Delivery</h3>
+                <span class="team-role">Startup & Business Execution</span>
+                <p>Engineering multi-tenant platforms, API suites, and dedicated staging sandbox previews.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 5. JOIN US / TALENT CALLOUT                               -->
+<!-- ========================================================= -->
+<section class="join-team-section section-padding">
+    <div class="section-container text-center">
+        <div class="glass-card max-w-800 margin-auto">
+            <div class="service-icon margin-auto"><i class="fa-solid fa-handshake"></i></div>
+            <h2>Interested in Partnering or Joining Our Team?</h2>
+            <p class="margin-top-xs">
+                We are constantly expanding our developer network and student mentorship programs. Reach out directly to Founder <strong>V Akhil</strong>.
+            </p>
+            <div class="margin-top-md">
+                <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg">
+                    <i class="fa-solid fa-envelope"></i> Contact Founder
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,606 @@
+{% extends "base.html" %}
+
+{% block title %}Student Academic Portal | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<section class="dashboard-section section-padding">
+    <div class="dashboard-container">
+        
+        <!-- ========================================================= -->
+        <!-- 1. DASHBOARD HEADER & WELCOME CARD                        -->
+        <!-- ========================================================= -->
+        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg">
+            <div class="flex-between align-center wrap-mobile">
+                <div class="welcome-text">
+                    <span class="badge-pill"><i class="fa-solid fa-graduation-cap"></i> Student & Academic Portal</span>
+                    <h1 class="margin-top-xs">Welcome, <span class="gradient-text">{{ session.get('full_name', 'Student') }}</span></h1>
+                    <p class="text-muted">Track your academic projects, access source code deliverables, prepare for viva reviews, or schedule 1-on-1 mentorship with Founder V Akhil.</p>
+                </div>
+                <div class="welcome-actions margin-top-mobile flex-between gap-sm">
+                    <button class="btn btn-primary" onclick="toggleModal('request-project-modal')">
+                        <i class="fa-solid fa-plus"></i> Request New Project
+                    </button>
+                    <button class="btn btn-outline" onclick="toggleModal('mentorship-modal')">
+                        <i class="fa-solid fa-calendar-check"></i> Book Mentorship
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="grid-4-col margin-bottom-lg">
+            <div class="glass-card metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                <div class="metric-info">
+                    <h3>{{ projects | length if projects else 0 }}</h3>
+                    <p>Total Projects Requested</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-success"><i class="fa-solid fa-box-archive"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% if projects %}
+                            {{ projects | selectattr('status', 'equalto', 'Completed') | list | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+                    <p>Ready Deliverables</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon icon-warning"><i class="fa-solid fa-spinner"></i></div>
+                <div class="metric-info">
+                    <h3>
+                        {% if projects %}
+                            {{ projects | selectattr('status', 'ne', 'Completed') | list | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </h3>
+                    <p>Active Builds in Progress</p>
+                </div>
+            </div>
+
+            <div class="glass-card metric-card">
+                <div class="metric-icon" style="color: var(--accent-purple);"><i class="fa-solid fa-award"></i></div>
+                <div class="metric-info">
+                    <h3>Verified</h3>
+                    <p>Academic Code Guarantee</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 2. MAIN DASHBOARD CONTENT AREA                            -->
+        <!-- ========================================================= -->
+        <div class="grid-2-col" style="grid-template-columns: 2.1fr 1fr; gap: 28px;">
+            
+            <!-- Left Main Column: Project List & Search -->
+            <div class="dashboard-main-col">
+                <div class="glass-card">
+                    <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
+                        <h2><i class="fa-solid fa-folder-open"></i> My Requested Projects</h2>
+                        <div class="flex-align-center gap-sm">
+                            <input type="text" id="project-search" class="form-input" placeholder="🔍 Search projects..." style="padding: 6px 14px; font-size: 0.85rem; max-width: 200px;">
+                            <button class="btn btn-sm btn-ghost" onclick="location.reload();" title="Refresh projects">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="projects-list-wrapper margin-top-md" id="projects-list">
+                        {% if projects %}
+                            {% for proj in projects %}
+                                <div class="dashboard-project-item glass-card margin-bottom-md project-card-item" data-title="{{ proj.title | lower }}" data-status="{{ proj.status | lower }}">
+                                    
+                                    <div class="flex-between align-center wrap-mobile">
+                                        <div>
+                                            <span class="badge-tech">{{ proj.category }}</span>
+                                            <h3 class="margin-top-xs" style="font-size: 1.25rem;">{{ proj.title }}</h3>
+                                        </div>
+                                        <div class="status-badge-wrapper margin-top-mobile">
+                                            <span class="status-pill status-{{ proj.status | lower | replace(' ', '-') }}">
+                                                <i class="fa-solid fa-circle-dot"></i> {{ proj.status }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <p class="text-muted margin-top-xs" style="font-size: 0.9rem;">{{ proj.description }}</p>
+
+                                    <!-- Tech Stack Badges & Project Value -->
+                                    <div class="flex-between align-center wrap-mobile margin-top-sm padding-top-xs border-top-glass">
+                                        <div class="tech-tags-list">
+                                            {% if proj.tech_stack %}
+                                                {% for t in proj.tech_stack %}
+                                                    <span class="tag"><i class="fa-solid fa-code"></i> {{ t }}</span>
+                                                {% endfor %}
+                                            {% else %}
+                                                <span class="tag">Python & Flask</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="project-quote-badge margin-top-mobile">
+                                            <span class="text-muted fs-sm">Quotation / Investment: </span>
+                                            <strong class="text-primary fs-md">₹{{ proj.amount_charged | default(0) }}</strong>
+                                        </div>
+                                    </div>
+
+                                    <!-- Visual Milestone Tracker -->
+                                    <div class="milestone-tracker margin-top-md">
+                                        <div class="tracker-step completed">
+                                            <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+                                            <span class="fs-sm">Submitted</span>
+                                        </div>
+                                        <div class="tracker-step {% if proj.status in ['In Progress', 'Testing', 'Completed'] %}completed{% endif %}">
+                                            <div class="step-dot">
+                                                {% if proj.status in ['In Progress', 'Testing', 'Completed'] %}<i class="fa-solid fa-check"></i>{% else %}2{% endif %}
+                                            </div>
+                                            <span class="fs-sm">Building</span>
+                                        </div>
+                                        <div class="tracker-step {% if proj.status in ['Testing', 'Completed'] %}completed{% endif %}">
+                                            <div class="step-dot">
+                                                {% if proj.status in ['Testing', 'Completed'] %}<i class="fa-solid fa-check"></i>{% else %}3{% endif %}
+                                            </div>
+                                            <span class="fs-sm">Testing</span>
+                                        </div>
+                                        <div class="tracker-step {% if proj.status == 'Completed' %}ready-step{% endif %}">
+                                            <div class="step-dot">
+                                                {% if proj.status == 'Completed' %}<i class="fa-solid fa-check"></i>{% else %}4{% endif %}
+                                            </div>
+                                            <span class="fs-sm">Ready</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Deliverables Download Bar & WhatsApp Quick Support -->
+                                    <div class="project-deliverable-bar margin-top-md flex-between align-center wrap-mobile gap-sm" style="padding-top: 14px; border-top: 1px solid var(--border-color);">
+                                        {% if proj.deliverables_link %}
+                                            <a href="{{ proj.deliverables_link }}" target="_blank" class="btn btn-primary btn-sm">
+                                                <i class="fa-solid fa-download"></i> Download Source Code Bundle
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted fs-sm"><i class="fa-solid fa-hourglass-half"></i> Deliverable files will unlock once build passes testing.</span>
+                                        {% endif %}
+                                        
+                                        <div class="flex-align-center gap-sm">
+                                            <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20have%20a%20question%20regarding%20my%20project:%20{{ proj.title | urlencode }}" target="_blank" class="btn btn-sm btn-outline" style="border-color: rgba(16, 185, 129, 0.4); color: var(--accent-emerald);">
+                                                <i class="fa-brands fa-whatsapp"></i> Chat Support
+                                            </a>
+                                            <button class="btn btn-outline btn-sm" onclick="openSupportQuery('{{ proj.title | escape }}')">
+                                                <i class="fa-solid fa-comment-dots"></i> Query Desk
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <!-- Empty State -->
+                            <div class="empty-state-card text-center padding-xl">
+                                <i class="fa-solid fa-folder-plus fs-xl text-muted" style="font-size: 2.5rem; margin-bottom: 14px;"></i>
+                                <h3>No Active Project Requests</h3>
+                                <p class="text-muted" style="max-width: 480px; margin: 8px auto 20px;">Need an academic project build, Machine Learning model, or portfolio? Submit your scope directly to Founder V Akhil and our engineering team.</p>
+                                <button class="btn btn-primary" onclick="toggleModal('request-project-modal')">
+                                    <i class="fa-solid fa-plus"></i> Submit First Request
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- My Submitted Inquiries & Mentorship History -->
+                <div class="glass-card margin-top-lg">
+                    <div class="card-header-bar flex-between align-center">
+                        <h2><i class="fa-solid fa-clock-rotate-left"></i> My Inquiries & Support Tickets</h2>
+                        <span class="badge-tech">{{ inquiries | length if inquiries else 0 }} Logged</span>
+                    </div>
+
+                    <div class="margin-top-md">
+                        {% if inquiries %}
+                            {% for inq in inquiries %}
+                                <div class="glass-card margin-bottom-sm" style="padding: 14px 18px; background: rgba(255, 255, 255, 0.02);">
+                                    <div class="flex-between align-center wrap-mobile">
+                                        <div>
+                                            <span class="badge-tech">{{ inq.user_category }}</span>
+                                            <h4 class="margin-top-xs" style="margin-bottom: 4px;">{{ inq.project_name }}</h4>
+                                            <p class="text-muted fs-sm" style="margin: 0;">{{ inq.message }}</p>
+                                            {% if inq.schedule %}
+                                                <span class="fs-sm text-primary"><i class="fa-solid fa-calendar-check"></i> Slot: {{ inq.schedule }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="status-badge-wrapper margin-top-mobile">
+                                            <span class="status-pill status-completed">
+                                                <i class="fa-solid fa-check"></i> {{ inq.status }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted fs-sm padding-sm text-center">No inquiry logs found for your account.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Viva & Project Presentation Prep Kit -->
+                <div class="glass-card margin-top-lg highlight-border-card">
+                    <div class="card-header-bar flex-between align-center">
+                        <h2><i class="fa-solid fa-book-open-reader"></i> Viva & Project Presentation Kit</h2>
+                        <span class="badge-tech">Academic Defense Prep</span>
+                    </div>
+                    <p class="text-muted fs-sm margin-top-xs">Quick review modules prepared for external lab examiners and college technical seminars.</p>
+                    
+                    <div class="grid-3-col margin-top-md" style="gap: 16px;">
+                        <div class="glass-card" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
+                            <h4><i class="fa-solid fa-network-wired" style="color: var(--primary);"></i> Architecture Flow</h4>
+                            <p class="fs-sm text-muted margin-top-xs">Explanation of Model-View-Template pattern, Flask application factories, and MongoDB schema collections.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
+                            <h4><i class="fa-solid fa-brain" style="color: var(--accent-purple);"></i> ML Metrics & Logic</h4>
+                            <p class="fs-sm text-muted margin-top-xs">Understand Accuracy, Confusion Matrix, Random Forest / SVM ensemble logic, and data preprocessing steps.</p>
+                        </div>
+                        <div class="glass-card" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
+                            <h4><i class="fa-solid fa-terminal" style="color: var(--accent-emerald);"></i> Execution Commands</h4>
+                            <p class="fs-sm text-muted margin-top-xs">Step-by-step local `venv` activation, `pip install -r requirements.txt`, and database setup guides.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar Column: Mentorship & Support Desk -->
+            <div class="dashboard-side-col">
+                <!-- Mentorship Booking Card -->
+                <div class="glass-card margin-bottom-lg">
+                    <h3><i class="fa-solid fa-user-graduate"></i> 1-on-1 Mentorship</h3>
+                    <p class="text-muted fs-sm margin-top-xs">Schedule a 1-on-1 code walkthrough session with <strong>V Akhil</strong> to understand backend architecture, Flask routing, and ML models for your seminar defense.</p>
+                    <button class="btn btn-outline btn-block margin-top-md" onclick="toggleModal('mentorship-modal')">
+                        <i class="fa-solid fa-calendar-plus"></i> Schedule Session
+                    </button>
+                </div>
+
+                <!-- Deliverables Checklist Card -->
+                <div class="glass-card margin-bottom-lg">
+                    <h3><i class="fa-solid fa-clipboard-check"></i> Deliverable Package</h3>
+                    <ul style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px; font-size: 0.88rem;">
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                            <i class="fa-solid fa-circle-check text-primary"></i> Complete Clean Source Code ZIP
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                            <i class="fa-solid fa-circle-check text-primary"></i> Setup & Installation Instructions
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                            <i class="fa-solid fa-circle-check text-primary"></i> MongoDB Database Collections Dump
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                            <i class="fa-solid fa-circle-check text-primary"></i> Project Presentation PPT Slide Deck
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Support Ticket Messaging Desk -->
+                <div class="glass-card" id="support-section">
+                    <h3><i class="fa-solid fa-headset"></i> Support & Queries Desk</h3>
+                    <p class="text-muted fs-sm margin-top-xs">Have questions regarding code configuration, database execution, or scope changes?</p>
+
+                    <form id="student-support-form" class="margin-top-md">
+                        <input type="hidden" name="access_key" value="ec1c8cd8-2e7e-4ba1-9b6f-23b58a3db594">
+                        <input type="hidden" name="subject" value="Student Dashboard Query - DAV Cloud Solutions">
+                        <input type="hidden" name="from_name" value="{{ session.get('full_name', 'Student User') }}">
+                        <input type="hidden" name="name" value="{{ session.get('full_name', 'Student User') }}">
+                        <input type="hidden" name="email" value="{{ session.get('email', '') }}">
+                        <input type="hidden" name="user_category" value="Student Support Desk">
+
+                        <div class="form-group">
+                            <label for="ticket-subject" class="fs-sm">Topic / Project Title</label>
+                            <input type="text" name="project_name" id="ticket-subject" class="form-input" placeholder="e.g. Smart Leave Management App" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ticket-message" class="fs-sm">Your Question</label>
+                            <textarea name="message" id="ticket-message" class="form-input" rows="3" placeholder="Describe what you need assistance with..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-sm">
+                            <i class="fa-solid fa-paper-plane"></i> Submit to Founder
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================================= -->
+<!-- 3. MODAL: REQUEST NEW PROJECT                             -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="request-project-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 580px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-laptop-code"></i> Submit Academic Project Scope</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('request-project-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+        
+        <form id="student-project-req-form" action="{{ url_for('student_dashboard') }}" method="POST">
+            <input type="hidden" name="access_key" value="ec1c8cd8-2e7e-4ba1-9b6f-23b58a3db594">
+            <input type="hidden" name="subject" value="New Academic Project Scope - Student Dashboard">
+            <input type="hidden" name="from_name" value="{{ session.get('full_name', 'Student User') }}">
+            <input type="hidden" name="name" value="{{ session.get('full_name', 'Student User') }}">
+            <input type="hidden" name="email" value="{{ session.get('email', '') }}">
+
+            <div class="form-group">
+                <label for="proj-title">Project Title <span style="color: var(--accent-rose);">*</span></label>
+                <input type="text" name="title" id="proj-title" class="form-input" placeholder="e.g. Smart Agriculture Crop Prediction System" required>
+            </div>
+
+            <div class="grid-2-col" style="gap: 14px;">
+                <div class="form-group">
+                    <label for="proj-category">Domain Category <span style="color: var(--accent-rose);">*</span></label>
+                    <select name="category" id="proj-category" class="form-input form-select" required>
+                        <option value="Student Academic Project">Flask & MongoDB Web App</option>
+                        <option value="Machine Learning Model">Machine Learning / AI Prediction</option>
+                        <option value="Cyber Security & NLP">Cyber Security & NLP Analytics</option>
+                        <option value="Developer Portfolio">Personal Developer Portfolio</option>
+                        <option value="Custom Scope">Other Custom Project</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="proj-stack">Preferred Stack</label>
+                    <input type="text" name="tech_stack" id="proj-stack" class="form-input" placeholder="e.g. Python, Flask, MongoDB, Pandas">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="proj-desc">Detailed Project Requirements <span style="color: var(--accent-rose);">*</span></label>
+                <textarea name="description" id="proj-desc" class="form-input" rows="4" placeholder="Mention specific modules, algorithms, datasets, or college submission deadlines..." required></textarea>
+            </div>
+
+            <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('request-project-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Scope for Review</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- 4. MODAL: MENTORSHIP BOOKING                              -->
+<!-- ========================================================= -->
+<div class="modal-overlay" id="mentorship-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 520px; padding: 28px;">
+        <div class="modal-header flex-between align-center" style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-calendar-days"></i> Schedule 1-on-1 Code Walkthrough</h3>
+            <button type="button" class="icon-btn" onclick="toggleModal('mentorship-modal')" style="width: 32px; height: 32px;">&times;</button>
+        </div>
+        
+        <form id="mentorship-form">
+            <input type="hidden" name="access_key" value="ec1c8cd8-2e7e-4ba1-9b6f-23b58a3db594">
+            <input type="hidden" name="subject" value="New Mentorship Booking Request - Student Dashboard">
+            <input type="hidden" name="from_name" value="{{ session.get('full_name', 'Student User') }}">
+            <input type="hidden" name="name" value="{{ session.get('full_name', 'Student User') }}">
+            <input type="hidden" name="email" value="{{ session.get('email', '') }}">
+            <input type="hidden" name="user_category" value="Student Mentorship">
+            <input type="hidden" name="project_name" value="1-on-1 Academic Mentorship Booking">
+
+            <div class="grid-2-col" style="gap: 14px;">
+                <div class="form-group">
+                    <label for="mentorship-date">Preferred Date <span style="color: var(--accent-rose);">*</span></label>
+                    <input type="date" name="preferred_date" id="mentorship-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="mentorship-time">Time Slot <span style="color: var(--accent-rose);">*</span></label>
+                    <select name="preferred_time" id="mentorship-time" class="form-input form-select" required>
+                        <option value="4:00 PM - 5:00 PM IST">4:00 PM - 5:00 PM IST</option>
+                        <option value="6:00 PM - 7:00 PM IST">6:00 PM - 7:00 PM IST</option>
+                        <option value="8:00 PM - 9:00 PM IST">8:00 PM - 9:00 PM IST</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="mentorship-notes">Topics to Cover / Viva Questions</label>
+                <textarea name="message" id="mentorship-notes" class="form-input" rows="3" placeholder="e.g. Flask route explainers, MongoDB aggregation queries, ML dataset preprocessing..."></textarea>
+            </div>
+
+            <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
+                <button type="button" class="btn btn-ghost" onclick="toggleModal('mentorship-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Request Booking Slot</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .milestone-tracker {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        padding: 12px 0;
+    }
+    .tracker-step {
+        text-align: center;
+        flex: 1;
+    }
+    .step-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--bg-main);
+        color: #fff;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 6px;
+        font-size: 0.8rem;
+    }
+    .tracker-step.completed .step-dot {
+        background: var(--primary);
+        border-color: var(--primary);
+    }
+    .tracker-step.ready-step .step-dot {
+        background: var(--accent-emerald);
+        border-color: var(--accent-emerald);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            const isVisible = modal.style.display === 'flex';
+            modal.style.display = isVisible ? 'none' : 'flex';
+        }
+    }
+
+    function openSupportQuery(projTitle) {
+        const subjectInput = document.getElementById('ticket-subject');
+        const supportSection = document.getElementById('support-section');
+        if (subjectInput) {
+            subjectInput.value = `Query regarding: ${projTitle}`;
+            if (supportSection) {
+                supportSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            subjectInput.focus();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Live Project Search Filter
+        const projSearch = document.getElementById('project-search');
+        if (projSearch) {
+            projSearch.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.project-card-item');
+                cards.forEach(card => {
+                    const title = card.getAttribute('data-title') || '';
+                    const status = card.getAttribute('data-status') || '';
+                    card.style.display = (title.includes(query) || status.includes(query)) ? '' : 'none';
+                });
+            });
+        }
+
+        // 1. Academic Project Proposal Handler (Dual Web3Forms + Flask Submit)
+        const reqForm = document.getElementById('student-project-req-form');
+        if (reqForm) {
+            reqForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = reqForm.querySelector('button[type="submit"]');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+                const formData = new FormData(reqForm);
+                const formJSON = Object.fromEntries(formData.entries());
+
+                try {
+                    // Send to Web3Forms API to display in dashboard
+                    await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(formJSON)
+                    });
+                } catch (err) {
+                    console.error('Web3Forms logging error:', err);
+                }
+
+                // Submit to Flask backend for MongoDB storage, email alert & page refresh
+                reqForm.submit();
+            });
+        }
+
+        // 2. Mentorship Booking Handler
+        const mentorshipForm = document.getElementById('mentorship-form');
+        if (mentorshipForm) {
+            mentorshipForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = mentorshipForm.querySelector('button[type="submit"]');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Scheduling...';
+
+                const formData = new FormData(mentorshipForm);
+                const formJSON = Object.fromEntries(formData.entries());
+
+                try {
+                    // 1. Web3Forms API
+                    const web3Res = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(formJSON)
+                    });
+                    const web3Data = await web3Res.json();
+
+                    // 2. Flask Backend API (MongoDB + Real-time SMTP Email)
+                    await fetch('/api/submit-inquiry', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (web3Data.success) {
+                        alert('Mentorship session logged! Founder V Akhil will review the slot and send confirmation.');
+                        mentorshipForm.reset();
+                        toggleModal('mentorship-modal');
+                        location.reload();
+                    } else {
+                        alert(web3Data.message || 'Error booking slot. Please try again.');
+                    }
+                } catch (err) {
+                    alert('Network error occurred.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            });
+        }
+
+        // 3. Support Ticket Desk Handler
+        const supportForm = document.getElementById('student-support-form');
+        if (supportForm) {
+            supportForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = supportForm.querySelector('button[type="submit"]');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+                const formData = new FormData(supportForm);
+                const formJSON = Object.fromEntries(formData.entries());
+
+                try {
+                    // 1. Web3Forms API
+                    const web3Res = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(formJSON)
+                    });
+                    const web3Data = await web3Res.json();
+
+                    // 2. Flask Backend API (MongoDB + Real-time SMTP Email)
+                    await fetch('/api/submit-inquiry', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (web3Data.success) {
+                        alert('Your query has been dispatched directly to Founder V Akhil.');
+                        supportForm.reset();
+                        location.reload();
+                    } else {
+                        alert(web3Data.message || 'Failed to dispatch ticket.');
+                    }
+                } catch (err) {
+                    alert('Network error occurred.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
