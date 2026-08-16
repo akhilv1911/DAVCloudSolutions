@@ -1,13 +1,36 @@
 """
 DAV Cloud Solutions - Mailer & Email Dispatcher Module
-Tech Stack: Python Flask, SMTP, MIME
+Tech Stack: Python Flask, SMTP (Direct SSL & Background Threading), MIME
 Founder: V Akhil
 """
 
 import smtplib
+import threading
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import current_app, url_for
+
+
+def _dispatch_smtp_background(msg: MIMEMultipart, recipient: str, mail_server: str, mail_port: int, mail_username: str, mail_password: str, mail_sender: str):
+    """Background worker that transmits email over SMTP without blocking the Flask worker."""
+    try:
+        if mail_port == 465:
+            # Direct SSL connection (recommended for cloud hosts like Render)
+            with smtplib.SMTP_SSL(mail_server, mail_port, timeout=12) as server:
+                server.login(mail_username, mail_password)
+                server.sendmail(mail_sender, [recipient], msg.as_string())
+        else:
+            # STARTTLS connection (Port 587)
+            with smtplib.SMTP(mail_server, mail_port, timeout=12) as server:
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login(mail_username, mail_password)
+                server.sendmail(mail_sender, [recipient], msg.as_string())
+
+        print(f"[MAILER SUCCESS] Email delivered to: {recipient}")
+    except Exception as e:
+        print(f"[MAILER ERROR] Failed to send email to {recipient}: {e}")
 
 
 def send_verification_email(to_email: str, full_name: str, token: str) -> bool:
@@ -16,9 +39,9 @@ def send_verification_email(to_email: str, full_name: str, token: str) -> bool:
     Uses SMTP settings defined in Flask config or environment variables.
     """
     mail_server = current_app.config.get('MAIL_SERVER', 'smtp.gmail.com')
-    mail_port = int(current_app.config.get('MAIL_PORT', 587))
+    mail_port = int(current_app.config.get('MAIL_PORT', 465))
     mail_username = current_app.config.get('MAIL_USERNAME')
-    mail_password = current_app.config.get('MAIL_PASSWORD')
+    mail_password = (current_app.config.get('MAIL_PASSWORD') or '').replace(' ', '').strip()
     mail_sender = (
         current_app.config.get('MAIL_DEFAULT_SENDER') 
         or mail_username 
@@ -99,17 +122,14 @@ contactdavcloudsolutions@gmail.com
         print(f"[SIMULATED VERIFICATION EMAIL] Link for {to_email}: {verification_url}")
         return True
 
-    try:
-        with smtplib.SMTP(mail_server, mail_port) as server:
-            server.starttls()
-            server.login(mail_username, mail_password)
-            server.sendmail(mail_sender, [to_email], msg.as_string())
-        
-        current_app.logger.info(f"Verification email sent to {to_email}")
-        return True
-    except Exception as e:
-        current_app.logger.error(f"Failed to send email to {to_email}: {e}")
-        return False
+    # Dispatch in background thread so Gunicorn worker does not timeout
+    threading.Thread(
+        target=_dispatch_smtp_background,
+        args=(msg, to_email, mail_server, mail_port, mail_username, mail_password, mail_sender),
+        daemon=True
+    ).start()
+
+    return True
 
 
 def send_admin_inquiry_notification(inquiry_data: dict) -> bool:
@@ -118,9 +138,9 @@ def send_admin_inquiry_notification(inquiry_data: dict) -> bool:
     (Project Scope, Mentorship Booking, or Support Query).
     """
     mail_server = current_app.config.get('MAIL_SERVER', 'smtp.gmail.com')
-    mail_port = int(current_app.config.get('MAIL_PORT', 587))
+    mail_port = int(current_app.config.get('MAIL_PORT', 465))
     mail_username = current_app.config.get('MAIL_USERNAME')
-    mail_password = current_app.config.get('MAIL_PASSWORD')
+    mail_password = (current_app.config.get('MAIL_PASSWORD') or '').replace(' ', '').strip()
     admin_email = current_app.config.get('ADMIN_EMAIL') or mail_username or "contactdavcloudsolutions@gmail.com"
     mail_sender = current_app.config.get('MAIL_DEFAULT_SENDER') or mail_username or "contactdavcloudsolutions@gmail.com"
 
@@ -226,14 +246,11 @@ Message / Scope:
         print(f"[SIMULATED ADMIN INQUIRY EMAIL] {subject} from {email}")
         return True
 
-    try:
-        with smtplib.SMTP(mail_server, mail_port) as server:
-            server.starttls()
-            server.login(mail_username, mail_password)
-            server.sendmail(mail_sender, [admin_email], msg.as_string())
-        
-        current_app.logger.info(f"Admin notification email sent for {name} ({email})")
-        return True
-    except Exception as e:
-        current_app.logger.error(f"Failed to dispatch inquiry notification: {e}")
-        return False
+    # Dispatch in background thread
+    threading.Thread(
+        target=_dispatch_smtp_background,
+        args=(msg, admin_email, mail_server, mail_port, mail_username, mail_password, mail_sender),
+        daemon=True
+    ).start()
+
+    return True
