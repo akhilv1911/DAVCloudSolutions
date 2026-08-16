@@ -681,7 +681,8 @@ def admin_update_user(user_id):
     is_admin_approved = (request.form.get('is_admin_approved', 'false').lower() == 'true')
     is_email_verified = (request.form.get('is_email_verified', 'false').lower() == 'true')
 
-    update_fields = {
+    # Explicitly type update_fields as a general dict to allow booleans and strings
+    update_fields: dict = {
         'is_admin_approved': is_admin_approved,
         'is_email_verified': is_email_verified,
         'is_verified': (is_email_verified and is_admin_approved)
