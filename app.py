@@ -162,7 +162,7 @@ def handle_inquiry():
 
 
 # ==============================================================================
-# AUTHENTICATION ROUTES (REGISTER, LOGIN, VERIFY, LOGOUT)
+# AUTHENTICATION ROUTES (REGISTER, LOGIN, VERIFY, RESEND, LOGOUT)
 # ==============================================================================
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -207,7 +207,7 @@ def register():
                 'website': request.form.get('website', '').strip()
             }
 
-        # Create New User Document
+        # Create New User Document (Unverified by default)
         user_document = {
             'full_name': full_name,
             'email': email,
@@ -227,7 +227,7 @@ def register():
         token = generate_verification_token(email)
         send_verification_email(email, full_name, token)
 
-        flash('Registration successful! Check your email inbox to verify your account.', 'success')
+        flash('Account created successfully! Please check your email inbox or spam folder to verify your account.', 'success')
         return redirect(url_for('verify_notice'))
 
     return render_template('auth/register.html')
@@ -235,7 +235,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """User Login - Validates credentials against MongoDB and sets session variables."""
+    """User Login - Validates credentials against MongoDB and strictly enforces email verification."""
     if session.get('user_id'):
         return redirect(url_for('dashboard'))
 
@@ -247,12 +247,30 @@ def login():
         user = db.users.find_one({'email': email})
 
         if user and check_password(user['password_hash'], password):
+            # 1. Master Admin bypasses verification
+            if user.get('role') == 'admin':
+                session['user_id'] = str(user['_id'])
+                session['full_name'] = user['full_name']
+                session['email'] = user['email']
+                session['role'] = user['role']
+                session['phone'] = user.get('phone', '')
+                session['is_verified'] = True
+
+                flash(f"Welcome back, Master Admin {user['full_name']}!", 'success')
+                return redirect(url_for('admin_dashboard'))
+
+            # 2. Enforce email verification for all other roles
+            if not user.get('is_verified', False):
+                flash('Your account is not verified yet. Please check your email for the verification link.', 'warning')
+                return redirect(url_for('verify_notice'))
+
+            # 3. Set authenticated session context
             session['user_id'] = str(user['_id'])
             session['full_name'] = user['full_name']
             session['email'] = user['email']
             session['role'] = user['role']
             session['phone'] = user.get('phone', '')
-            session['is_verified'] = user.get('is_verified', False)
+            session['is_verified'] = True
 
             flash(f"Welcome back, {user['full_name']}!", 'success')
             return redirect(url_for('dashboard'))
@@ -267,6 +285,31 @@ def login():
 def verify_notice():
     """Verification Pending Notice Page."""
     return render_template('auth/verify.html', status='notice')
+
+
+@app.route('/resend-verification', methods=['POST'])
+def resend_verification():
+    """Allows users to request a fresh verification email."""
+    email = request.form.get('email', '').strip().lower()
+    if not email:
+        flash('Please provide your registered email address.', 'danger')
+        return redirect(url_for('verify_notice'))
+
+    db = get_db()
+    user = db.users.find_one({'email': email})
+
+    if user:
+        if user.get('is_verified', False):
+            flash('Your account is already verified. Please log in directly.', 'info')
+            return redirect(url_for('login'))
+
+        token = generate_verification_token(email)
+        send_verification_email(email, user['full_name'], token)
+        flash('A fresh verification link has been dispatched to your email.', 'success')
+    else:
+        flash('No account found with this email address.', 'danger')
+
+    return redirect(url_for('verify_notice'))
 
 
 @app.route('/verify/<token>')
@@ -662,7 +705,6 @@ def admin_add_team_member():
         flash('Team member name and role are required.', 'danger')
         return redirect(url_for('admin_dashboard'))
 
-    # Parse newline-separated responsibilities into a list
     responsibilities = [r.strip() for r in responsibilities_raw.replace('\r', '').split('\n') if r.strip()]
 
     new_member = {
