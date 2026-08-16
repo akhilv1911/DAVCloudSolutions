@@ -14,7 +14,7 @@
                 <div class="welcome-text">
                     <span class="badge-pill"><i class="fa-solid fa-user-shield"></i> Master Admin Control Panel</span>
                     <h1 class="margin-top-xs">Founder Command Center: <span class="gradient-text">V Akhil</span></h1>
-                    <p class="text-muted">Platform management, user verification, team project dispatch, and live DAV AI intelligence.</p>
+                    <p class="text-muted">Platform management, two-tier user verification, project dispatch, and live DAV AI intelligence.</p>
                 </div>
                 <div class="welcome-actions margin-top-mobile flex-between gap-sm">
                     <span class="status-pill status-completed"><i class="fa-solid fa-server"></i> System Normal</span>
@@ -56,7 +56,7 @@
             </div>
 
             <div class="glass-card metric-card">
-                <div class="metric-icon" style="color: var(--accent-emerald);"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                <div class="metric-icon" style="color: var(--accent-emerald, #10b981);"><i class="fa-solid fa-indian-rupee-sign"></i></div>
                 <div class="metric-info">
                     <h3>
                         {% set total_revenue = namespace(value=0) %}
@@ -116,7 +116,7 @@
             <!-- Live Output Drawer Container -->
             <div id="ai-live-output-container" class="glass-card margin-top-md" style="display: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(99, 102, 241, 0.35); padding: 20px;">
                 <div class="flex-between align-center border-bottom-glass padding-bottom-sm">
-                    <h4 id="ai-output-title" style="color: var(--accent-cyan);"><i class="fa-solid fa-terminal"></i> Live DAV AI Output</h4>
+                    <h4 id="ai-output-title" style="color: var(--accent-cyan, #06b6d4);"><i class="fa-solid fa-terminal"></i> Live DAV AI Output</h4>
                     <div class="flex-align-center gap-xs">
                         <button type="button" class="btn btn-sm btn-ghost" onclick="copyAIOutput()"><i class="fa-solid fa-copy"></i> Copy</button>
                         <button type="button" class="btn btn-sm btn-ghost" onclick="document.getElementById('ai-live-output-container').style.display='none'"><i class="fa-solid fa-xmark"></i> Close</button>
@@ -180,7 +180,7 @@
                                     </td>
                                     <td>
                                         <form action="{{ url_for('admin_delete_team_member', member_id=member._id) }}" method="POST" onsubmit="return confirm('Are you sure you want to remove this team member?');" style="display: inline;">
-                                            <button type="submit" class="btn btn-sm btn-ghost" style="color: var(--accent-rose);">
+                                            <button type="submit" class="btn btn-sm btn-ghost" style="color: var(--accent-rose, #f43f5e);">
                                                 <i class="fa-solid fa-trash-can"></i> Remove
                                             </button>
                                         </form>
@@ -283,11 +283,14 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 5. USER & BUSINESS VERIFICATION DIRECTORY PANEL           -->
+        <!-- 5. TWO-TIER USER & BUSINESS VERIFICATION PANEL            -->
         <!-- ========================================================= -->
         <div class="glass-card">
             <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
-                <h2><i class="fa-solid fa-users-gear"></i> User Accounts & Business Verification Status</h2>
+                <div>
+                    <h2><i class="fa-solid fa-users-gear"></i> User Accounts, Email Verification & Admin Approvals</h2>
+                    <p class="text-muted fs-sm">Approve verified student, business, and team member accounts.</p>
+                </div>
                 <input type="text" id="user-search" class="form-input" placeholder="🔍 Search users/email..." style="padding: 6px 14px; font-size: 0.85rem; max-width: 220px;">
             </div>
 
@@ -298,8 +301,9 @@
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Company / Details</th>
+                            <th>Institution / Business</th>
                             <th>Email Verified</th>
+                            <th>Admin Approval</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -320,10 +324,21 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% if u.is_verified %}
-                                            <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Verified</span>
+                                        {% if u.is_email_verified or (u.is_verified and not u.is_email_verified is defined) %}
+                                            <span class="status-pill status-completed"><i class="fa-solid fa-envelope-circle-check"></i> Verified</span>
                                         {% else %}
-                                            <span class="status-pill status-pending"><i class="fa-solid fa-clock"></i> Pending</span>
+                                            <span class="status-pill status-pending"><i class="fa-solid fa-hourglass-start"></i> Pending Link</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if u.role == 'admin' or u.is_admin_approved %}
+                                            <span class="status-pill status-completed" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                                <i class="fa-solid fa-shield-check"></i> Approved
+                                            </span>
+                                        {% else %}
+                                            <span class="status-pill status-pending" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">
+                                                <i class="fa-solid fa-user-clock"></i> Awaiting Review
+                                            </span>
                                         {% endif %}
                                     </td>
                                     <td>
@@ -332,7 +347,8 @@
                                                 data-name="{{ u.full_name }}"
                                                 data-email="{{ u.email }}"
                                                 data-role="{{ u.role }}"
-                                                data-verified="{{ 'true' if u.is_verified else 'false' }}">
+                                                data-email-verified="{{ 'true' if (u.is_email_verified or u.is_verified) else 'false' }}"
+                                                data-admin-approved="{{ 'true' if (u.is_admin_approved or u.role == 'admin') else 'false' }}">
                                             <i class="fa-solid fa-gear"></i> Manage
                                         </button>
                                     </td>
@@ -340,7 +356,7 @@
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="6" class="text-center text-muted padding-md">
+                                <td colspan="7" class="text-center text-muted padding-md">
                                     No registered user accounts found.
                                 </td>
                             </tr>
@@ -539,12 +555,12 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- 10. MODAL: MANAGE USER STATUS & ROLE                      -->
+<!-- 10. MODAL: MANAGE USER STATUS & APPROVAL                   -->
 <!-- ========================================================= -->
 <div class="modal-overlay" id="admin-manage-user-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
-    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 480px; padding: 28px;">
+    <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 500px; padding: 28px;">
         <div class="modal-header flex-between align-center" style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-user-gear"></i> User Account Controls</h3>
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-user-gear"></i> User Verification & Access Controls</h3>
             <button type="button" class="icon-btn" onclick="toggleModal('admin-manage-user-modal')" style="width: 32px; height: 32px;">&times;</button>
         </div>
         <form id="manage-user-form" method="POST">
@@ -558,22 +574,30 @@
                 <input type="text" id="manage-user-email" class="form-input" readonly style="opacity: 0.75;">
             </div>
 
+            <div class="form-group">
+                <label for="manage-user-role">Assigned System Role</label>
+                <select name="role" id="manage-user-role" class="form-input form-select" required>
+                    <option value="student">Student</option>
+                    <option value="team">Team Member / Specialist</option>
+                    <option value="business">Business</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
             <div class="grid-2-col" style="gap: 14px;">
                 <div class="form-group">
-                    <label for="manage-user-role">System Role</label>
-                    <select name="role" id="manage-user-role" class="form-input form-select" required>
-                        <option value="student">Student</option>
-                        <option value="team">Team Member / Specialist</option>
-                        <option value="business">Business</option>
-                        <option value="admin">Admin</option>
+                    <label for="manage-user-email-verified">Email Verified</label>
+                    <select name="is_email_verified" id="manage-user-email-verified" class="form-input form-select" required>
+                        <option value="true">Confirmed (Yes)</option>
+                        <option value="false">Unconfirmed (No)</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="manage-user-verified">Email Verified Status</label>
-                    <select name="is_verified" id="manage-user-verified" class="form-input form-select" required>
-                        <option value="true">Verified (Active)</option>
-                        <option value="false">Pending</option>
+                    <label for="manage-user-admin-approved">Admin Approval</label>
+                    <select name="is_admin_approved" id="manage-user-admin-approved" class="form-input form-select" required>
+                        <option value="true">Approved (Active)</option>
+                        <option value="false">Pending Approval</option>
                     </select>
                 </div>
             </div>
@@ -750,19 +774,21 @@
             });
         });
 
-        // User Manage Buttons
+        // User Manage Buttons (Two-Tier Sync)
         document.querySelectorAll('.btn-manage-user').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = this.dataset.id;
                 const name = this.dataset.name;
                 const email = this.dataset.email;
                 const role = this.dataset.role;
-                const isVerified = this.dataset.verified;
+                const emailVerified = this.dataset.emailVerified;
+                const adminApproved = this.dataset.adminApproved;
 
                 document.getElementById('manage-user-name').value = name;
                 document.getElementById('manage-user-email').value = email;
                 document.getElementById('manage-user-role').value = role;
-                document.getElementById('manage-user-verified').value = isVerified;
+                document.getElementById('manage-user-email-verified').value = emailVerified;
+                document.getElementById('manage-user-admin-approved').value = adminApproved;
                 
                 const form = document.getElementById('manage-user-form');
                 form.action = '/admin/update-user/' + id;

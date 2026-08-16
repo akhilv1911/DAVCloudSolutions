@@ -162,7 +162,7 @@ def handle_inquiry():
 
 
 # ==============================================================================
-# AUTHENTICATION ROUTES (REGISTER, LOGIN, VERIFY, RESEND, LOGOUT)
+# AUTHENTICATION & TWO-TIER VERIFICATION ROUTES
 # ==============================================================================
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -207,7 +207,7 @@ def register():
                 'website': request.form.get('website', '').strip()
             }
 
-        # Create New User Document (Unverified by default)
+        # Create New User Document (Requires Email Verification + Admin Approval)
         user_document = {
             'full_name': full_name,
             'email': email,
@@ -216,7 +216,9 @@ def register():
             'phone': phone,
             'institution': institution if role == 'student' else None,
             'business_info': business_info,
-            'is_verified': False,
+            'is_email_verified': False,     # Tier 1: User verifies email link
+            'is_admin_approved': False,      # Tier 2: Admin reviews and activates
+            'is_verified': False,            # Compatibility flag
             'created_at': datetime.now(timezone.utc)
         }
 
@@ -227,7 +229,17 @@ def register():
         token = generate_verification_token(email)
         send_verification_email(email, full_name, token)
 
-        flash('Account created successfully! Please check your email inbox or spam folder to verify your account.', 'success')
+        # Notify Admin inbox about new pending registration
+        send_admin_inquiry_notification({
+            'name': full_name,
+            'email': email,
+            'phone': phone,
+            'user_category': f'New {role.capitalize()} Registration',
+            'project_name': 'Pending Approval',
+            'message': f"A new {role} registered ({email}). Awaiting email confirmation and Admin approval."
+        })
+
+        flash('Registration successful! Please check your email inbox to verify your email address.', 'success')
         return redirect(url_for('verify_notice'))
 
     return render_template('auth/register.html')
@@ -235,7 +247,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """User Login - Validates credentials against MongoDB and strictly enforces email verification."""
+    """User Login - Validates credentials, email confirmation, and admin approval."""
     if session.get('user_id'):
         return redirect(url_for('dashboard'))
 
@@ -259,12 +271,18 @@ def login():
                 flash(f"Welcome back, Master Admin {user['full_name']}!", 'success')
                 return redirect(url_for('admin_dashboard'))
 
-            # 2. Enforce email verification for all other roles
-            if not user.get('is_verified', False):
-                flash('Your account is not verified yet. Please check your email for the verification link.', 'warning')
+            # 2. Check Step 1: User Email Verification
+            user_email_verified = user.get('is_email_verified', user.get('is_verified', False))
+            if not user_email_verified:
+                flash('Please verify your email address before logging in. Check your inbox or spam folder.', 'warning')
                 return redirect(url_for('verify_notice'))
 
-            # 3. Set authenticated session context
+            # 3. Check Step 2: Admin Approval
+            if not user.get('is_admin_approved', False):
+                flash('Your email is verified! Your account is currently in queue for review and activation by Admin V Akhil.', 'info')
+                return redirect(url_for('login'))
+
+            # 4. Authenticated Session Context
             session['user_id'] = str(user['_id'])
             session['full_name'] = user['full_name']
             session['email'] = user['email']
@@ -299,8 +317,8 @@ def resend_verification():
     user = db.users.find_one({'email': email})
 
     if user:
-        if user.get('is_verified', False):
-            flash('Your account is already verified. Please log in directly.', 'info')
+        if user.get('is_email_verified', user.get('is_verified', False)):
+            flash('Your email is already verified. If your account is pending approval, please wait for Admin activation.', 'info')
             return redirect(url_for('login'))
 
         token = generate_verification_token(email)
@@ -314,19 +332,20 @@ def resend_verification():
 
 @app.route('/verify/<token>')
 def verify_email(token):
-    """Token Verification Endpoint - Validates email verification link."""
+    """Token Verification Endpoint - Validates link clicked from Gmail."""
     email = verify_token(token)
 
     if not email:
         return render_template('auth/verify.html', status='expired')
 
     db = get_db()
-    result = db.users.update_one({'email': email}, {'$set': {'is_verified': True}})
+    result = db.users.update_one(
+        {'email': email}, 
+        {'$set': {'is_email_verified': True, 'is_verified': True}}
+    )
 
     if result.matched_count > 0:
-        if session.get('email') == email:
-            session['is_verified'] = True
-        return render_template('auth/verify.html', status='success')
+        return render_template('auth/verify.html', status='email_verified_waiting_admin')
     else:
         return render_template('auth/verify.html', status='invalid')
 
@@ -656,19 +675,22 @@ def admin_update_project(project_id):
 @login_required
 @role_required('admin')
 def admin_update_user(user_id):
-    """Allows Founder to manually verify users or update role permissions."""
+    """Allows Founder to manually approve accounts, update email status, or edit roles."""
     db = get_db()
     role = request.form.get('role')
-    is_verified_str = request.form.get('is_verified', 'false')
-    is_verified = (is_verified_str.lower() == 'true')
+    is_admin_approved = (request.form.get('is_admin_approved', 'false').lower() == 'true')
+    is_email_verified = (request.form.get('is_email_verified', 'false').lower() == 'true')
 
-    update_fields: dict = {}
+    update_fields = {
+        'is_admin_approved': is_admin_approved,
+        'is_email_verified': is_email_verified,
+        'is_verified': (is_email_verified and is_admin_approved)
+    }
     if role:
         update_fields['role'] = role
-    update_fields['is_verified'] = is_verified
 
     db.users.update_one({'_id': ObjectId(user_id)}, {'$set': update_fields})
-    flash('User account status updated successfully.', 'success')
+    flash('User verification & approval status updated successfully.', 'success')
     return redirect(url_for('admin_dashboard'))
 
 
