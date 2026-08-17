@@ -1,21 +1,119 @@
 """
 DAV Cloud Solutions - Mailer & Email Dispatcher Module
-Tech Stack: Python Flask, SMTP (Direct SSL & Background Threading), MIME
+Tech Stack: Python Flask, HTTPS API (Brevo/Resend) & Direct SMTP Fallback, MIME
 Founder: V Akhil
 """
 
+from typing import Optional
+import os
 import smtplib
 import threading
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import current_app, url_for
 
 
-def _dispatch_smtp_background(msg: MIMEMultipart, recipient: str, mail_server: str, mail_port: int, mail_username: str, mail_password: str, mail_sender: str):
-    """Background worker that transmits email over SMTP without blocking the Flask worker."""
+def _send_via_http_api(
+    recipient: str, 
+    subject: str, 
+    html_content: str, 
+    text_content: str, 
+    reply_to: Optional[str] = None
+) -> bool:
+    """
+    Dispatches email via HTTPS REST API (Port 443).
+    Bypasses Render / Cloud provider SMTP port blocks (Errno 101).
+    """
+    # 1. Brevo REST API Engine
+    brevo_api_key = os.environ.get("BREVO_API_KEY")
+    if brevo_api_key:
+        try:
+            url = "https://api.brevo.com/v3/smtp/email"
+            headers = {
+                "accept": "application/json",
+                "api-key": brevo_api_key,
+                "content-type": "application/json"
+            }
+            payload: dict = {
+                "sender": {"name": "DAV Cloud Solutions", "email": "contactdavcloudsolutions@gmail.com"},
+                "to": [{"email": recipient}],
+                "subject": subject,
+                "htmlContent": html_content,
+                "textContent": text_content
+            }
+            if reply_to:
+                payload["replyTo"] = {"email": reply_to}
+
+            res = requests.post(url, json=payload, headers=headers, timeout=12)
+            if res.status_code in [200, 201]:
+                print(f"[MAILER SUCCESS (Brevo API)] Delivered to {recipient}")
+                return True
+            else:
+                print(f"[MAILER API ERROR] Status {res.status_code}: {res.text}")
+        except Exception as e:
+            print(f"[MAILER API EXCEPTION] Brevo dispatch failed: {e}")
+
+    # 2. Resend REST API Engine
+    resend_api_key = os.environ.get("RESEND_API_KEY")
+    if resend_api_key:
+        try:
+            url = "https://api.resend.com/emails"
+            headers = {
+                "Authorization": f"Bearer {resend_api_key}",
+                "Content-Type": "application/json"
+            }
+            payload: dict = {
+                "from": "DAV Cloud Solutions <onboarding@resend.dev>",
+                "to": [recipient],
+                "subject": subject,
+                "html": html_content,
+                "text": text_content
+            }
+            if reply_to:
+                payload["reply_to"] = reply_to
+
+            res = requests.post(url, json=payload, headers=headers, timeout=12)
+            if res.status_code in [200, 201]:
+                print(f"[MAILER SUCCESS (Resend API)] Delivered to {recipient}")
+                return True
+            else:
+                print(f"[MAILER RESEND ERROR] Status {res.status_code}: {res.text}")
+        except Exception as e:
+            print(f"[MAILER RESEND EXCEPTION] Resend dispatch failed: {e}")
+
+    return False
+
+
+def _dispatch_smtp_background(
+    msg: MIMEMultipart, 
+    recipient: str, 
+    mail_server: str, 
+    mail_port: int, 
+    mail_username: Optional[str], 
+    mail_password: Optional[str], 
+    mail_sender: str, 
+    html_content: str = "", 
+    text_content: str = "", 
+    reply_to: Optional[str] = None
+) -> None:
+    """
+    Background worker that transmits email without blocking the Flask worker.
+    Tries HTTPS REST API first; if unavailable, falls back to direct SMTP.
+    """
+    # Step 1: Attempt HTTPS API (Never blocked on Render/Cloud)
+    if html_content and text_content:
+        subject = str(msg.get('Subject', 'DAV Cloud Solutions Notification'))
+        if _send_via_http_api(recipient, subject, html_content, text_content, reply_to):
+            return
+
+    # Step 2: Fallback to direct SMTP (Local development / Unrestricted hosts)
+    if not mail_username or not mail_password:
+        return
+
     try:
         if mail_port == 465:
-            # Direct SSL connection (recommended for cloud hosts like Render)
+            # Direct SSL connection
             with smtplib.SMTP_SSL(mail_server, mail_port, timeout=12) as server:
                 server.login(mail_username, mail_password)
                 server.sendmail(mail_sender, [recipient], msg.as_string())
@@ -28,7 +126,7 @@ def _dispatch_smtp_background(msg: MIMEMultipart, recipient: str, mail_server: s
                 server.login(mail_username, mail_password)
                 server.sendmail(mail_sender, [recipient], msg.as_string())
 
-        print(f"[MAILER SUCCESS] Email delivered to: {recipient}")
+        print(f"[MAILER SUCCESS (SMTP)] Email delivered to: {recipient}")
     except Exception as e:
         print(f"[MAILER ERROR] Failed to send email to {recipient}: {e}")
 
@@ -38,11 +136,12 @@ def send_verification_email(to_email: str, full_name: str, token: str) -> bool:
     Dispatches an automated email verification link to a newly registered user.
     Uses SMTP settings defined in Flask config or environment variables.
     """
-    mail_server = current_app.config.get('MAIL_SERVER', 'smtp.gmail.com')
-    mail_port = int(current_app.config.get('MAIL_PORT', 465))
+    mail_server = str(current_app.config.get('MAIL_SERVER', 'smtp.gmail.com'))
+    mail_port = int(current_app.config.get('MAIL_PORT', 587))
     mail_username = current_app.config.get('MAIL_USERNAME')
-    mail_password = (current_app.config.get('MAIL_PASSWORD') or '').replace(' ', '').strip()
-    mail_sender = (
+    raw_password = current_app.config.get('MAIL_PASSWORD')
+    mail_password = (raw_password or '').replace(' ', '').strip() if raw_password else None
+    mail_sender = str(
         current_app.config.get('MAIL_DEFAULT_SENDER') 
         or mail_username 
         or "contactdavcloudsolutions@gmail.com"
@@ -116,16 +215,16 @@ contactdavcloudsolutions@gmail.com
     msg.attach(MIMEText(text_content, 'plain'))
     msg.attach(MIMEText(html_content, 'html'))
 
-    # Development fallback if credentials are unset
-    if not mail_username or not mail_password:
-        current_app.logger.warning("SMTP Mailer credentials missing. Email dispatch simulated.")
+    # Development fallback if credentials and API keys are unset
+    if not mail_username and not os.environ.get("BREVO_API_KEY") and not os.environ.get("RESEND_API_KEY"):
+        current_app.logger.warning("Mailer credentials missing. Email dispatch simulated.")
         print(f"[SIMULATED VERIFICATION EMAIL] Link for {to_email}: {verification_url}")
         return True
 
     # Dispatch in background thread so Gunicorn worker does not timeout
     threading.Thread(
         target=_dispatch_smtp_background,
-        args=(msg, to_email, mail_server, mail_port, mail_username, mail_password, mail_sender),
+        args=(msg, to_email, mail_server, mail_port, mail_username, mail_password, mail_sender, html_content, text_content, None),
         daemon=True
     ).start()
 
@@ -137,12 +236,13 @@ def send_admin_inquiry_notification(inquiry_data: dict) -> bool:
     Sends an instant email notification to the company whenever a user submits any form
     (Project Scope, Mentorship Booking, or Support Query).
     """
-    mail_server = current_app.config.get('MAIL_SERVER', 'smtp.gmail.com')
-    mail_port = int(current_app.config.get('MAIL_PORT', 465))
+    mail_server = str(current_app.config.get('MAIL_SERVER', 'smtp.gmail.com'))
+    mail_port = int(current_app.config.get('MAIL_PORT', 587))
     mail_username = current_app.config.get('MAIL_USERNAME')
-    mail_password = (current_app.config.get('MAIL_PASSWORD') or '').replace(' ', '').strip()
-    admin_email = current_app.config.get('ADMIN_EMAIL') or mail_username or "contactdavcloudsolutions@gmail.com"
-    mail_sender = current_app.config.get('MAIL_DEFAULT_SENDER') or mail_username or "contactdavcloudsolutions@gmail.com"
+    raw_password = current_app.config.get('MAIL_PASSWORD')
+    mail_password = (raw_password or '').replace(' ', '').strip() if raw_password else None
+    admin_email = str(current_app.config.get('ADMIN_EMAIL') or mail_username or "contactdavcloudsolutions@gmail.com")
+    mail_sender = str(current_app.config.get('MAIL_DEFAULT_SENDER') or mail_username or "contactdavcloudsolutions@gmail.com")
 
     name = inquiry_data.get('name', 'Guest Visitor')
     email = inquiry_data.get('email', 'N/A')
@@ -241,15 +341,15 @@ Message / Scope:
     msg.attach(MIMEText(text_content, "plain"))
     msg.attach(MIMEText(html_content, "html"))
 
-    if not mail_username or not mail_password:
-        current_app.logger.warning("SMTP Mailer credentials missing. Admin inquiry email simulated.")
+    if not mail_username and not os.environ.get("BREVO_API_KEY") and not os.environ.get("RESEND_API_KEY"):
+        current_app.logger.warning("Mailer credentials missing. Admin inquiry email simulated.")
         print(f"[SIMULATED ADMIN INQUIRY EMAIL] {subject} from {email}")
         return True
 
     # Dispatch in background thread
     threading.Thread(
         target=_dispatch_smtp_background,
-        args=(msg, admin_email, mail_server, mail_port, mail_username, mail_password, mail_sender),
+        args=(msg, admin_email, mail_server, mail_port, mail_username, mail_password, mail_sender, html_content, text_content, email),
         daemon=True
     ).start()
 
