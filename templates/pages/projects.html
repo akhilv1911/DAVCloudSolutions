@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- ========================================================= -->
-<!-- 1. CATALOG HERO SECTION                                   -->
+<!-- 1. CATALOG HERO & SEARCH SECTION                          -->
 <!-- ========================================================= -->
 <section class="projects-hero-section section-padding text-center">
     <div class="section-container">
@@ -15,10 +15,10 @@
             Explore Our Comprehensive <span class="gradient-text">IT & Software Projects</span>
         </h1>
         <p class="hero-subtitle max-w-700 margin-auto">
-            Browse our catalog of 60+ engineered projects across Student Academic Domains, Small Business Portals, and Startup MVPs.
+            Browse our catalog of engineered projects across Student Academic Domains, Small Business Portals, and Startup MVPs.
         </p>
 
-        <!-- Search & Live Filter Controls -->
+        <!-- Search & Filter Controls -->
         <div class="catalog-controls-container margin-top-lg max-w-800 margin-auto">
             <div class="search-bar-wrapper" style="position: relative;">
                 <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
@@ -26,7 +26,7 @@
                     type="text" 
                     id="project-search" 
                     class="form-input" 
-                    placeholder="Search by title, tech stack (e.g., Flask, ML, OpenCV), or keyword..."
+                    placeholder="Search by title, domain, or technology (e.g., Python, AI, Cloud, SaaS)..."
                     style="padding-left: 44px; font-size: 1rem; border-radius: var(--radius-full);"
                 >
             </div>
@@ -50,12 +50,12 @@
             <!-- Quick Technology Pills -->
             <div class="tech-pills-wrapper margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; font-size: 0.8rem;">
                 <span class="text-muted fs-sm" style="align-self: center; margin-right: 4px;">Quick Filter:</span>
-                <button type="button" class="tech-pill-btn" data-tech="flask">Flask</button>
-                <button type="button" class="tech-pill-btn" data-tech="mongodb">MongoDB</button>
+                <button type="button" class="tech-pill-btn" data-tech="python">Python</button>
+                <button type="button" class="tech-pill-btn" data-tech="cloud">Cloud Architecture</button>
                 <button type="button" class="tech-pill-btn" data-tech="machine learning">Machine Learning</button>
-                <button type="button" class="tech-pill-btn" data-tech="nlp">NLP / AI</button>
+                <button type="button" class="tech-pill-btn" data-tech="ai">Applied AI / NLP</button>
                 <button type="button" class="tech-pill-btn" data-tech="opencv">Computer Vision</button>
-                <button type="button" class="tech-pill-btn" data-tech="stripe">Payments / SaaS</button>
+                <button type="button" class="tech-pill-btn" data-tech="saas">SaaS / Payments</button>
             </div>
 
             <!-- Dynamic Results Count -->
@@ -79,15 +79,15 @@
             <!-- ================================================= -->
 
             <!-- Project 1 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb html5 css3 javascript">
+            <div class="project-card glass-card" data-domain="student" data-stack="python cloud backend html5 css3 javascript">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> Student Project</span>
-                    <span class="badge-tech">Python Flask + MongoDB</span>
+                    <span class="badge-tech">Cloud Backend</span>
                 </div>
                 <h3 class="margin-top-xs">Student Leave Management System</h3>
                 <p class="text-muted fs-sm margin-top-xs">Role-based portal for students to submit leave applications, view status logs, and allow faculty guides to approve/reject requests.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, HTML5, JavaScript
+                    <strong>Tech Stack:</strong> Python, Cloud Backend, HTML5, JavaScript
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
@@ -103,15 +103,15 @@
             </div>
 
             <!-- Project 2 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask python machine learning scikit-learn pandas mongodb chartjs">
+            <div class="project-card glass-card" data-domain="student" data-stack="python machine learning ai cloud data-science">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-brain"></i> Machine Learning</span>
-                    <span class="badge-tech">Flask + Scikit-Learn</span>
+                    <span class="badge-tech">Applied AI / ML</span>
                 </div>
                 <h3 class="margin-top-xs">AgriPredict Crop Yield & Disease Engine</h3>
                 <p class="text-muted fs-sm margin-top-xs">Agricultural ML system predicting optimal crops and plant diseases based on soil NPK parameters and weather data.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, Python ML (Scikit-Learn, Pandas), MongoDB
+                    <strong>Tech Stack:</strong> Python, Scikit-Learn, Pandas, Cloud Storage
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -127,15 +127,15 @@
             </div>
 
             <!-- Project 3 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask nlp nltk spacy mongodb bootstrap">
+            <div class="project-card glass-card" data-domain="student" data-stack="python nlp ai security cloud">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-shield-halved"></i> Cyber Security</span>
-                    <span class="badge-tech">Flask + NLP</span>
+                    <span class="badge-tech">NLP Threat Analysis</span>
                 </div>
                 <h3 class="margin-top-xs">Political Security Threat Prediction Framework</h3>
                 <p class="text-muted fs-sm margin-top-xs">Text classification and sentiment analysis tool assessing security threat levels from news feeds and social posts.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Flask, NLTK/SpaCy, MongoDB
+                    <strong>Tech Stack:</strong> Python, NLTK, SpaCy, Cloud Backend
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
@@ -151,15 +151,15 @@
             </div>
 
             <!-- Project 4 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask pymongo mongodb html5 css3 reportlab">
+            <div class="project-card glass-card" data-domain="student" data-stack="python cloud web-app reporting">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-address-card"></i> Web App</span>
-                    <span class="badge-tech">Flask + MongoDB</span>
+                    <span class="badge-tech">Dynamic Analytics</span>
                 </div>
                 <h3 class="margin-top-xs">Smart Attendance & Performance Tracker</h3>
                 <p class="text-muted fs-sm margin-top-xs">Student attendance logger featuring performance charts, low attendance alerts, and downloadable PDF reports.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Flask, PyMongo, ReportLab
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, PDF Engine
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
@@ -175,15 +175,15 @@
             </div>
 
             <!-- Project 5 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb gridfs javascript tailwind">
+            <div class="project-card glass-card" data-domain="student" data-stack="cloud storage repository javascript">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-book"></i> Academic Tool</span>
-                    <span class="badge-tech">Flask + MongoDB GridFS</span>
+                    <span class="badge-tech">Cloud Storage</span>
                 </div>
                 <h3 class="margin-top-xs">Research Paper Filing & Repository System</h3>
                 <p class="text-muted fs-sm margin-top-xs">Centralized filing system for faculty guides and students to submit, archive, and peer-review research paper drafts.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB GridFS, JavaScript
+                    <strong>Tech Stack:</strong> Python Backend, High-Availability Cloud Storage
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
@@ -199,15 +199,15 @@
             </div>
 
             <!-- Project 6 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask github rest api html5 css3">
+            <div class="project-card glass-card" data-domain="student" data-stack="python api developer-tool cloud">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-laptop-code"></i> Developer Tool</span>
-                    <span class="badge-tech">Flask + GitHub API</span>
+                    <span class="badge-tech">API Integration</span>
                 </div>
                 <h3 class="margin-top-xs">Personal Developer Portfolio & Resume Generator</h3>
                 <p class="text-muted fs-sm margin-top-xs">Dynamic portfolio generator that automatically fetches GitHub repositories and builds downloadable PDF resumes.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Flask, GitHub REST API
+                    <strong>Tech Stack:</strong> Python, GitHub REST API, ATS Formatter
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 2–4 Days</span>
@@ -223,15 +223,15 @@
             </div>
 
             <!-- Project 7 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask scikit-learn machine learning mongodb chartjs">
+            <div class="project-card glass-card" data-domain="student" data-stack="machine learning healthcare ai python">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-heart-pulse"></i> Healthcare ML</span>
-                    <span class="badge-tech">Flask + ML Models</span>
+                    <span class="badge-tech">Predictive Analytics</span>
                 </div>
                 <h3 class="margin-top-xs">AI Disease Risk Predictor</h3>
                 <p class="text-muted fs-sm margin-top-xs">Early medical symptom checking engine calculating risk metrics for diabetes, heart conditions, and kidney disease.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, Scikit-Learn, MongoDB, Chart.js
+                    <strong>Tech Stack:</strong> Python, Scikit-Learn, Predictive Model Pipeline
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -247,15 +247,15 @@
             </div>
 
             <!-- Project 8 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb jinja2 bootstrap">
+            <div class="project-card glass-card" data-domain="student" data-stack="python cloud websockets campus">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-building-columns"></i> Campus App</span>
-                    <span class="badge-tech">Flask + WebSockets</span>
+                    <span class="badge-tech">Live Portal</span>
                 </div>
                 <h3 class="margin-top-xs">College Placement & Campus Interview Portal</h3>
                 <p class="text-muted fs-sm margin-top-xs">Coordinates company visits, student eligibility filtering, resume submissions, and interview schedule alerts.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Flask, MongoDB, Jinja2
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Records, Real-Time Alerts
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -271,15 +271,15 @@
             </div>
 
             <!-- Project 9 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask nlp nltk spacy mongodb transformers">
+            <div class="project-card glass-card" data-domain="student" data-stack="nlp ai python transformers">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-comments"></i> NLP App</span>
-                    <span class="badge-tech">Python + Transformers</span>
+                    <span class="badge-tech">Language Intelligence</span>
                 </div>
                 <h3 class="margin-top-xs">Automated Student Essay & Assignment Scorer</h3>
                 <p class="text-muted fs-sm margin-top-xs">NLP engine evaluating student essay submissions for grammar, relevance, keyword density, and plagiarism score.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, NLTK, SpaCy, MongoDB
+                    <strong>Tech Stack:</strong> Python, NLTK, SpaCy, Language Scoring
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
@@ -295,15 +295,15 @@
             </div>
 
             <!-- Project 10 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb google maps api leaflet">
+            <div class="project-card glass-card" data-domain="student" data-stack="cloud tracking maps geolocation">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-bus"></i> IoT / Tracking</span>
-                    <span class="badge-tech">Flask + Google Maps API</span>
+                    <span class="badge-tech">Transit API</span>
                 </div>
                 <h3 class="margin-top-xs">College Bus Route & GPS Tracker</h3>
                 <p class="text-muted fs-sm margin-top-xs">Real-time transit application showing campus bus locations, driver contacts, and expected arrival times.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, Leaflet.js
+                    <strong>Tech Stack:</strong> Python Backend, Geolocation Maps, Leaflet.js
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
@@ -319,15 +319,15 @@
             </div>
 
             <!-- Project 11 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb pycryptodome aes encryption">
+            <div class="project-card glass-card" data-domain="student" data-stack="security cryptography cloud encryption">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-vault"></i> Security</span>
-                    <span class="badge-tech">Flask + Cryptography</span>
+                    <span class="badge-tech">Encrypted Vault</span>
                 </div>
                 <h3 class="margin-top-xs">Encrypted Academic Document Storage System</h3>
                 <p class="text-muted fs-sm margin-top-xs">Secure vault for storing degree certificates and marks memos using AES-256 encryption and link expiration.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, PyCryptodome
+                    <strong>Tech Stack:</strong> Python, High-Grade AES Encryption, Secure Store
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
@@ -343,15 +343,15 @@
             </div>
 
             <!-- Project 12 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask pymongo vanilla js html5">
+            <div class="project-card glass-card" data-domain="student" data-stack="python javascript gamification edtech">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-gamepad"></i> EdTech</span>
-                    <span class="badge-tech">Flask + JavaScript</span>
+                    <span class="badge-tech">Interactive UI</span>
                 </div>
                 <h3 class="margin-top-xs">Interactive Coding Quiz & Leaderboard Platform</h3>
                 <p class="text-muted fs-sm margin-top-xs">Gamified learning platform with timed programming quizzes, instant score compilation, and rank leaderboards.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Flask, PyMongo, Vanilla JS
+                    <strong>Tech Stack:</strong> Python Web Framework, Cloud Data, Vanilla JS
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
@@ -367,15 +367,15 @@
             </div>
 
             <!-- Project 13 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb css grid js">
+            <div class="project-card glass-card" data-domain="student" data-stack="cloud marketplace student-network">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-cart-flatbed"></i> Campus Marketplace</span>
-                    <span class="badge-tech">Flask + MongoDB</span>
+                    <span class="badge-tech">P2P Network</span>
                 </div>
                 <h3 class="margin-top-xs">Peer-to-Peer Campus Book Exchange</h3>
                 <p class="text-muted fs-sm margin-top-xs">Allows students to buy, sell, or trade used textbooks, lab coats, and electronics within their campus network.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, CSS Grid
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, CSS Grid
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
@@ -391,15 +391,15 @@
             </div>
 
             <!-- Project 14 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask opencv face_recognition mongodb computer vision">
+            <div class="project-card glass-card" data-domain="student" data-stack="opencv face_recognition vision computer-vision python">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-camera"></i> Computer Vision</span>
-                    <span class="badge-tech">Flask + OpenCV</span>
+                    <span class="badge-tech">Biometric Vision</span>
                 </div>
                 <h3 class="margin-top-xs">Face Recognition Attendance System</h3>
                 <p class="text-muted fs-sm margin-top-xs">Automated classroom attendance logger using webcam frames and OpenCV face embedding matches.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, OpenCV, Face_Recognition, MongoDB
+                    <strong>Tech Stack:</strong> Python, OpenCV, Neural Face Embeddings
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
@@ -415,15 +415,15 @@
             </div>
 
             <!-- Project 15 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb nltk html5 nlp ai chatbot">
+            <div class="project-card glass-card" data-domain="student" data-stack="python nlp ai chatbot cloud">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-robot"></i> AI Chatbot</span>
-                    <span class="badge-tech">Flask + NLP Engine</span>
+                    <span class="badge-tech">NLP Intelligence</span>
                 </div>
                 <h3 class="margin-top-xs">Campus Helpdesk Assistant Bot</h3>
                 <p class="text-muted fs-sm margin-top-xs">AI-powered inquiry bot answering student questions regarding admission fees, exam schedules, and syllabus links.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, NLTK
+                    <strong>Tech Stack:</strong> Python, NLTK, Conversational AI
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
@@ -439,15 +439,15 @@
             </div>
 
             <!-- Project 16 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb tailwind javascript">
+            <div class="project-card glass-card" data-domain="student" data-stack="cloud tailwind javascript ordering">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-utensils"></i> Campus App</span>
-                    <span class="badge-tech">Flask + PyMongo</span>
+                    <span class="badge-tech">Digital Orders</span>
                 </div>
                 <h3 class="margin-top-xs">Digital Canteen Token & Pre-Ordering System</h3>
                 <p class="text-muted fs-sm margin-top-xs">Reduces canteen queues by enabling students to pre-order food items, pay online, and receive digital pickup tokens.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, Tailwind CSS
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, Tailwind CSS
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
@@ -463,15 +463,15 @@
             </div>
 
             <!-- Project 17 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask scikit-learn machine learning mongodb chartjs">
+            <div class="project-card glass-card" data-domain="student" data-stack="machine learning weather cloud analytics">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-cloud-sun"></i> IoT / ML</span>
-                    <span class="badge-tech">Flask + Weather API</span>
+                    <span class="badge-tech">Energy Modeling</span>
                 </div>
                 <h3 class="margin-top-xs">Smart Campus Energy Consumption Predictor</h3>
                 <p class="text-muted fs-sm margin-top-xs">Analyzes lab and classroom electricity usage patterns to recommend energy-saving schedules.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, Scikit-Learn, MongoDB, Chart.js
+                    <strong>Tech Stack:</strong> Python, Machine Learning Models, Analytics UI
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -487,15 +487,15 @@
             </div>
 
             <!-- Project 18 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python flask mongodb bootstrap">
+            <div class="project-card glass-card" data-domain="student" data-stack="python cloud community networking">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-handshake"></i> Management</span>
-                    <span class="badge-tech">Flask + MongoDB</span>
+                    <span class="badge-tech">Community Portal</span>
                 </div>
                 <h3 class="margin-top-xs">Alumni Network & Mentorship Connect</h3>
                 <p class="text-muted fs-sm margin-top-xs">Connects current students with graduated alumni for career guidance, mock interviews, and job referrals.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, Bootstrap 5
+                    <strong>Tech Stack:</strong> Python Backend, High-Availability Cloud, Bootstrap 5
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -511,15 +511,15 @@
             </div>
 
             <!-- Project 19 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask tensorflow keras opencv mongodb deep learning">
+            <div class="project-card glass-card" data-domain="student" data-stack="deep learning cnn vision opencv python">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-laptop-medical"></i> ML App</span>
-                    <span class="badge-tech">Flask + TensorFlow/Keras</span>
+                    <span class="badge-tech">Deep Learning CNN</span>
                 </div>
                 <h3 class="margin-top-xs">Skin Disease Classification via Image Analysis</h3>
                 <p class="text-muted fs-sm margin-top-xs">Deep learning CNN model predicting skin conditions from user-uploaded dermatological images.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, TensorFlow, Keras, OpenCV, MongoDB
+                    <strong>Tech Stack:</strong> Python, Deep Learning (CNN), OpenCV, Cloud
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–9 Days</span>
@@ -535,15 +535,15 @@
             </div>
 
             <!-- Project 20 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="flask mongodb chartjs html5 css3">
+            <div class="project-card glass-card" data-domain="student" data-stack="finance fintech cloud student python">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-chart-line"></i> FinTech Student</span>
-                    <span class="badge-tech">Flask + Finance API</span>
+                    <span class="badge-tech">Financial Modeling</span>
                 </div>
-                <h3 class="margin-top-xs">Student Personal Budget & Micro-Investment Planner</h3>
+                <h3 class="margin-top-xs">Student Personal Budget & Savings Planner</h3>
                 <p class="text-muted fs-sm margin-top-xs">Tracks daily expenses, categorizes spending, and provides savings goal suggestions for college students.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, Chart.js
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, Chart.js
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
@@ -551,7 +551,7 @@
                         <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Budget%20Planner" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Student Personal Budget & Micro-Investment Planner', 'Student Academic Project')">
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Student Personal Budget & Savings Planner', 'Student Academic Project')">
                             <i class="fa-solid fa-paper-plane"></i> Request Build
                         </button>
                     </div>
@@ -563,15 +563,15 @@
             <!-- ================================================= -->
 
             <!-- Project 21 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb whatsapp webhook api css grid">
+            <div class="project-card glass-card" data-domain="business" data-stack="cloud whatsapp webhooks retail store">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-store"></i> Business Portal</span>
-                    <span class="badge-tech">Flask + WhatsApp API</span>
+                    <span class="badge-tech">WhatsApp Integration</span>
                 </div>
                 <h3 class="margin-top-xs">Local Retail Store Digital Catalog & Order Tracker</h3>
                 <p class="text-muted fs-sm margin-top-xs">Online product catalog for local shops allowing customers to browse inventory and send WhatsApp/Email orders.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, WhatsApp Webhook API
+                    <strong>Tech Stack:</strong> Python Web Framework, Cloud Data, WhatsApp Webhooks
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -587,15 +587,15 @@
             </div>
 
             <!-- Project 22 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="python flask mongodb datatables">
+            <div class="project-card glass-card" data-domain="business" data-stack="python operations inventory cloud">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-boxes-stacked"></i> Operations</span>
-                    <span class="badge-tech">Flask + PyMongo</span>
+                    <span class="badge-tech">Automated Alerts</span>
                 </div>
                 <h3 class="margin-top-xs">Smart Inventory & Stock Alert Manager</h3>
                 <p class="text-muted fs-sm margin-top-xs">Tracks stock levels in real time, generates low-inventory email alerts, and logs supplier purchase orders.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Flask, MongoDB, DataTables JS
+                    <strong>Tech Stack:</strong> Python, Scalable Cloud Store, Live DataTables
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
@@ -611,15 +611,15 @@
             </div>
 
             <!-- Project 23 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb reportlab pdfkit billing">
+            <div class="project-card glass-card" data-domain="business" data-stack="finance billing tax pdf invoicing">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-file-invoice-dollar"></i> Finance</span>
-                    <span class="badge-tech">Flask + PDF Billing</span>
+                    <span class="badge-tech">Automated Invoicing</span>
                 </div>
                 <h3 class="margin-top-xs">Automated GST Billing & Invoice Portal</h3>
                 <p class="text-muted fs-sm margin-top-xs">Generates tax-compliant GST invoices, tracks pending client payments, and outputs downloadable PDF receipts.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, ReportLab / PDFKit
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Records, ReportLab Engine
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -635,15 +635,15 @@
             </div>
 
             <!-- Project 24 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb javascript tailwind crm">
+            <div class="project-card glass-card" data-domain="business" data-stack="crm leads customers business">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-users"></i> CRM</span>
-                    <span class="badge-tech">Flask + MongoDB</span>
+                    <span class="badge-tech">CRM Pipeline</span>
                 </div>
                 <h3 class="margin-top-xs">Small Business Customer Relationship Manager</h3>
                 <p class="text-muted fs-sm margin-top-xs">Centralizes customer contacts, lead status stages, service call logs, and automated follow-up reminders.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, JavaScript, Tailwind
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Database, Interactive UI
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–10 Days</span>
@@ -659,15 +659,15 @@
             </div>
 
             <!-- Project 25 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="flask mongodb fullcalendar flask-mail booking">
+            <div class="project-card glass-card" data-domain="business" data-stack="booking scheduling calendar business">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-calendar-check"></i> Booking</span>
-                    <span class="badge-tech">Flask + FullCalendar</span>
+                    <span class="badge-tech">Calendar System</span>
                 </div>
                 <h3 class="margin-top-xs">Salon & Clinic Appointment Scheduling System</h3>
                 <p class="text-muted fs-sm margin-top-xs">Online calendar for customers to select time slots, choose staff members, and receive SMS/email confirmations.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, FullCalendar.js, Flask-Mail
+                    <strong>Tech Stack:</strong> Python, High-Availability Cloud, FullCalendar
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
@@ -686,16 +686,16 @@
             <!-- DOMAIN 3: TECH STARTUP MVPs                       -->
             <!-- ================================================= -->
 
-            <!-- Project 41 -->
-            <div class="project-card glass-card" data-domain="startup" data-stack="flask mongodb atlas stripe api javascript jwt saas">
+            <!-- Project 26 -->
+            <div class="project-card glass-card" data-domain="startup" data-stack="saas cloud payments auth multi-tenant">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-cloud"></i> SaaS MVP</span>
-                    <span class="badge-tech">Flask + Stripe + Multi-Tenant</span>
+                    <span class="badge-tech">Multi-Tenant Core</span>
                 </div>
                 <h3 class="margin-top-xs">Multi-Tenant Subscription SaaS Engine</h3>
                 <p class="text-muted fs-sm margin-top-xs">Turnkey SaaS MVP with tenant isolation, tiered pricing plans, automated billing webhooks, and team management.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB Atlas, Stripe API, JWT
+                    <strong>Tech Stack:</strong> Cloud Microservices, Payment Webhooks, JWT Auth
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 10–14 Days</span>
@@ -710,16 +710,16 @@
                 </div>
             </div>
 
-            <!-- Project 42 -->
-            <div class="project-card glass-card" data-domain="startup" data-stack="flask mongodb razorpay stripe tailwind e-commerce">
+            <!-- Project 27 -->
+            <div class="project-card glass-card" data-domain="startup" data-stack="e-commerce marketplace payments cloud startup">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-cart-shopping"></i> E-Commerce MVP</span>
-                    <span class="badge-tech">Flask + Multi-Vendor</span>
+                    <span class="badge-tech">Multi-Vendor Platform</span>
                 </div>
                 <h3 class="margin-top-xs">Multi-Vendor E-Commerce Marketplace MVP</h3>
                 <p class="text-muted fs-sm margin-top-xs">Complete multi-seller platform with commission calculations, vendor management dashboards, and checkout systems.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Flask, MongoDB, Razorpay / Stripe
+                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, Razorpay / Stripe
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 12–16 Days</span>
@@ -734,16 +734,16 @@
                 </div>
             </div>
 
-            <!-- Project 43 -->
-            <div class="project-card glass-card" data-domain="startup" data-stack="python flask openai api llm mongodb ai saas">
+            <!-- Project 28 -->
+            <div class="project-card glass-card" data-domain="startup" data-stack="python ai llm saas cloud">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-microchip"></i> AI SaaS</span>
-                    <span class="badge-tech">Flask + OpenAI / LLM</span>
+                    <span class="badge-tech">Generative AI Core</span>
                 </div>
                 <h3 class="margin-top-xs">AI Content & Copywriting Generator SaaS</h3>
                 <p class="text-muted fs-sm margin-top-xs">Generates marketing copy, social media captions, and blog posts using LLM prompt pipelines and token credit billing.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Flask, OpenAI API, MongoDB
+                    <strong>Tech Stack:</strong> Python Web Backend, Generative AI APIs, Cloud Data
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 8–12 Days</span>
@@ -758,10 +758,12 @@
                 </div>
             </div>
 
-            <!-- DYNAMIC BACKEND DATABASE PROJECTS -->
+            <!-- ================================================= -->
+            <!-- DYNAMIC BACKEND DATABASE PROJECTS                 -->
+            <!-- ================================================= -->
             {% if projects %}
                 {% for proj in projects %}
-                    <div class="project-card glass-card" data-domain="{{ proj.category | lower }}" data-stack="{{ proj.tech_stack | join(' ') | lower if proj.tech_stack is iterable and proj.tech_stack is not string else 'flask mongodb' }}">
+                    <div class="project-card glass-card" data-domain="{{ proj.category | lower }}" data-stack="{{ proj.tech_stack | join(' ') | lower if proj.tech_stack is iterable and proj.tech_stack is not string else 'python cloud web' }}">
                         <div class="project-header flex-between align-center">
                             <span class="project-category">{{ proj.category }}</span>
                             <span class="badge-tech">Verified Build</span>
@@ -773,7 +775,7 @@
                             {% if proj.tech_stack is iterable and proj.tech_stack is not string %}
                                 {{ proj.tech_stack | join(', ') }}
                             {% else %}
-                                Flask, MongoDB, Python
+                                Cloud Architecture, Python Backend, API Integration
                             {% endif %}
                         </div>
                         <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
@@ -817,7 +819,7 @@
         </div>
         
         <form id="project-inquiry-form">
-            <!-- Web3Forms and Categorization Meta Inputs -->
+            <!-- Web3Forms and Meta Inputs -->
             <input type="hidden" name="access_key" value="ec1c8cd8-2e7e-4ba1-9b6f-23b58a3db594">
             <input type="hidden" name="subject" value="New Catalog Project Inquiry - DAV Cloud Solutions">
             <input type="hidden" name="from_name" value="DAV Cloud Solutions Catalog">
@@ -958,8 +960,8 @@
         let visibleCount = 0;
 
         cards.forEach(card => {
-            const domain = card.getAttribute('data-domain') || '';
-            const stack = card.getAttribute('data-stack') || '';
+            const domain = (card.getAttribute('data-domain') || '').toLowerCase();
+            const stack = (card.getAttribute('data-stack') || '').toLowerCase();
             const text = card.textContent.toLowerCase();
 
             const matchesDomain = (currentDomain === 'all' || domain.includes(currentDomain));
@@ -984,7 +986,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Domain Tabs
+        // Domain Filter Tabs
         document.querySelectorAll('.filter-tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 document.querySelectorAll('.filter-tab').forEach(t => {
@@ -1001,7 +1003,7 @@
             });
         });
 
-        // Tech Pills
+        // Quick Tech Pills
         document.querySelectorAll('.tech-pill-btn').forEach(pill => {
             pill.addEventListener('click', function() {
                 if (this.classList.contains('active')) {
@@ -1016,13 +1018,13 @@
             });
         });
 
-        // Search Input
+        // Search Input Event
         const searchInput = document.getElementById('project-search');
         if (searchInput) {
             searchInput.addEventListener('input', filterProjects);
         }
 
-        // Dual-Dispatch Handler: Web3Forms (Dashboard) + Local Flask/MongoDB
+        // Dual-Dispatch Handler: Web3Forms + Local Flask/MongoDB
         const inquiryForm = document.getElementById('project-inquiry-form');
         if (inquiryForm) {
             inquiryForm.addEventListener('submit', async function(e) {

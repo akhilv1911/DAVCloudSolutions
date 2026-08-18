@@ -46,9 +46,7 @@
             </a>
 
             {% if session.get('user_id') %}
-                <!-- ============================================= -->
-                <!-- LOGGED-IN NAVIGATION (USER & ADMIN)           -->
-                <!-- ============================================= -->
+                <!-- LOGGED-IN NAVIGATION (USER & ADMIN) -->
                 <ul class="nav-links" id="nav-links">
                     <li>
                         <a href="{{ url_for('dashboard') }}" class="nav-item {% if request.path.startswith('/dashboard') %}active{% endif %}">
@@ -58,7 +56,7 @@
                 </ul>
 
                 <div class="nav-controls">
-                    <!-- Dark / Light Theme Toggle Button -->
+                    <!-- Theme Toggle Button -->
                     <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
@@ -67,12 +65,15 @@
                     <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm" title="Logout">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                 </div>
 
             {% else %}
-                <!-- ============================================= -->
-                <!-- PUBLIC VISITOR NAVIGATION                     -->
-                <!-- ============================================= -->
+                <!-- PUBLIC VISITOR NAVIGATION -->
                 <ul class="nav-links" id="nav-links">
                     <li><a href="{{ url_for('home') }}#hero" class="nav-item">Home</a></li>
                     <li><a href="{{ url_for('home') }}#services" class="nav-item">Services</a></li>
@@ -84,16 +85,18 @@
                 </ul>
 
                 <div class="nav-controls">
-                    <!-- Dark / Light Theme Toggle Button -->
+                    <!-- Theme Toggle Button -->
                     <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
 
-                    <!-- Guest Authentication Actions -->
-                    <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Log In</a>
-                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Get Started</a>
+                    <!-- Auth Actions Group (Always accessible on Mobile & Desktop) -->
+                    <div class="auth-actions-group">
+                        <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Log In</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Get Started</a>
+                    </div>
 
-                    <!-- Mobile Navigation Toggle Button -->
+                    <!-- Mobile Menu Button -->
                     <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
                         <i class="fa-solid fa-bars"></i>
                     </button>
@@ -127,6 +130,25 @@
     <main class="main-content-wrapper">
         {% block content %}{% endblock %}
     </main>
+
+    <!-- ========================================================= -->
+    <!-- PROMOTIONAL SEASONAL DISCOUNT POPUP MODAL                 -->
+    <!-- ========================================================= -->
+    {% if not session.get('user_id') %}
+    <div id="promoModal" class="promo-modal-backdrop" style="display: none;">
+        <div class="promo-modal-card">
+            <button class="promo-modal-close" onclick="closePromoModal()" aria-label="Close Modal">&times;</button>
+            <div class="promo-badge">🔥 Seasonal Special Offer</div>
+            <h2>Accelerate Your Next Project</h2>
+            <p>Get up to <strong>30% OFF</strong> on custom full-stack solutions, major project builds, and instant cloud deployments.</p>
+            <div class="promo-actions">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-promo-start">
+                    Create Account & Claim Offer <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     <!-- ========================================================= -->
     <!-- GLOBAL FOOTER                                             -->
@@ -172,11 +194,47 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; {{ current_year if current_year else '2026' }} <strong>DAV Cloud Solutions</strong>. All Rights Reserved. Engineered with Flask & MongoDB.</p>
+            <p>&copy; {{ current_year if current_year else '2026' }} <strong>DAV Cloud Solutions</strong>. All Rights Reserved. Engineered with High-Performance Cloud Architecture.</p>
         </div>
     </footer>
 
-    <!-- Global JavaScript (Controls Theme Toggle, Mobile Menu, Web3Forms) -->
+    <!-- Promotional Modal & Toast Scripts (Clean JS - Zero Jinja Interpolation in Scripts) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const promoModal = document.getElementById("promoModal");
+            
+            // If the promo modal element exists in the DOM and has not been dismissed, trigger it
+            if (promoModal && !sessionStorage.getItem("promoDismissed")) {
+                setTimeout(function() {
+                    promoModal.style.display = "flex";
+                }, 3000);
+            }
+
+            // Auto-dismiss Flash Messages after 5 seconds
+            const flashToasts = document.querySelectorAll('.flash-toast');
+            if (flashToasts.length > 0) {
+                setTimeout(function() {
+                    flashToasts.forEach(function(toast) {
+                        toast.style.transition = 'opacity 0.5s ease';
+                        toast.style.opacity = '0';
+                        setTimeout(function() {
+                            toast.remove();
+                        }, 500);
+                    });
+                }, 5000);
+            }
+        });
+
+        function closePromoModal() {
+            const modal = document.getElementById("promoModal");
+            if (modal) {
+                modal.style.display = "none";
+            }
+            sessionStorage.setItem("promoDismissed", "true");
+        }
+    </script>
+
+    <!-- Global JavaScript -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
