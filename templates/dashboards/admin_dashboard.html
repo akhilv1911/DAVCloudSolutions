@@ -81,7 +81,7 @@
                     <h2><i class="fa-solid fa-robot text-primary"></i> DAV AI Core Engine (Live Agent Console)</h2>
                     <p class="text-muted fs-sm">Powered by Gemini AI for lead assessment, technical architecture, and automated code review.</p>
                 </div>
-                <span class="badge-tech"><i class="fa-solid fa-bolt text-warning"></i> V Akhil Live Access</span>
+                <span class="badge-tech"><i class="fa-solid fa-bolt text-warning"></i> Master Admin Live Access</span>
             </div>
 
             <div class="grid-3-col margin-top-md">
@@ -97,7 +97,7 @@
                 <!-- AI Scope & Blueprint Agent -->
                 <div class="glass-card ai-subcard">
                     <h4><i class="fa-solid fa-wand-magic-sparkles text-primary"></i> Scope & Blueprint Agent</h4>
-                    <p class="fs-sm text-muted margin-top-xs">Generates multi-layer software architecture, MongoDB collection schemas, and academic viva defense questions.</p>
+                    <p class="fs-sm text-muted margin-top-xs">Generates multi-layer software architecture, database collection schemas, and academic viva defense questions.</p>
                     <button class="btn btn-sm btn-primary margin-top-md" onclick="openAIAgentModal('scope')">
                         <i class="fa-solid fa-drafting-compass"></i> Generate Scope
                     </button>
@@ -129,7 +129,73 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 3. TEAM ROSTER MANAGEMENT SECTION                         -->
+        <!-- 3. INBOUND LEADS & CLIENT INQUIRIES LOG                   -->
+        <!-- ========================================================= -->
+        <div class="glass-card margin-bottom-lg">
+            <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
+                <div>
+                    <h2><i class="fa-solid fa-envelope-open-text text-primary"></i> Inbound Client & Student Inquiries</h2>
+                    <p class="text-muted fs-sm">Captured leads routed directly from the public contact forms.</p>
+                </div>
+                <input type="text" id="inquiry-search" class="form-input" placeholder="🔍 Search inquiries..." style="padding: 6px 14px; font-size: 0.85rem; max-width: 200px;">
+            </div>
+
+            <div class="table-responsive margin-top-md">
+                <table class="data-table" id="inquiries-table">
+                    <thead>
+                        <tr>
+                            <th>Contact Name</th>
+                            <th>Email & WhatsApp</th>
+                            <th>Track / Track Category</th>
+                            <th>Requirement Message</th>
+                            <th>AI Quick Action</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if inquiries %}
+                            {% for inq in inquiries %}
+                                <tr>
+                                    <td><strong>{{ inq.name }}</strong></td>
+                                    <td>
+                                        <div class="fs-sm">{{ inq.email }}</div>
+                                        <div class="text-muted fs-sm">{{ inq.phone }}</div>
+                                    </td>
+                                    <td><span class="badge-tech">{{ inq.user_category }}</span></td>
+                                    <td style="max-width: 280px;">
+                                        <p class="fs-sm text-muted" style="margin: 0;">{{ inq.message | truncate(100) }}</p>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-outline btn-direct-lead-ai" 
+                                                data-name="{{ inq.name }}" 
+                                                data-category="{{ inq.user_category }}" 
+                                                data-message="{{ inq.message | default('') }}">
+                                            <i class="fa-solid fa-brain"></i> Score with AI
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <form action="{{ url_for('admin_delete_inquiry', inquiry_id=inq._id) }}" method="POST" onsubmit="return confirm('Remove this inquiry from the active log?');" style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-ghost" style="color: var(--accent-rose, #f43f5e);">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted padding-md">
+                                    No new incoming inquiries logged in MongoDB.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 4. TEAM ROSTER MANAGEMENT SECTION                         -->
         <!-- ========================================================= -->
         <div class="glass-card margin-bottom-lg highlight-border-card">
             <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
@@ -200,7 +266,7 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 4. PROJECT DISPATCH & DELIVERABLES ENGINE                 -->
+        <!-- 5. PROJECT DISPATCH & DELIVERABLES ENGINE                 -->
         <!-- ========================================================= -->
         <div class="glass-card margin-bottom-lg">
             <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
@@ -283,7 +349,7 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 5. TWO-TIER USER & BUSINESS VERIFICATION PANEL            -->
+        <!-- 6. TWO-TIER USER & BUSINESS VERIFICATION PANEL            -->
         <!-- ========================================================= -->
         <div class="glass-card">
             <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
@@ -370,7 +436,7 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 6. MODAL: LIVE DAV AI AGENT RUNNER                        -->
+<!-- 7. MODAL: LIVE DAV AI AGENT RUNNER                        -->
 <!-- ========================================================= -->
 <div class="modal-overlay" id="dav-ai-runner-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 3100; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 620px; padding: 28px;">
@@ -393,7 +459,7 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- 7. MODAL: ADD TEAM MEMBER                                 -->
+<!-- 8. MODAL: ADD TEAM MEMBER                                 -->
 <!-- ========================================================= -->
 <div class="modal-overlay" id="admin-add-team-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 560px; padding: 28px;">
@@ -443,7 +509,7 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- 8. MODAL: CREATE / DISPATCH NEW PROJECT                   -->
+<!-- 9. MODAL: CREATE / DISPATCH NEW PROJECT                   -->
 <!-- ========================================================= -->
 <div class="modal-overlay" id="admin-add-project-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 540px; padding: 28px;">
@@ -498,7 +564,7 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- 9. MODAL: EDIT / UPDATE PROJECT RECORD                    -->
+<!-- 10. MODAL: EDIT / UPDATE PROJECT RECORD                   -->
 <!-- ========================================================= -->
 <div class="modal-overlay" id="admin-edit-project-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 540px; padding: 28px;">
@@ -555,7 +621,7 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- 10. MODAL: MANAGE USER STATUS & APPROVAL                   -->
+<!-- 11. MODAL: MANAGE USER STATUS & APPROVAL                  -->
 <!-- ========================================================= -->
 <div class="modal-overlay" id="admin-manage-user-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 500px; padding: 28px;">
@@ -681,6 +747,18 @@
         toggleModal('dav-ai-runner-modal');
     }
 
+    function runDirectLeadAI(name, category, message) {
+        openAIAgentModal('lead');
+        setTimeout(() => {
+            const nameEl = document.getElementById('ai-lead-name');
+            const catEl = document.getElementById('ai-lead-cat');
+            const msgEl = document.getElementById('ai-lead-msg');
+            if (nameEl) nameEl.value = name || '';
+            if (catEl) catEl.value = category || 'Student Final Year Project';
+            if (msgEl) msgEl.value = message || '';
+        }, 100);
+    }
+
     async function executeLiveAIAgent() {
         const btn = document.getElementById('btn-execute-ai');
         btn.disabled = true;
@@ -747,6 +825,16 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        // Direct Lead AI Handlers using dataset attributes
+        document.querySelectorAll('.btn-direct-lead-ai').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const category = this.dataset.category;
+                const message = this.dataset.message;
+                runDirectLeadAI(name, category, message);
+            });
+        });
+
         // Project Update Buttons
         document.querySelectorAll('.btn-edit-proj').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -797,44 +885,25 @@
             });
         });
 
-        // Live Team Member Search Filter
-        const teamSearch = document.getElementById('team-search');
-        if (teamSearch) {
-            teamSearch.addEventListener('input', function(e) {
-                const query = e.target.value.toLowerCase();
-                const rows = document.querySelectorAll('#team-table tbody tr');
-                rows.forEach(row => {
-                    const text = row.innerText.toLowerCase();
-                    row.style.display = text.includes(query) ? '' : 'none';
+        // Search Filter Helper Function
+        function setupTableSearch(inputId, tableId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('input', function(e) {
+                    const query = e.target.value.toLowerCase();
+                    const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+                    rows.forEach(row => {
+                        const text = row.innerText.toLowerCase();
+                        row.style.display = text.includes(query) ? '' : 'none';
+                    });
                 });
-            });
+            }
         }
 
-        // Live Project Search Filter
-        const projSearch = document.getElementById('project-search');
-        if (projSearch) {
-            projSearch.addEventListener('input', function(e) {
-                const query = e.target.value.toLowerCase();
-                const rows = document.querySelectorAll('#projects-table tbody tr');
-                rows.forEach(row => {
-                    const text = row.innerText.toLowerCase();
-                    row.style.display = text.includes(query) ? '' : 'none';
-                });
-            });
-        }
-
-        // Live User Search Filter
-        const userSearch = document.getElementById('user-search');
-        if (userSearch) {
-            userSearch.addEventListener('input', function(e) {
-                const query = e.target.value.toLowerCase();
-                const rows = document.querySelectorAll('#users-table tbody tr');
-                rows.forEach(row => {
-                    const text = row.innerText.toLowerCase();
-                    row.style.display = text.includes(query) ? '' : 'none';
-                });
-            });
-        }
+        setupTableSearch('inquiry-search', 'inquiries-table');
+        setupTableSearch('team-search', 'team-table');
+        setupTableSearch('project-search', 'projects-table');
+        setupTableSearch('user-search', 'users-table');
     });
 </script>
 {% endblock %}

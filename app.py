@@ -5,6 +5,7 @@ Founder: V Akhil
 """
 
 from datetime import datetime, timezone
+from functools import wraps
 import os
 from bson.objectid import ObjectId
 from config import config_by_name
@@ -43,6 +44,38 @@ app.teardown_appcontext(close_db_connection)
 # Initialize Database Indexes & Master Admin
 init_db(app)
 init_admin(app)
+
+
+# ==============================================================================
+# RBAC HELPER DECORATORS
+# ==============================================================================
+
+
+def admin_or_team_required(f):
+  """Allows access to both Master Admin and verified Team specialists."""
+
+  @wraps(f)
+  def decorated_function(*args, **kwargs):
+    if not session.get("user_id"):
+      if request.is_json or request.path.startswith("/api/"):
+        return jsonify(
+            {"success": False, "error": "Authentication required."}
+        ), 401
+      flash("Please log in to access this workspace resource.", "warning")
+      return redirect(url_for("login"))
+
+    role = session.get("role")
+    if role not in ["admin", "team"]:
+      if request.is_json or request.path.startswith("/api/"):
+        return jsonify(
+            {"success": False, "error": "Unauthorized specialist resource."}
+        ), 403
+      flash("Unauthorized access level.", "danger")
+      return redirect(url_for("dashboard"))
+
+    return f(*args, **kwargs)
+
+  return decorated_function
 
 
 # ==============================================================================
@@ -922,15 +955,14 @@ def admin_delete_team_member(member_id):
 
 
 # ==============================================================================
-# LIVE DAV AI INTERNAL AGENT ENDPOINTS (GEMINI POWERED)
+# LIVE DAV AI INTERNAL AGENT ENDPOINTS (GEMINI POWERED - ADMIN & TEAM ACCESS)
 # ==============================================================================
 
 
 @app.route("/api/dav-ai/analyze-lead", methods=["POST"])
-@login_required
-@role_required("admin")
+@admin_or_team_required
 def api_dav_ai_analyze_lead():
-  """Live AI endpoint: Lead scoring, tech feasibility, and pricing suggestions."""
+  """Live AI endpoint: Lead scoring, tech feasibility, and scope assessment for Admin & Team specialists."""
   data = request.get_json() or {}
   inquiry_id = data.get("inquiry_id")
 
@@ -946,9 +978,11 @@ def api_dav_ai_analyze_lead():
       category = inquiry.get("user_category", category)
       message = inquiry.get("message", message)
 
+  user_role = session.get("role", "team")
+
   prompt = f"""
-    You are the Senior Technical Architect at DAV Cloud Solutions assisting Founder V Akhil.
-    Analyze this incoming client/student inquiry:
+    You are the Senior Technical Architect at DAV Cloud Solutions assisting Founder V Akhil and the Core Engineering Team.
+    Analyze this incoming client/student inquiry (Requested by: {user_role.upper()} Specialist):
 
     Client Name: {lead_name}
     Track: {category}
@@ -959,7 +993,7 @@ def api_dav_ai_analyze_lead():
     2. **Recommended Tech Architecture**: (e.g. Scalable Microservices, Cloud Data, React, Applied ML).
     3. **Estimated Delivery Timeline**: (e.g. 3-5 days, 1 week).
     4. **Suggested Price Quote (₹)**: (e.g. ₹3,500 - ₹6,000).
-    5. **Founder Action**: Exact response draft to send the client on WhatsApp or Email.
+    5. **Next Technical Actions**: Concrete engineering steps and response draft for the client.
     """
 
   try:
@@ -985,8 +1019,7 @@ def api_dav_ai_analyze_lead():
 
 
 @app.route("/api/dav-ai/generate-scope", methods=["POST"])
-@login_required
-@role_required("admin")
+@admin_or_team_required
 def api_dav_ai_generate_scope():
   """Live AI endpoint: System architecture blueprint, schema design, and viva defense questions."""
   data = request.get_json() or {}
@@ -1037,8 +1070,7 @@ def api_dav_ai_generate_scope():
 
 
 @app.route("/api/dav-ai/code-audit", methods=["POST"])
-@login_required
-@role_required("admin")
+@admin_or_team_required
 def api_dav_ai_code_audit():
   """Live AI endpoint: Security and optimization audit on code snippets."""
   data = request.get_json() or {}

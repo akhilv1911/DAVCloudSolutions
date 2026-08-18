@@ -12,10 +12,10 @@
                 <div class="welcome-text">
                     <span class="badge-pill"><i class="fa-solid fa-code-branch"></i> Core Specialist Workspace</span>
                     <h1 class="margin-top-xs">Welcome, <span class="gradient-text">{{ session.get('full_name', 'Team Member') }}</span></h1>
-                    <p class="text-muted">Manage your assigned builds, upload deliverables for Founder review, and track student walkthrough sessions.</p>
+                    <p class="text-muted">Manage your assigned builds, leverage the DAV AI suite, upload deliverables for Founder review, and track project progress.</p>
                 </div>
                 <div class="welcome-actions margin-top-mobile flex-between gap-sm">
-                    <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> Active Engineer</span>
+                    <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> Active Specialist</span>
                 </div>
             </div>
         </div>
@@ -76,8 +76,100 @@
         <!-- 2. MAIN WORKSPACE GRID -->
         <div class="grid-2-col" style="grid-template-columns: 2.2fr 1fr; gap: 28px;">
             
-            <!-- Left Column: Assigned Builds -->
+            <!-- Left Column: AI Suite + Assigned Builds -->
             <div class="dashboard-main-col">
+                
+                <!-- ========================================================= -->
+                <!-- DAV AI SPECIALIST SUITE (GEMINI POWERED)                   -->
+                <!-- ========================================================= -->
+                <div class="glass-card highlight-border-card dav-ai-command-box margin-bottom-lg">
+                    <div class="flex-between align-center wrap-mobile margin-bottom-sm">
+                        <div>
+                            <span class="section-tag" style="color: var(--accent-purple);"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Engineering Suite</span>
+                            <h2>DAV AI Specialist Assistant</h2>
+                        </div>
+                        <span class="badge-pill" style="background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.4); color: var(--accent-purple);">
+                            <i class="fa-solid fa-brain"></i> Gemini 2.5 Engine
+                        </span>
+                    </div>
+                    <p class="text-muted fs-sm margin-bottom-md">Generate system architecture blueprints, perform automated security and code audits, or evaluate incoming client scopes instantly.</p>
+
+                    <!-- Tool Selector Tabs -->
+                    <div class="filter-tabs-wrapper margin-bottom-md" style="justify-content: flex-start; gap: 8px;">
+                        <button type="button" class="filter-tab active" id="btn-tab-scope" onclick="switchTeamAITab('scope-tool')">
+                            <i class="fa-solid fa-sitemap"></i> Blueprint Generator
+                        </button>
+                        <button type="button" class="filter-tab" id="btn-tab-audit" onclick="switchTeamAITab('audit-tool')">
+                            <i class="fa-solid fa-shield-halved"></i> Code Auditor
+                        </button>
+                        <button type="button" class="filter-tab" id="btn-tab-lead" onclick="switchTeamAITab('lead-tool')">
+                            <i class="fa-solid fa-chart-pie"></i> Lead Scorer
+                        </button>
+                    </div>
+
+                    <!-- 1. Blueprint / Scope Generator -->
+                    <div id="ai-tab-scope-tool" class="ai-tool-panel">
+                        <div class="grid-2-col" style="gap: 12px;">
+                            <div class="form-group">
+                                <label class="fs-sm">Project Title *</label>
+                                <input type="text" id="team-ai-title" class="form-input" placeholder="e.g. Smart Crop Prediction System">
+                            </div>
+                            <div class="form-group">
+                                <label class="fs-sm">Domain Track</label>
+                                <select id="team-ai-category" class="form-input form-select">
+                                    <option value="Student Academic Project">Student Academic Project</option>
+                                    <option value="Small Business Portal">Small Business Portal</option>
+                                    <option value="Startup MVP Build">Startup MVP Build</option>
+                                    <option value="Machine Learning / AI Platform">Machine Learning / AI Platform</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="fs-sm">Scope Requirements & Features</label>
+                            <textarea id="team-ai-requirements" class="form-input" rows="3" placeholder="List core functional modules, authentication needs, preferred tech stack, and database details..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="runTeamAIScope()">
+                            <i class="fa-solid fa-gears"></i> Generate Blueprint & Viva Qs
+                        </button>
+                    </div>
+
+                    <!-- 2. Code & Security Audit -->
+                    <div id="ai-tab-audit-tool" class="ai-tool-panel" style="display: none;">
+                        <div class="form-group">
+                            <label class="fs-sm">Code Snippet to Audit (Python / JS / Routes) *</label>
+                            <textarea id="team-ai-code" class="form-input" rows="6" placeholder="Paste your code snippet here to check for security vulnerabilities, injection flaws, and performance bottlenecks..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="runTeamAICodeAudit()">
+                            <i class="fa-solid fa-shield-virus"></i> Run Security & Quality Audit
+                        </button>
+                    </div>
+
+                    <!-- 3. Lead & Inquiry Analysis -->
+                    <div id="ai-tab-lead-tool" class="ai-tool-panel" style="display: none;">
+                        <div class="form-group">
+                            <label class="fs-sm">Inquiry Message / Client Scope *</label>
+                            <textarea id="team-ai-message" class="form-input" rows="4" placeholder="Paste client message or requirement prompt to assess feasibility, estimated timeline, and draft technical response..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="runTeamAILeadAnalyze()">
+                            <i class="fa-solid fa-brain"></i> Score Lead & Draft Response
+                        </button>
+                    </div>
+
+                    <!-- Live AI Output Box -->
+                    <div id="team-ai-output-box" class="glass-card margin-top-md" style="display: none; background: rgba(3, 7, 18, 0.7); border: 1px solid rgba(139, 92, 246, 0.4);">
+                        <div class="flex-between align-center margin-bottom-xs">
+                            <h4 style="color: var(--accent-purple); font-size: 0.95rem;">
+                                <i class="fa-solid fa-square-poll-vertical"></i> DAV AI Generated Assessment:
+                            </h4>
+                            <button type="button" class="btn-ghost btn-sm" onclick="document.getElementById('team-ai-output-box').style.display='none'">
+                                <i class="fa-solid fa-xmark"></i> Close
+                            </button>
+                        </div>
+                        <div id="team-ai-output-content" class="fs-sm text-main" style="white-space: pre-wrap; line-height: 1.6; max-height: 400px; overflow-y: auto; padding-right: 6px;"></div>
+                    </div>
+                </div>
+
+                <!-- Assigned Deliverables List -->
                 <div class="glass-card">
                     <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
                         <h2><i class="fa-solid fa-laptop-code"></i> Assigned Project Deliverables</h2>
@@ -133,7 +225,7 @@
                                             <input type="text" name="dev_notes" value="{{ proj.dev_notes or '' }}" class="form-input" placeholder="e.g. Model accuracy: 94.2%, requirements.txt verified, PPT slides added.">
                                         </div>
 
-                                        <div class="flex-between align-center margin-top-sm">
+                                        <div class="flex-between align-center margin-top-sm wrap-mobile gap-sm">
                                             {% if proj.deliverables_link %}
                                                 <a href="{{ proj.deliverables_link }}" target="_blank" class="fs-sm text-primary">
                                                     <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Current Deliverable
@@ -159,7 +251,7 @@
                 </div>
             </div>
 
-            <!-- Right Sidebar: QA Checklist & Walkthroughs -->
+            <!-- Right Sidebar: QA Checklist & Escalation -->
             <div class="dashboard-side-col">
                 <!-- Pre-Delivery QA Checklist -->
                 <div class="glass-card margin-bottom-lg">
@@ -167,10 +259,10 @@
                     <p class="text-muted fs-sm margin-top-xs">Verify these steps before setting project to <strong>Completed</strong>:</p>
                     
                     <ul style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px; font-size: 0.85rem; color: var(--text-muted);">
-                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Virtualenv tested with clean <code>pip install -r requirements.txt</code></li>
-                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> MongoDB schema collections dump included</li>
-                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Machine Learning metrics (accuracy/confusion matrix) verified</li>
-                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Presentation PPT & Documentation PDF enclosed</li>
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Clean virtualenv test (<code>pip install -r requirements.txt</code>)</li>
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Database collection schema verified</li>
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> ML metrics (accuracy, confusion matrix) validated</li>
+                        <li style="display: flex; gap: 8px;"><i class="fa-solid fa-square-check text-primary"></i> Project documentation & presentation enclosed</li>
                     </ul>
                 </div>
 
@@ -188,4 +280,87 @@
 
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function switchTeamAITab(tabName) {
+    document.querySelectorAll('.ai-tool-panel').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.filter-tabs-wrapper .filter-tab').forEach(btn => btn.classList.remove('active'));
+
+    const activePanel = document.getElementById(`ai-tab-${tabName}`);
+    if (activePanel) activePanel.style.display = 'block';
+
+    if (tabName === 'scope-tool') document.getElementById('btn-tab-scope').classList.add('active');
+    if (tabName === 'audit-tool') document.getElementById('btn-tab-audit').classList.add('active');
+    if (tabName === 'lead-tool') document.getElementById('btn-tab-lead').classList.add('active');
+}
+
+async function handleTeamAIRequest(endpoint, payload, triggerBtn) {
+    const origText = triggerBtn.innerHTML;
+    const outputBox = document.getElementById('team-ai-output-box');
+    const outputContent = document.getElementById('team-ai-output-content');
+
+    triggerBtn.disabled = true;
+    triggerBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing with AI...';
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        outputBox.style.display = 'block';
+
+        if (data.success) {
+            outputContent.textContent = data.scope || data.audit || data.analysis || 'Analysis completed successfully.';
+        } else {
+            outputContent.textContent = 'DAV AI Error: ' + (data.error || 'Failed to process request.');
+        }
+    } catch (err) {
+        outputBox.style.display = 'block';
+        outputContent.textContent = 'Network or server error communicating with DAV AI engine.';
+    } finally {
+        triggerBtn.disabled = false;
+        triggerBtn.innerHTML = origText;
+    }
+}
+
+function runTeamAIScope() {
+    const title = document.getElementById('team-ai-title').value.trim();
+    const category = document.getElementById('team-ai-category').value;
+    const requirements = document.getElementById('team-ai-requirements').value.trim();
+
+    if (!title) {
+        alert('Please enter a project title.');
+        return;
+    }
+
+    handleTeamAIRequest('/api/dav-ai/generate-scope', { title, category, requirements }, event.target);
+}
+
+function runTeamAICodeAudit() {
+    const code = document.getElementById('team-ai-code').value.trim();
+    if (!code) {
+        alert('Please paste a code snippet to audit.');
+        return;
+    }
+
+    handleTeamAIRequest('/api/dav-ai/code-audit', { code }, event.target);
+}
+
+function runTeamAILeadAnalyze() {
+    const message = document.getElementById('team-ai-message').value.trim();
+    if (!message) {
+        alert('Please paste inquiry message details to analyze.');
+        return;
+    }
+
+    handleTeamAIRequest('/api/dav-ai/analyze-lead', { message, name: 'Specialist Evaluation' }, event.target);
+}
+</script>
 {% endblock %}
