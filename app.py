@@ -6,6 +6,7 @@ Founder: V Akhil
 
 from datetime import datetime, timezone
 from functools import wraps
+from google import genai
 import os
 from bson.objectid import ObjectId
 from config import config_by_name
