@@ -228,20 +228,20 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 5. CLIENT REVIEWS & MARQUEE SECTION                       -->
+<!-- 5. CLIENT REVIEWS & SUBMISSION SECTION                    -->
 <!-- ========================================================= -->
 <section id="reviews-section" class="reviews-section section-padding bg-alt">
     <div class="section-container">
         <div class="section-header text-center">
-            <span class="section-tag">Client Experiences</span>
-            <h2>What People Say About Our Delivered Projects</h2>
-            <p>Feedback from founders, students, and teams who built and scaled with us.</p>
+            <span class="section-tag">Client Feedback</span>
+            <h2>What Clients Say About Our Delivered Projects</h2>
+            <p>Verified feedback from founders, students, and teams who built with DAV Cloud Solutions.</p>
         </div>
 
-        <!-- Auto-Scrolling Marquee Track -->
-        <div class="marquee-wrapper">
-            <div class="marquee-track">
-                {% if reviews and reviews|length > 0 %}
+        <!-- Only display scrolling marquee if REAL reviews exist in MongoDB -->
+        {% if reviews and reviews|length > 0 %}
+            <div class="marquee-wrapper">
+                <div class="marquee-track">
                     {% for r in reviews %}
                         <div class="review-card">
                             <div class="review-stars">
@@ -254,7 +254,7 @@
                             </div>
                         </div>
                     {% endfor %}
-                    <!-- Duplicate for infinite seamless loop -->
+                    <!-- Seamless infinite loop duplication for real reviews -->
                     {% for r in reviews %}
                         <div class="review-card" aria-hidden="true">
                             <div class="review-stars">
@@ -267,70 +267,26 @@
                             </div>
                         </div>
                     {% endfor %}
-                {% else %}
-                    <!-- Fallback Testimonials -->
-                    <div class="review-card">
-                        <div class="review-stars">★★★★★</div>
-                        <p class="review-text">"The cloud architecture and project deliverables were handed over ahead of schedule. Flawless execution and viva preparation!"</p>
-                        <div class="review-author">
-                            <strong>Rahul S.</strong>
-                            <span>AgriPredict ML Platform</span>
-                        </div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-stars">★★★★★</div>
-                        <p class="review-text">"Our business web portal was built and deployed live within a week. High quality backend logic and automated lead capture."</p>
-                        <div class="review-author">
-                            <strong>Kiran Tech Ventures</strong>
-                            <span>Custom SaaS Portal</span>
-                        </div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-stars">★★★★★</div>
-                        <p class="review-text">"Clean single-column ATS resume and full-stack project explanation helped me stand out in technical interview rounds!"</p>
-                        <div class="review-author">
-                            <strong>Pooja V.</strong>
-                            <span>MCA Final Year Project</span>
-                        </div>
-                    </div>
-                    <!-- Duplicate fallback cards for continuous scroll loop -->
-                    <div class="review-card" aria-hidden="true">
-                        <div class="review-stars">★★★★★</div>
-                        <p class="review-text">"The cloud architecture and project deliverables were handed over ahead of schedule. Flawless execution and viva preparation!"</p>
-                        <div class="review-author">
-                            <strong>Rahul S.</strong>
-                            <span>AgriPredict ML Platform</span>
-                        </div>
-                    </div>
-                    <div class="review-card" aria-hidden="true">
-                        <div class="review-stars">★★★★★</div>
-                        <p class="review-text">"Our business web portal was built and deployed live within a week. High quality backend logic and automated lead capture."</p>
-                        <div class="review-author">
-                            <strong>Kiran Tech Ventures</strong>
-                            <span>Custom SaaS Portal</span>
-                        </div>
-                    </div>
-                    <div class="review-card" aria-hidden="true">
-                        <div class="review-stars">★★★★★</div>
-                        <p class="review-text">"Clean single-column ATS resume and full-stack project explanation helped me stand out in technical interview rounds!"</p>
-                        <div class="review-author">
-                            <strong>Pooja V.</strong>
-                            <span>MCA Final Year Project</span>
-                        </div>
-                    </div>
-                {% endif %}
+                </div>
             </div>
-        </div>
+        {% else %}
+            <!-- Clean Empty State (Zero Fake/Demo Reviews) -->
+            <div class="glass-card text-center padding-xl max-w-700 margin-auto" style="margin-bottom: 30px;">
+                <i class="fa-solid fa-comment-dots fs-xl text-primary" style="font-size: 2.2rem; margin-bottom: 12px;"></i>
+                <h3>No Client Reviews Yet</h3>
+                <p class="text-muted fs-sm margin-top-xs">Completed a project or internship deliverable with us? Submit your review below to get featured on our live platform.</p>
+            </div>
+        {% endif %}
 
         <!-- Review Submission Card -->
         <div class="review-form-container glass-card">
-            <h3 class="text-center">Completed a Project With Us?</h3>
+            <h3 class="text-center">Completed a Project With Us? Leave Your Review</h3>
             <p class="text-center text-muted fs-sm margin-bottom-md">Share your experience to be featured in our verified client showcase.</p>
-            <form action="{{ url_for('submit_review') if 'submit_review' in url_for.__globals__ else '/submit-review' }}" method="POST" class="review-form">
+            <form action="{{ url_for('submit_review') }}" method="POST" class="review-form">
                 <div class="grid-2-col" style="gap: 14px;">
                     <div class="form-group">
                         <label>Your Name / Business Name *</label>
-                        <input type="text" name="client_name" class="form-input" placeholder="e.g. Ramesh Kumar" required>
+                        <input type="text" name="client_name" class="form-input" placeholder="e.g. Rahul Sharma" required>
                     </div>
                     <div class="form-group">
                         <label>Delivered Project Title *</label>
@@ -359,7 +315,6 @@
         </div>
     </div>
 </section>
-
 <!-- ========================================================= -->
 <!-- 6. TEAM PREVIEW SECTION                                   -->
 <!-- ========================================================= -->
