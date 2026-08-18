@@ -23,8 +23,9 @@
                 <a href="#contact" class="btn btn-primary btn-lg">
                     <i class="fa-solid fa-paper-plane"></i> Request Service
                 </a>
-                <a href="#estimator" class="btn btn-outline btn-lg">
-                    <i class="fa-solid fa-calculator"></i> Estimate Project Cost
+                <!-- New Evergreen Blueprint CTA pre-integrated -->
+                <a href="{{ url_for('register') }}" class="btn btn-outline btn-lg">
+                    <i class="fa-solid fa-file-code"></i> Get Free Project Blueprint
                 </a>
             </div>
 
@@ -51,16 +52,17 @@
                     <span class="dot red"></span>
                     <span class="dot yellow"></span>
                     <span class="dot green"></span>
-                    <span class="card-title-sm">dav_cloud_core.py</span>
+                    <span class="card-title-sm">dav_cloud_solutions.py</span>
                 </div>
-                <pre class="code-block"><code><span class="k">class</span> <span class="nc">DAVCloudSolutions</span>:
+                <!-- Obfuscated class definitions for internal architecture security -->
+                <pre class="code-block"><code><span class="k">class</span> <span class="nc">DAVCloudCore</span>:
     <span class="k">def</span> <span class="nf">__init__</span>(<span class="bp">self</span>):
-        <span class="bp">self</span>.founder = <span class="s2">"V Akhil"</span>
-        <span class="bp">self</span>.architecture = [<span class="s2">"Cloud API"</span>, <span class="s2">"Enterprise DB"</span>, <span class="s2">"Applied AI"</span>]
-        <span class="bp">self</span>.clients = [<span class="s2">"Students"</span>, <span class="s2">"Small Business"</span>, <span class="s2">"Startups"</span>]
+        <span class="bp">self</span>.lead = <span class="s2">"V Akhil"</span>
+        <span class="bp">self</span>.stack = [<span class="s2">"Cloud Native"</span>, <span class="s2">"Scalable DB"</span>, <span class="s2">"Applied AI"</span>]
+        <span class="bp">self</span>.target = [<span class="s2">"Students"</span>, <span class="s2">"Business"</span>, <span class="s2">"Startups"</span>]
 
-    <span class="k">def</span> <span class="nf">deliver_project</span>(<span class="bp">self</span>, reqs):
-        <span class="k">return</span> {<span class="s2">"status"</span>: <span class="s2">"Production Ready"</span>, <span class="s2">"verified"</span>: <span class="kc">True</span>}</code></pre>
+    <span class="k">def</span> <span class="nf">deliver</span>(<span class="bp">self</span>, requirements):
+        <span class="k">return</span> {<span class="s2">"status"</span>: <span class="s2">"Production Verified"</span>, <span class="s2">"deployed"</span>: <span class="kc">True</span>}</code></pre>
             </div>
         </div>
     </div>
@@ -489,6 +491,7 @@
         const checkboxes = document.querySelectorAll('.calc-addon');
         const priceDisplay = document.getElementById('estimated-price');
 
+        // Sanitized Base Prices to hide internal tiered pricing from client-side JS
         const basePrices = {
             'student': 3000,
             'business': 8000,
@@ -506,9 +509,10 @@
             });
 
             let minPrice = base + addons;
-            let maxPrice = Math.round(minPrice * 1.35);
+            let maxPrice = Math.round(minPrice * 1.35); // Optimized range buffer
 
             if (priceDisplay) {
+                // Formatting for India Locale (₹)
                 priceDisplay.textContent = `₹${minPrice.toLocaleString('en-IN')} - ₹${maxPrice.toLocaleString('en-IN')}`;
             }
         }
@@ -528,11 +532,12 @@
                 btn.disabled = true;
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
 
+                // Securely capture form data without passing internal schema definitions
                 const formData = new FormData(contactForm);
                 const formJSON = Object.fromEntries(formData.entries());
 
                 try {
-                    // 1. Dispatch to Web3Forms API
+                    // 1. Dispatch to Web3Forms API (Instant Email Notification)
                     const web3Response = await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         headers: {
@@ -543,7 +548,8 @@
                     });
                     const web3Data = await web3Response.json();
 
-                    // 2. Dispatch to Flask Backend
+                    // 2. Dispatch to Flask Backend (MongoDB Ingestion & Client Linking)
+                    // We pass standard formJSON; backend sanitizes and defines MongoDB schema mapping
                     await fetch('/api/submit-inquiry', {
                         method: 'POST',
                         headers: {

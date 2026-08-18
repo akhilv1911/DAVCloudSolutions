@@ -76,8 +76,10 @@ html {
     scroll-behavior: smooth;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
-    max-width: 100vw;
-    overflow-x: hidden;
+    /* Ensure bounding box constraints across all devices */
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
 }
 
 body {
@@ -98,8 +100,10 @@ body {
 .main-content-wrapper {
     flex: 1 0 auto;
     width: 100%;
-    max-width: 100vw;
-    overflow-x: hidden;
+    /* Standardized overflow prevention */
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -890,44 +894,58 @@ code, pre {
 
     /* Header & Mobile Action Buttons Alignment */
     .navbar-header {
-        height: var(--navbar-height);
-        padding: 0;
+        height: auto !important;
+        min-height: var(--navbar-height) !important;
+        padding: 8px 0 !important;
     }
 
     .nav-container {
-        padding: 0 14px;
-        gap: 8px;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 14px !important;
+        gap: 8px !important;
     }
 
     .brand-logo {
-        font-size: 1.05rem;
-        white-space: nowrap;
-        flex-shrink: 0;
+        font-size: 1.05rem !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        gap: 4px !important;
     }
 
     .nav-controls {
-        gap: 6px;
-        margin-left: auto;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        margin-left: auto !important;
     }
 
     .auth-actions-group {
         display: flex !important;
-        gap: 6px;
+        align-items: center !important;
+        gap: 6px !important;
     }
 
     .auth-actions-group .btn {
-        padding: 5px 10px;
-        font-size: 0.8rem;
-        min-height: 34px;
+        padding: 5px 10px !important;
+        font-size: 0.8rem !important;
+        min-height: 34px !important;
+    }
+
+    /* Standard Mobile Override Logic */
+    .auth-actions-group .btn-ghost {
+        display: none !important; /* Hide 'Log In' button to save space on mobile header */
     }
 
     .mobile-nav-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        font-size: 1.2rem;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+        font-size: 1.2rem !important;
     }
 
     /* Mobile Dropdown Nav */
@@ -960,6 +978,10 @@ code, pre {
         to { opacity: 1; transform: translateY(0); }
     }
 
+    .nav-links li {
+        width: 100% !important;
+    }
+
     .nav-links li a {
         display: block;
         padding: 10px 0;
@@ -967,7 +989,7 @@ code, pre {
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* Grids & Cards */
+    /* Grids & Cards Vertical Stacking */
     .services-grid, 
     .projects-grid,
     .projects-grid-3col,
@@ -984,8 +1006,71 @@ code, pre {
         gap: 24px;
     }
 
+    /* Hero Section Stacking & Typography */
+    .hero-section {
+        padding: 40px 16px !important;
+        text-align: center !important;
+    }
+
+    .hero-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+        padding: 0 !important;
+    }
+
+    .hero-title {
+        font-size: 1.65rem !important;
+        line-height: 1.25 !important;
+        word-break: normal !important;
+    }
+
+    .hero-subtitle {
+        font-size: 0.92rem !important;
+        line-height: 1.5 !important;
+        margin-top: 12px !important;
+    }
+
+    .hero-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 10px !important;
+        margin-top: 20px !important;
+        justify-content: center !important;
+    }
+
     .hero-actions .btn {
-        width: 100%;
+        width: 100% !important;
+        min-height: 48px !important;
+    }
+
+    /* Hero Stats Stacking */
+    .hero-stats {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 16px !important;
+        margin-top: 24px !important;
+        padding-top: 20px !important;
+        width: 100% !important;
+        border-top: 1px solid var(--border-color) !important;
+    }
+
+    .stat-card {
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .stat-card h3 {
+        font-size: 1.4rem !important;
+    }
+
+    /* Disable Any Fixed Minimum Widths in Subcomponents */
+    .code-block, pre, table, .glass-card {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .wrap-mobile {
@@ -996,26 +1081,32 @@ code, pre {
 }
 
 @media (max-width: 480px) {
-    .auth-actions-group .btn-ghost {
-        display: none; /* Hide Ghost LogIn on very small screens, keep Get Started */
-    }
+    /* (Specialized mobile header overrides merged into 768px block above for cleaner maintenance) */
 
     .hero-title {
-        font-size: 1.75rem;
-    }
-
-    .hero-stats {
-        flex-direction: column;
-        gap: 14px;
-        align-items: center;
-    }
-
-    .stat-card {
-        text-align: center;
-        width: 100%;
+        font-size: 1.6rem !important;
     }
 
     .review-card {
         width: 280px;
     }
+}
+
+/* ==========================================================================
+   MOBILE-FIRST GLOBAL OVERFLOW PREVENTION
+   ========================================================================== */
+/* Final hard constraint on standard structural components */
+html, body {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    position: relative;
+}
+
+.main-content-wrapper,
+.section-container,
+.hero-container,
+.nav-container {
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
 }

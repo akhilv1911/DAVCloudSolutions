@@ -36,6 +36,25 @@
 <body class="bg-main text-main">
 
     <!-- ========================================================= -->
+    <!-- FLASH MESSAGES SYSTEM (Anchored to Top of Body)            -->
+    <!-- ========================================================= -->
+    <div class="flash-messages-container" id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-toast flash-{{ category }}" role="alert">
+                        <div class="flash-content">
+                            <i class="fa-solid {% if category == 'success' %}fa-circle-check{% elif category == 'danger' %}fa-circle-xmark{% elif category == 'warning' %}fa-triangle-exclamation{% else %}fa-circle-info{% endif %}"></i>
+                            <span>{{ message }}</span>
+                        </div>
+                        <button type="button" class="flash-close-btn" onclick="this.parentElement.remove();">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- ========================================================= -->
     <!-- MAIN NAVIGATION BAR                                       -->
     <!-- ========================================================= -->
     <header class="navbar-header" id="header">
@@ -90,7 +109,7 @@
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
 
-                    <!-- Auth Actions Group (Always accessible on Mobile & Desktop) -->
+                    <!-- Standard Auth Actions (Optimized for Mobile Header Support) -->
                     <div class="auth-actions-group">
                         <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Log In</a>
                         <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Get Started</a>
@@ -106,49 +125,11 @@
     </header>
 
     <!-- ========================================================= -->
-    <!-- FLASH MESSAGES SYSTEM                                     -->
-    <!-- ========================================================= -->
-    <div class="flash-messages-container" id="flash-container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-toast flash-{{ category }}" role="alert">
-                        <div class="flash-content">
-                            <i class="fa-solid {% if category == 'success' %}fa-circle-check{% elif category == 'danger' %}fa-circle-xmark{% elif category == 'warning' %}fa-triangle-exclamation{% else %}fa-circle-info{% endif %}"></i>
-                            <span>{{ message }}</span>
-                        </div>
-                        <button type="button" class="flash-close-btn" onclick="this.parentElement.remove();">&times;</button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
-
-    <!-- ========================================================= -->
     <!-- DYNAMIC BODY CONTENT BLOCK                                -->
     <!-- ========================================================= -->
     <main class="main-content-wrapper">
         {% block content %}{% endblock %}
     </main>
-
-    <!-- ========================================================= -->
-    <!-- PROMOTIONAL SEASONAL DISCOUNT POPUP MODAL                 -->
-    <!-- ========================================================= -->
-    {% if not session.get('user_id') %}
-    <div id="promoModal" class="promo-modal-backdrop" style="display: none;">
-        <div class="promo-modal-card">
-            <button class="promo-modal-close" onclick="closePromoModal()" aria-label="Close Modal">&times;</button>
-            <div class="promo-badge">🔥 Seasonal Special Offer</div>
-            <h2>Accelerate Your Next Project</h2>
-            <p>Get up to <strong>30% OFF</strong> on custom full-stack solutions, major project builds, and instant cloud deployments.</p>
-            <div class="promo-actions">
-                <a href="{{ url_for('register') }}" class="btn btn-primary btn-promo-start">
-                    Create Account & Claim Offer <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    {% endif %}
 
     <!-- ========================================================= -->
     <!-- GLOBAL FOOTER                                             -->
@@ -198,40 +179,21 @@
         </div>
     </footer>
 
-    <!-- Promotional Modal & Toast Scripts (Clean JS - Zero Jinja Interpolation in Scripts) -->
+    <!-- Standard Scripts -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const promoModal = document.getElementById("promoModal");
-            
-            // If the promo modal element exists in the DOM and has not been dismissed, trigger it
-            if (promoModal && !sessionStorage.getItem("promoDismissed")) {
-                setTimeout(function() {
-                    promoModal.style.display = "flex";
-                }, 3000);
-            }
-
             // Auto-dismiss Flash Messages after 5 seconds
             const flashToasts = document.querySelectorAll('.flash-toast');
             if (flashToasts.length > 0) {
                 setTimeout(function() {
-                    flashToasts.forEach(function(toast) {
+                    flashToasts.forEach(toast => {
                         toast.style.transition = 'opacity 0.5s ease';
                         toast.style.opacity = '0';
-                        setTimeout(function() {
-                            toast.remove();
-                        }, 500);
+                        setTimeout(() => toast.remove(), 500);
                     });
                 }, 5000);
             }
         });
-
-        function closePromoModal() {
-            const modal = document.getElementById("promoModal");
-            if (modal) {
-                modal.style.display = "none";
-            }
-            sessionStorage.setItem("promoDismissed", "true");
-        }
     </script>
 
     <!-- Global JavaScript -->
