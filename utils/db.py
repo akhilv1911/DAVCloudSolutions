@@ -78,8 +78,8 @@ def init_db(app: Flask):
             
             app.logger.info("MongoDB indexes verified successfully.")
             
-            # Seed Default Curated Projects if collection is empty
-            seed_curated_projects(db, app)
+            # Disabled automatic seed function so no demo projects populate by default
+            # seed_curated_projects(db, app)
             
         except (OperationFailure, RuntimeError) as e:
             app.logger.warning(f"Database initialization note: {e}")
@@ -129,7 +129,7 @@ def init_admin(app: Flask):
 
 def seed_curated_projects(db: Database, app: Flask):
     """
-    Seeds initial reference records if the projects collection is empty.
+    Optional helper function to seed demo records if needed in future testing.
     """
     try:
         if db.projects.count_documents({}) == 0:
@@ -149,24 +149,6 @@ def seed_curated_projects(db: Database, app: Flask):
                     "description": "Enterprise workflow portal for student leave applications, automated warden/faculty approvals, and digital pass issuance.",
                     "tech_stack": ["Python", "Flask", "MongoDB Atlas", "RBAC Auth"],
                     "delivery_days": "4–5 Days",
-                    "status": "Delivered",
-                    "created_at": datetime.now(timezone.utc)
-                },
-                {
-                    "title": "FinPredict: High-Cap Stock Forecasting & Volatility EDA",
-                    "category": "Data Science & EDA",
-                    "description": "Comprehensive statistical analysis and machine learning pipeline mapping historical market trends and risk metrics.",
-                    "tech_stack": ["Python", "Pandas", "Statsmodels", "Plotly Dashboards"],
-                    "delivery_days": "4–6 Days",
-                    "status": "Delivered",
-                    "created_at": datetime.now(timezone.utc)
-                },
-                {
-                    "title": "SecureTrace: Digital Vehicle RC, Insurance & Police Verification",
-                    "category": "Cloud Infrastructure",
-                    "description": "Decentralized document verification system enabling law enforcement to audit vehicle licenses and insurance in seconds.",
-                    "tech_stack": ["Python Backend", "QR Authentication", "Cloud DB"],
-                    "delivery_days": "5–7 Days",
                     "status": "Delivered",
                     "created_at": datetime.now(timezone.utc)
                 }

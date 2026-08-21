@@ -105,9 +105,13 @@ def inject_global_vars():
 
 @app.route("/")
 def home():
-    """Home Landing Page - Aggregates hero, services, about preview, featured projects, and live reviews."""
+    """Home Landing Page - Shows only delivered projects registered by real users."""
     db = get_db()
-    featured_projects = list(db.projects.find().limit(6))
+    featured_projects = list(
+        db.projects.find({
+            "status": {"$in": ["Delivered", "Completed", "Production Verified"]}
+        }).sort("created_at", -1).limit(6)
+    )
     approved_reviews = list(
         db.reviews.find({"status": "approved"}).sort("created_at", -1).limit(12)
     )
@@ -1108,10 +1112,9 @@ def api_dav_ai_code_audit():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    # use_reloader=True with threaded=True triggers the Windows socket tear-down race condition
     app.run(
         host="0.0.0.0", 
         port=port, 
         debug=app.config.get("DEBUG", True),
-        threaded=True
+        use_reloader=False
     )

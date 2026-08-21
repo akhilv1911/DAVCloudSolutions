@@ -159,7 +159,7 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 4. FEATURED DELIVERED BUILDS (3D SHOWCASE)                 -->
+<!-- 4. FEATURED DELIVERED BUILDS (REAL USER PROJECTS ONLY)    -->
 <!-- ========================================================= -->
 <section id="projects" class="projects-section section-padding">
     <div class="section-container">
@@ -168,65 +168,48 @@
                 <span class="section-tag"><i class="fa-solid fa-laptop-code"></i> Engineering Showcase</span>
                 <h2>Recent Works & Delivered Builds</h2>
             </div>
-            <a href="{{ url_for('projects_page') }}" class="btn btn-ghost">View All 40+ Projects <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="{{ url_for('projects_page') }}" class="btn btn-ghost">Browse 40+ Catalog Ideas <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
         <div class="projects-grid margin-top-md">
-            {% if projects %}
+            {% if projects and projects|length > 0 %}
                 {% for proj in projects %}
-                    <div class="project-card glass-card tilt-card">
+                    <div class="project-card glass-card tilt-card highlight-border-card">
                         <div class="project-header flex-between align-center">
                             <span class="project-category">{{ proj.category }}</span>
-                            <span class="status-pill status-completed">Delivered</span>
+                            <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> {{ proj.status }}</span>
                         </div>
                         <h3 class="margin-top-xs">{{ proj.title }}</h3>
                         <p class="text-muted fs-sm">{{ proj.description | truncate(120) }}</p>
+                        
+                        {% if proj.tech_stack %}
+                            <div class="founder-skills-tags margin-top-xs" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                                {% for tech in proj.tech_stack %}
+                                    <span class="badge-tech" style="font-size: 0.72rem; padding: 2px 8px;">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
                         <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
-                            <span class="text-muted fs-sm"><i class="fa-solid fa-circle-check text-success"></i> Status</span>
+                            <span class="text-muted fs-sm"><i class="fa-solid fa-circle-check text-success"></i> Verification</span>
                             <strong class="text-primary fs-sm">Production Verified</strong>
                         </div>
                     </div>
                 {% endfor %}
             {% else %}
-                <!-- Project 1: AgriSmart -->
-                <div class="project-card glass-card tilt-card">
-                    <div class="project-header flex-between align-center">
-                        <span class="project-category"><i class="fa-solid fa-wheat-awn"></i> Agriculture & ML</span>
-                        <span class="status-pill status-completed">Delivered</span>
-                    </div>
-                    <h3 class="margin-top-xs">AgriSmart: Predictive Crop Analytics</h3>
-                    <p class="text-muted fs-sm">Agricultural prediction and crop health analysis web portal engineered for regional soil optimization.</p>
-                    <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
-                        <span class="text-muted fs-sm"><i class="fa-solid fa-server"></i> Deployment</span>
-                        <strong class="text-primary fs-sm">Live Cloud App</strong>
-                    </div>
-                </div>
-
-                <!-- Project 2: SLMS Platform -->
-                <div class="project-card glass-card tilt-card">
-                    <div class="project-header flex-between align-center">
-                        <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> Campus SaaS</span>
-                        <span class="status-pill status-completed">Delivered</span>
-                    </div>
-                    <h3 class="margin-top-xs">Student Leave Management System</h3>
-                    <p class="text-muted fs-sm">Role-based student portal featuring automated faculty approval workflows and verifiable digital passes.</p>
-                    <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
-                        <span class="text-muted fs-sm"><i class="fa-solid fa-server"></i> Deployment</span>
-                        <strong class="text-primary fs-sm">Live Cloud App</strong>
-                    </div>
-                </div>
-
-                <!-- Project 3: FinPredict -->
-                <div class="project-card glass-card tilt-card">
-                    <div class="project-header flex-between align-center">
-                        <span class="project-category"><i class="fa-solid fa-chart-line"></i> Data Science</span>
-                        <span class="status-pill status-completed">Delivered</span>
-                    </div>
-                    <h3 class="margin-top-xs">Financial Forecasting & Market EDA</h3>
-                    <p class="text-muted fs-sm">Exploratory Data Analysis and machine learning predictive modeling pipeline for historical market forecasting.</p>
-                    <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
-                        <span class="text-muted fs-sm"><i class="fa-solid fa-server"></i> Deployment</span>
-                        <strong class="text-primary fs-sm">Live Cloud App</strong>
+                <div class="glass-card text-center padding-xl max-w-700 margin-auto" style="grid-column: 1 / -1;">
+                    <i class="fa-solid fa-rocket text-primary fs-xl" style="font-size: 2.4rem; margin-bottom: 14px;"></i>
+                    <h3>Be the First to Deploy</h3>
+                    <p class="text-muted fs-sm margin-top-xs">
+                        No delivered client builds are currently listed. Register an account or submit a proposal from our catalog to get your custom software engineered and showcased here.
+                    </p>
+                    <div class="margin-top-md flex-center gap-sm wrap-mobile" style="display: flex; justify-content: center; gap: 12px;">
+                        <a href="{{ url_for('projects_page') }}" class="btn btn-primary btn-sm">
+                            <i class="fa-solid fa-layer-group"></i> Explore Catalog Builds
+                        </a>
+                        <a href="{{ url_for('register') }}" class="btn btn-outline btn-sm">
+                            <i class="fa-solid fa-user-plus"></i> Register to Start Project
+                        </a>
                     </div>
                 </div>
             {% endif %}
@@ -581,16 +564,28 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(formJSON)
-                    });
+                    }).catch(() => {});
 
                     if (web3Data.success) {
-                        alert('Inquiry successfully received! Our engineering team will review your scope and get in touch shortly.');
+                        if (typeof showToast === 'function') {
+                            showToast('Inquiry successfully received! Our engineering team will review your scope and get in touch shortly.', 'success');
+                        } else {
+                            alert('Inquiry successfully received!');
+                        }
                         contactForm.reset();
                     } else {
-                        alert(web3Data.message || 'Error submitting inquiry. Please try again.');
+                        if (typeof showToast === 'function') {
+                            showToast(web3Data.message || 'Error submitting inquiry. Please try again.', 'danger');
+                        } else {
+                            alert(web3Data.message || 'Error submitting inquiry.');
+                        }
                     }
                 } catch (err) {
-                    alert('Network error occurred. Please verify your connection.');
+                    if (typeof showToast === 'function') {
+                        showToast('Network error occurred. Please verify your connection.', 'danger');
+                    } else {
+                        alert('Network error occurred.');
+                    }
                 } finally {
                     btn.disabled = false;
                     btn.innerHTML = origText;
