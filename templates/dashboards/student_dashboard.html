@@ -9,40 +9,40 @@
         <!-- ========================================================= -->
         <!-- 1. DASHBOARD HEADER & WELCOME CARD                        -->
         <!-- ========================================================= -->
-        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg">
+        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg border-beam">
             <div class="flex-between align-center wrap-mobile">
                 <div class="welcome-text">
-                    <span class="badge-pill"><i class="fa-solid fa-graduation-cap"></i> Student & Academic Portal</span>
+                    <span class="badge-pill floating-badge"><i class="fa-solid fa-graduation-cap text-primary pulse-icon"></i> Student & Academic Portal</span>
                     <h1 class="margin-top-xs">Welcome, <span class="gradient-text">{{ session.get('full_name', 'Student') }}</span></h1>
                     <p class="text-muted">Track your academic projects, access source code deliverables, prepare for viva reviews, or schedule 1-on-1 mentorship with Founder V Akhil.</p>
                 </div>
                 <div class="welcome-actions margin-top-mobile flex-between gap-sm">
-                    <button class="btn btn-primary" onclick="toggleModal('request-project-modal')">
+                    <button class="btn btn-primary magnetic-btn" onclick="toggleModal('request-project-modal')">
                         <i class="fa-solid fa-plus"></i> Request New Project
                     </button>
-                    <button class="btn btn-outline" onclick="toggleModal('mentorship-modal')">
+                    <button class="btn btn-outline magnetic-btn" onclick="toggleModal('mentorship-modal')">
                         <i class="fa-solid fa-calendar-check"></i> Book Mentorship
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Metric Cards Grid -->
+        <!-- Metric Cards Grid with Animated Rollers -->
         <div class="grid-4-col margin-bottom-lg">
-            <div class="glass-card metric-card">
-                <div class="metric-icon"><i class="fa-solid fa-diagram-project"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon floating-icon"><i class="fa-solid fa-diagram-project"></i></div>
                 <div class="metric-info">
-                    <h3>{{ projects | length if projects else 0 }}</h3>
+                    <h3><span class="stat-counter" data-target="{{ projects | length if projects else 0 }}">0</span></h3>
                     <p>Total Projects Requested</p>
                 </div>
             </div>
 
-            <div class="glass-card metric-card">
-                <div class="metric-icon icon-success"><i class="fa-solid fa-box-archive"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon icon-success floating-icon"><i class="fa-solid fa-box-archive text-success"></i></div>
                 <div class="metric-info">
                     <h3>
                         {% if projects %}
-                            {{ projects | selectattr('status', 'equalto', 'Completed') | list | length }}
+                            <span class="stat-counter" data-target="{{ projects | selectattr('status', 'equalto', 'Completed') | list | length }}">0</span>
                         {% else %}
                             0
                         {% endif %}
@@ -51,12 +51,12 @@
                 </div>
             </div>
 
-            <div class="glass-card metric-card">
-                <div class="metric-icon icon-warning"><i class="fa-solid fa-spinner"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon icon-warning floating-icon"><i class="fa-solid fa-spinner text-warning"></i></div>
                 <div class="metric-info">
                     <h3>
                         {% if projects %}
-                            {{ projects | selectattr('status', 'ne', 'Completed') | list | length }}
+                            <span class="stat-counter" data-target="{{ projects | selectattr('status', 'ne', 'Completed') | list | length }}">0</span>
                         {% else %}
                             0
                         {% endif %}
@@ -65,8 +65,8 @@
                 </div>
             </div>
 
-            <div class="glass-card metric-card">
-                <div class="metric-icon" style="color: var(--accent-purple);"><i class="fa-solid fa-award"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon floating-icon" style="color: var(--accent-purple);"><i class="fa-solid fa-award text-purple"></i></div>
                 <div class="metric-info">
                     <h3>Verified</h3>
                     <p>Academic Code Guarantee</p>
@@ -81,12 +81,12 @@
             
             <!-- Left Main Column: Project List & Search -->
             <div class="dashboard-main-col">
-                <div class="glass-card">
+                <div class="glass-card hover-glow">
                     <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
-                        <h2><i class="fa-solid fa-folder-open"></i> My Requested Projects</h2>
+                        <h2><i class="fa-solid fa-folder-open text-primary"></i> My Requested Projects</h2>
                         <div class="flex-align-center gap-sm">
                             <input type="text" id="project-search" class="form-input" placeholder="🔍 Search projects..." style="padding: 6px 14px; font-size: 0.85rem; max-width: 200px;">
-                            <button class="btn btn-sm btn-ghost" onclick="location.reload();" title="Refresh projects">
+                            <button class="btn btn-sm btn-ghost magnetic-btn" onclick="location.reload();" title="Refresh projects">
                                 <i class="fa-solid fa-rotate-right"></i>
                             </button>
                         </div>
@@ -95,7 +95,7 @@
                     <div class="projects-list-wrapper margin-top-md" id="projects-list">
                         {% if projects %}
                             {% for proj in projects %}
-                                <div class="dashboard-project-item glass-card margin-bottom-md project-card-item" data-title="{{ proj.title | lower }}" data-status="{{ proj.status | lower }}">
+                                <div class="dashboard-project-item glass-card margin-bottom-md project-card-item hover-glow" data-title="{{ proj.title | lower }}" data-status="{{ proj.status | lower }}">
                                     
                                     <div class="flex-between align-center wrap-mobile">
                                         <div>
@@ -113,13 +113,13 @@
 
                                     <!-- Tech Stack Badges & Project Value -->
                                     <div class="flex-between align-center wrap-mobile margin-top-sm padding-top-xs border-top-glass">
-                                        <div class="tech-tags-list">
+                                        <div class="founder-skills-tags" style="display: flex; flex-wrap: wrap; gap: 6px;">
                                             {% if proj.tech_stack %}
                                                 {% for t in proj.tech_stack %}
-                                                    <span class="tag"><i class="fa-solid fa-code"></i> {{ t }}</span>
+                                                    <span class="badge-tech" style="font-size: 0.72rem;"><i class="fa-solid fa-code"></i> {{ t }}</span>
                                                 {% endfor %}
                                             {% else %}
-                                                <span class="tag">Python & Flask</span>
+                                                <span class="badge-tech" style="font-size: 0.72rem;">Python & Flask</span>
                                             {% endif %}
                                         </div>
                                         <div class="project-quote-badge margin-top-mobile">
@@ -134,30 +134,30 @@
                                             <div class="step-dot"><i class="fa-solid fa-check"></i></div>
                                             <span class="fs-sm">Submitted</span>
                                         </div>
-                                        <div class="tracker-step {% if proj.status in ['In Progress', 'Testing', 'Completed'] %}completed{% endif %}">
+                                        <div class="tracker-step {% if proj.status in ['In Progress', 'Testing', 'Completed', 'Delivered', 'Production Verified'] %}completed{% endif %}">
                                             <div class="step-dot">
-                                                {% if proj.status in ['In Progress', 'Testing', 'Completed'] %}<i class="fa-solid fa-check"></i>{% else %}2{% endif %}
+                                                {% if proj.status in ['In Progress', 'Testing', 'Completed', 'Delivered', 'Production Verified'] %}<i class="fa-solid fa-check"></i>{% else %}2{% endif %}
                                             </div>
                                             <span class="fs-sm">Building</span>
                                         </div>
-                                        <div class="tracker-step {% if proj.status in ['Testing', 'Completed'] %}completed{% endif %}">
+                                        <div class="tracker-step {% if proj.status in ['Testing', 'Completed', 'Delivered', 'Production Verified'] %}completed{% endif %}">
                                             <div class="step-dot">
-                                                {% if proj.status in ['Testing', 'Completed'] %}<i class="fa-solid fa-check"></i>{% else %}3{% endif %}
+                                                {% if proj.status in ['Testing', 'Completed', 'Delivered', 'Production Verified'] %}<i class="fa-solid fa-check"></i>{% else %}3{% endif %}
                                             </div>
                                             <span class="fs-sm">Testing</span>
                                         </div>
-                                        <div class="tracker-step {% if proj.status == 'Completed' %}ready-step{% endif %}">
+                                        <div class="tracker-step {% if proj.status in ['Completed', 'Delivered', 'Production Verified'] %}ready-step{% endif %}">
                                             <div class="step-dot">
-                                                {% if proj.status == 'Completed' %}<i class="fa-solid fa-check"></i>{% else %}4{% endif %}
+                                                {% if proj.status in ['Completed', 'Delivered', 'Production Verified'] %}<i class="fa-solid fa-check"></i>{% else %}4{% endif %}
                                             </div>
                                             <span class="fs-sm">Ready</span>
                                         </div>
                                     </div>
 
-                                    <!-- Deliverables Download Bar & WhatsApp Quick Support -->
+                                    <!-- Deliverables Download Bar & Quick Support -->
                                     <div class="project-deliverable-bar margin-top-md flex-between align-center wrap-mobile gap-sm" style="padding-top: 14px; border-top: 1px solid var(--border-color);">
                                         {% if proj.deliverables_link %}
-                                            <a href="{{ proj.deliverables_link }}" target="_blank" class="btn btn-primary btn-sm">
+                                            <a href="{{ proj.deliverables_link }}" target="_blank" class="btn btn-primary btn-sm magnetic-btn" onclick="celebrateDownload()">
                                                 <i class="fa-solid fa-download"></i> Download Source Code Bundle
                                             </a>
                                         {% else %}
@@ -165,10 +165,10 @@
                                         {% endif %}
                                         
                                         <div class="flex-align-center gap-sm">
-                                            <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20have%20a%20question%20regarding%20my%20project:%20{{ proj.title | urlencode }}" target="_blank" class="btn btn-sm btn-outline" style="border-color: rgba(16, 185, 129, 0.4); color: var(--accent-emerald);">
+                                            <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20have%20a%20question%20regarding%20my%20project:%20{{ proj.title | urlencode }}" target="_blank" class="btn btn-sm btn-outline magnetic-btn" style="border-color: rgba(16, 185, 129, 0.4); color: var(--accent-emerald);">
                                                 <i class="fa-brands fa-whatsapp"></i> Chat Support
                                             </a>
-                                            <button class="btn btn-outline btn-sm" onclick="openSupportQuery('{{ proj.title | escape }}')">
+                                            <button class="btn btn-outline btn-sm magnetic-btn" onclick="openSupportQuery('{{ proj.title | escape }}')">
                                                 <i class="fa-solid fa-comment-dots"></i> Query Desk
                                             </button>
                                         </div>
@@ -178,11 +178,11 @@
                             {% endfor %}
                         {% else %}
                             <!-- Empty State -->
-                            <div class="empty-state-card text-center padding-xl">
-                                <i class="fa-solid fa-folder-plus fs-xl text-muted" style="font-size: 2.5rem; margin-bottom: 14px;"></i>
+                            <div class="empty-state-card text-center padding-xl hover-glow">
+                                <i class="fa-solid fa-folder-plus fs-xl text-muted floating-icon" style="font-size: 2.5rem; margin-bottom: 14px;"></i>
                                 <h3>No Active Project Requests</h3>
                                 <p class="text-muted" style="max-width: 480px; margin: 8px auto 20px;">Need an academic project build, Machine Learning model, or portfolio? Submit your scope directly to Founder V Akhil and our engineering team.</p>
-                                <button class="btn btn-primary" onclick="toggleModal('request-project-modal')">
+                                <button class="btn btn-primary magnetic-btn" onclick="toggleModal('request-project-modal')">
                                     <i class="fa-solid fa-plus"></i> Submit First Request
                                 </button>
                             </div>
@@ -191,16 +191,16 @@
                 </div>
 
                 <!-- My Submitted Inquiries & Mentorship History -->
-                <div class="glass-card margin-top-lg">
+                <div class="glass-card margin-top-lg hover-glow">
                     <div class="card-header-bar flex-between align-center">
-                        <h2><i class="fa-solid fa-clock-rotate-left"></i> My Inquiries & Support Tickets</h2>
+                        <h2><i class="fa-solid fa-clock-rotate-left text-primary"></i> My Inquiries & Support Tickets</h2>
                         <span class="badge-tech">{{ inquiries | length if inquiries else 0 }} Logged</span>
                     </div>
 
                     <div class="margin-top-md">
                         {% if inquiries %}
                             {% for inq in inquiries %}
-                                <div class="glass-card margin-bottom-sm" style="padding: 14px 18px; background: rgba(255, 255, 255, 0.02);">
+                                <div class="glass-card margin-bottom-sm hover-glow" style="padding: 14px 18px; background: rgba(255, 255, 255, 0.02);">
                                     <div class="flex-between align-center wrap-mobile">
                                         <div>
                                             <span class="badge-tech">{{ inq.user_category }}</span>
@@ -225,25 +225,25 @@
                 </div>
 
                 <!-- Viva & Project Presentation Prep Kit -->
-                <div class="glass-card margin-top-lg highlight-border-card">
+                <div class="glass-card margin-top-lg highlight-border-card hover-glow">
                     <div class="card-header-bar flex-between align-center">
-                        <h2><i class="fa-solid fa-book-open-reader"></i> Viva & Project Presentation Kit</h2>
+                        <h2><i class="fa-solid fa-book-open-reader text-primary"></i> Viva & Project Presentation Kit</h2>
                         <span class="badge-tech">Academic Defense Prep</span>
                     </div>
                     <p class="text-muted fs-sm margin-top-xs">Quick review modules prepared for external lab examiners and college technical seminars.</p>
                     
                     <div class="grid-3-col margin-top-md" style="gap: 16px;">
-                        <div class="glass-card" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
+                        <div class="glass-card hover-glow" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
                             <h4><i class="fa-solid fa-network-wired" style="color: var(--primary);"></i> Architecture Flow</h4>
                             <p class="fs-sm text-muted margin-top-xs">Explanation of Model-View-Template pattern, Flask application factories, and MongoDB schema collections.</p>
                         </div>
-                        <div class="glass-card" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
+                        <div class="glass-card hover-glow" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
                             <h4><i class="fa-solid fa-brain" style="color: var(--accent-purple);"></i> ML Metrics & Logic</h4>
                             <p class="fs-sm text-muted margin-top-xs">Understand Accuracy, Confusion Matrix, Random Forest / SVM ensemble logic, and data preprocessing steps.</p>
                         </div>
-                        <div class="glass-card" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
+                        <div class="glass-card hover-glow" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
                             <h4><i class="fa-solid fa-terminal" style="color: var(--accent-emerald);"></i> Execution Commands</h4>
-                            <p class="fs-sm text-muted margin-top-xs">Step-by-step local `venv` activation, `pip install -r requirements.txt`, and database setup guides.</p>
+                            <p class="fs-sm text-muted margin-top-xs">Step-by-step local virtual environment activation, dependency installation, and database seeding guides.</p>
                         </div>
                     </div>
                 </div>
@@ -252,17 +252,17 @@
             <!-- Right Sidebar Column: Mentorship & Support Desk -->
             <div class="dashboard-side-col">
                 <!-- Mentorship Booking Card -->
-                <div class="glass-card margin-bottom-lg">
-                    <h3><i class="fa-solid fa-user-graduate"></i> 1-on-1 Mentorship</h3>
+                <div class="glass-card margin-bottom-lg hover-glow">
+                    <h3><i class="fa-solid fa-user-graduate text-primary"></i> 1-on-1 Mentorship</h3>
                     <p class="text-muted fs-sm margin-top-xs">Schedule a 1-on-1 code walkthrough session with <strong>V Akhil</strong> to understand backend architecture, Flask routing, and ML models for your seminar defense.</p>
-                    <button class="btn btn-outline btn-block margin-top-md" onclick="toggleModal('mentorship-modal')">
+                    <button class="btn btn-outline btn-block margin-top-md magnetic-btn" onclick="toggleModal('mentorship-modal')">
                         <i class="fa-solid fa-calendar-plus"></i> Schedule Session
                     </button>
                 </div>
 
                 <!-- Deliverables Checklist Card -->
-                <div class="glass-card margin-bottom-lg">
-                    <h3><i class="fa-solid fa-clipboard-check"></i> Deliverable Package</h3>
+                <div class="glass-card margin-bottom-lg hover-glow">
+                    <h3><i class="fa-solid fa-clipboard-check text-primary"></i> Deliverable Package</h3>
                     <ul style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px; font-size: 0.88rem;">
                         <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
                             <i class="fa-solid fa-circle-check text-primary"></i> Complete Clean Source Code ZIP
@@ -280,8 +280,8 @@
                 </div>
 
                 <!-- Support Ticket Messaging Desk -->
-                <div class="glass-card" id="support-section">
-                    <h3><i class="fa-solid fa-headset"></i> Support & Queries Desk</h3>
+                <div class="glass-card hover-glow" id="support-section">
+                    <h3><i class="fa-solid fa-headset text-primary"></i> Support & Queries Desk</h3>
                     <p class="text-muted fs-sm margin-top-xs">Have questions regarding code configuration, database execution, or scope changes?</p>
 
                     <form id="student-support-form" class="margin-top-md">
@@ -300,7 +300,7 @@
                             <label for="ticket-message" class="fs-sm">Your Question</label>
                             <textarea name="message" id="ticket-message" class="form-input" rows="3" placeholder="Describe what you need assistance with..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block btn-sm">
+                        <button type="submit" class="btn btn-primary btn-block btn-sm magnetic-btn">
                             <i class="fa-solid fa-paper-plane"></i> Submit to Founder
                         </button>
                     </form>
@@ -318,8 +318,8 @@
 <div class="modal-overlay" id="request-project-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 580px; padding: 28px;">
         <div class="modal-header flex-between align-center" style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-laptop-code"></i> Submit Academic Project Scope</h3>
-            <button type="button" class="icon-btn" onclick="toggleModal('request-project-modal')" style="width: 32px; height: 32px;">&times;</button>
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-laptop-code text-primary"></i> Submit Academic Project Scope</h3>
+            <button type="button" class="icon-btn magnetic-btn" onclick="toggleModal('request-project-modal')" style="width: 32px; height: 32px;">&times;</button>
         </div>
         
         <form id="student-project-req-form" action="{{ url_for('student_dashboard') }}" method="POST">
@@ -358,8 +358,8 @@
             </div>
 
             <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
-                <button type="button" class="btn btn-ghost" onclick="toggleModal('request-project-modal')">Cancel</button>
-                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Scope for Review</button>
+                <button type="button" class="btn btn-ghost magnetic-btn" onclick="toggleModal('request-project-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary magnetic-btn"><i class="fa-solid fa-paper-plane"></i> Submit Scope for Review</button>
             </div>
         </form>
     </div>
@@ -371,8 +371,8 @@
 <div class="modal-overlay" id="mentorship-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 520px; padding: 28px;">
         <div class="modal-header flex-between align-center" style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-calendar-days"></i> Schedule 1-on-1 Code Walkthrough</h3>
-            <button type="button" class="icon-btn" onclick="toggleModal('mentorship-modal')" style="width: 32px; height: 32px;">&times;</button>
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-calendar-days text-primary"></i> Schedule 1-on-1 Code Walkthrough</h3>
+            <button type="button" class="icon-btn magnetic-btn" onclick="toggleModal('mentorship-modal')" style="width: 32px; height: 32px;">&times;</button>
         </div>
         
         <form id="mentorship-form">
@@ -405,8 +405,8 @@
             </div>
 
             <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
-                <button type="button" class="btn btn-ghost" onclick="toggleModal('mentorship-modal')">Cancel</button>
-                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Request Booking Slot</button>
+                <button type="button" class="btn btn-ghost magnetic-btn" onclick="toggleModal('mentorship-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary magnetic-btn"><i class="fa-solid fa-check"></i> Request Booking Slot</button>
             </div>
         </form>
     </div>
@@ -422,41 +422,55 @@
     .tracker-step {
         text-align: center;
         flex: 1;
+        position: relative;
+    }
+    .tracker-step::after {
+        content: '';
+        position: absolute;
+        top: 14px;
+        left: 50%;
+        width: 100%;
+        height: 2px;
+        background: var(--border-color);
+        z-index: 0;
+    }
+    .tracker-step:last-child::after {
+        display: none;
+    }
+    .tracker-step.completed::after {
+        background: var(--primary);
     }
     .step-dot {
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         background: var(--bg-main);
         color: #fff;
-        border: 1px solid var(--border-color);
+        border: 2px solid var(--border-color);
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 6px;
         font-size: 0.8rem;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
     }
     .tracker-step.completed .step-dot {
         background: var(--primary);
         border-color: var(--primary);
+        box-shadow: 0 0 10px var(--primary-glow);
     }
     .tracker-step.ready-step .step-dot {
         background: var(--accent-emerald);
         border-color: var(--accent-emerald);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
     }
 </style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    function toggleModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            const isVisible = modal.style.display === 'flex';
-            modal.style.display = isVisible ? 'none' : 'flex';
-        }
-    }
-
     function openSupportQuery(projTitle) {
         const subjectInput = document.getElementById('ticket-subject');
         const supportSection = document.getElementById('support-section');
@@ -466,6 +480,15 @@
                 supportSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
             subjectInput.focus();
+        }
+    }
+
+    function celebrateDownload() {
+        if (typeof confetti === 'function') {
+            confetti({ particleCount: 100, spread: 75, origin: { y: 0.6 } });
+        }
+        if (typeof showToast === 'function') {
+            showToast('Deliverable bundle download initiated!', 'success');
         }
     }
 
@@ -484,7 +507,7 @@
             });
         }
 
-        // 1. Academic Project Proposal Handler (Dual Web3Forms + Flask Submit)
+        // 1. Academic Project Proposal Handler
         const reqForm = document.getElementById('student-project-req-form');
         if (reqForm) {
             reqForm.addEventListener('submit', async function(e) {
@@ -498,17 +521,13 @@
                 const formJSON = Object.fromEntries(formData.entries());
 
                 try {
-                    // Send to Web3Forms API to display in dashboard
                     await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify(formJSON)
                     });
-                } catch (err) {
-                    console.error('Web3Forms logging error:', err);
-                }
+                } catch (err) {}
 
-                // Submit to Flask backend for MongoDB storage, email alert & page refresh
                 reqForm.submit();
             });
         }
@@ -527,7 +546,6 @@
                 const formJSON = Object.fromEntries(formData.entries());
 
                 try {
-                    // 1. Web3Forms API
                     const web3Res = await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -535,22 +553,30 @@
                     });
                     const web3Data = await web3Res.json();
 
-                    // 2. Flask Backend API (MongoDB + Real-time SMTP Email)
                     await fetch('/api/submit-inquiry', {
                         method: 'POST',
                         body: formData
                     });
 
                     if (web3Data.success) {
-                        alert('Mentorship session logged! Founder V Akhil will review the slot and send confirmation.');
+                        if (typeof confetti === 'function') {
+                            confetti({ particleCount: 70, spread: 60, origin: { y: 0.5 } });
+                        }
+                        if (typeof showToast === 'function') {
+                            showToast('Mentorship session logged! Confirmation will be sent shortly.', 'success');
+                        }
                         mentorshipForm.reset();
                         toggleModal('mentorship-modal');
-                        location.reload();
+                        setTimeout(() => location.reload(), 1000);
                     } else {
-                        alert(web3Data.message || 'Error booking slot. Please try again.');
+                        if (typeof showToast === 'function') {
+                            showToast(web3Data.message || 'Error booking slot.', 'danger');
+                        }
                     }
                 } catch (err) {
-                    alert('Network error occurred.');
+                    if (typeof showToast === 'function') {
+                        showToast('Network error occurred.', 'danger');
+                    }
                 } finally {
                     btn.disabled = false;
                     btn.innerHTML = orig;
@@ -572,7 +598,6 @@
                 const formJSON = Object.fromEntries(formData.entries());
 
                 try {
-                    // 1. Web3Forms API
                     const web3Res = await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -580,21 +605,26 @@
                     });
                     const web3Data = await web3Res.json();
 
-                    // 2. Flask Backend API (MongoDB + Real-time SMTP Email)
                     await fetch('/api/submit-inquiry', {
                         method: 'POST',
                         body: formData
                     });
 
                     if (web3Data.success) {
-                        alert('Your query has been dispatched directly to Founder V Akhil.');
+                        if (typeof showToast === 'function') {
+                            showToast('Query dispatched directly to Founder V Akhil.', 'success');
+                        }
                         supportForm.reset();
-                        location.reload();
+                        setTimeout(() => location.reload(), 1000);
                     } else {
-                        alert(web3Data.message || 'Failed to dispatch ticket.');
+                        if (typeof showToast === 'function') {
+                            showToast(web3Data.message || 'Failed to dispatch query.', 'danger');
+                        }
                     }
                 } catch (err) {
-                    alert('Network error occurred.');
+                    if (typeof showToast === 'function') {
+                        showToast('Network error occurred.', 'danger');
+                    }
                 } finally {
                     btn.disabled = false;
                     btn.innerHTML = orig;

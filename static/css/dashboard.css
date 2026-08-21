@@ -72,12 +72,13 @@
     background: var(--bg-card);
     backdrop-filter: var(--glass-backdrop);
     border: 1px solid var(--border-color);
-    transition: transform var(--transition-smooth), border-color var(--transition-smooth);
+    transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
 .metric-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     border-color: var(--border-highlight);
+    box-shadow: var(--shadow-glow);
 }
 
 .metric-icon {
@@ -92,6 +93,11 @@
     justify-content: center;
     font-size: 1.4rem;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.metric-card:hover .metric-icon {
+    transform: scale(1.08);
 }
 
 .metric-icon.icon-success {
@@ -120,7 +126,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. DASHBOARD PROJECT CARDS & DELIVERABLE BARS
+   3. DASHBOARD PROJECT CARDS & MILESTONE TRACKER
    -------------------------------------------------------------------------- */
 .dashboard-project-item {
     border: 1px solid var(--border-color);
@@ -133,11 +139,78 @@
 .dashboard-project-item:hover {
     background: rgba(255, 255, 255, 0.04);
     border-color: var(--border-highlight);
+    transform: translateY(-2px);
 }
 
 .project-deliverable-bar {
     padding-top: 16px;
     border-top: 1px solid var(--border-color);
+}
+
+/* Milestone Progress Stepper */
+.milestone-tracker {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding: 16px 0 8px;
+}
+
+.tracker-step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.tracker-step::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--border-color);
+    z-index: 0;
+    transition: background 0.3s ease;
+}
+
+.tracker-step:last-child::after {
+    display: none;
+}
+
+.tracker-step.completed::after {
+    background: var(--primary);
+}
+
+.step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-main);
+    color: var(--text-muted);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tracker-step.completed .step-dot {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.tracker-step.ready-step .step-dot {
+    background: var(--accent-emerald);
+    border-color: var(--accent-emerald);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
 }
 
 .empty-state-card {
@@ -153,7 +226,85 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. SIDEBAR PANELS & INFORMATION LISTS
+   4. TABLES & DATA LISTS
+   -------------------------------------------------------------------------- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.data-table th {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.data-table td {
+    padding: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.data-table tbody tr {
+    transition: background var(--transition-fast);
+}
+
+.data-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.04);
+}
+
+/* --------------------------------------------------------------------------
+   5. SKELETON SHIMMER & AI DRAWER STYLES
+   -------------------------------------------------------------------------- */
+.skeleton-box {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.8s infinite;
+    border-radius: var(--radius-sm);
+}
+
+@keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* AI Command & Output Drawer */
+.dav-ai-command-box {
+    position: relative;
+}
+
+#ai-live-output-container pre,
+#team-ai-output-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+}
+
+#ai-live-output-container pre::-webkit-scrollbar,
+#team-ai-output-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+#ai-live-output-container pre::-webkit-scrollbar-thumb,
+#team-ai-output-content::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   6. SIDEBAR PANELS & INFORMATION LISTS
    -------------------------------------------------------------------------- */
 .company-info-list p {
     margin-bottom: 10px;
@@ -222,7 +373,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. RESPONSIVE DASHBOARD BREAKPOINTS
+   7. RESPONSIVE DASHBOARD BREAKPOINTS
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
     .grid-2-col-wide {

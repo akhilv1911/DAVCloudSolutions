@@ -7,10 +7,10 @@
     <div class="dashboard-container">
         
         <!-- 1. HEADER & SPECIALIST BADGE -->
-        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg">
+        <div class="glass-card dashboard-welcome-card highlight-border-card margin-bottom-lg border-beam">
             <div class="flex-between align-center wrap-mobile">
                 <div class="welcome-text">
-                    <span class="badge-pill"><i class="fa-solid fa-code-branch"></i> Core Specialist Workspace</span>
+                    <span class="badge-pill floating-badge"><i class="fa-solid fa-code-branch text-primary pulse-icon"></i> Core Specialist Workspace</span>
                     <h1 class="margin-top-xs">Welcome, <span class="gradient-text">{{ session.get('full_name', 'Team Member') }}</span></h1>
                     <p class="text-muted">Manage your assigned builds, leverage the DAV AI suite, upload deliverables for Founder review, and track project progress.</p>
                 </div>
@@ -20,22 +20,22 @@
             </div>
         </div>
 
-        <!-- Metric Cards Grid -->
+        <!-- Metric Cards Grid with Live Counters -->
         <div class="grid-4-col margin-bottom-lg">
-            <div class="glass-card metric-card">
-                <div class="metric-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon floating-icon"><i class="fa-solid fa-list-check"></i></div>
                 <div class="metric-info">
-                    <h3>{{ projects | length if projects else 0 }}</h3>
+                    <h3><span class="stat-counter" data-target="{{ projects | length if projects else 0 }}">0</span></h3>
                     <p>Assigned Builds</p>
                 </div>
             </div>
 
-            <div class="glass-card metric-card">
-                <div class="metric-icon icon-warning"><i class="fa-solid fa-gears"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon icon-warning floating-icon"><i class="fa-solid fa-gears text-warning"></i></div>
                 <div class="metric-info">
                     <h3>
                         {% if projects %}
-                            {{ projects | selectattr('status', 'equalto', 'In Progress') | list | length }}
+                            <span class="stat-counter" data-target="{{ projects | selectattr('status', 'equalto', 'In Progress') | list | length }}">0</span>
                         {% else %}
                             0
                         {% endif %}
@@ -44,12 +44,12 @@
                 </div>
             </div>
 
-            <div class="glass-card metric-card">
-                <div class="metric-icon" style="color: var(--accent-cyan);"><i class="fa-solid fa-flask"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon floating-icon" style="color: var(--accent-cyan);"><i class="fa-solid fa-flask text-cyan"></i></div>
                 <div class="metric-info">
                     <h3>
                         {% if projects %}
-                            {{ projects | selectattr('status', 'equalto', 'Testing') | list | length }}
+                            <span class="stat-counter" data-target="{{ projects | selectattr('status', 'equalto', 'Testing') | list | length }}">0</span>
                         {% else %}
                             0
                         {% endif %}
@@ -58,12 +58,12 @@
                 </div>
             </div>
 
-            <div class="glass-card metric-card">
-                <div class="metric-icon icon-success"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="glass-card metric-card hover-glow">
+                <div class="metric-icon icon-success floating-icon"><i class="fa-solid fa-circle-check text-success"></i></div>
                 <div class="metric-info">
                     <h3>
                         {% if projects %}
-                            {{ projects | selectattr('status', 'equalto', 'Completed') | list | length }}
+                            <span class="stat-counter" data-target="{{ projects | selectattr('status', 'equalto', 'Completed') | list | length }}">0</span>
                         {% else %}
                             0
                         {% endif %}
@@ -82,10 +82,10 @@
                 <!-- ========================================================= -->
                 <!-- DAV AI SPECIALIST SUITE (GEMINI POWERED)                   -->
                 <!-- ========================================================= -->
-                <div class="glass-card highlight-border-card dav-ai-command-box margin-bottom-lg">
+                <div class="glass-card highlight-border-card dav-ai-command-box margin-bottom-lg border-beam hover-glow">
                     <div class="flex-between align-center wrap-mobile margin-bottom-sm">
                         <div>
-                            <span class="section-tag" style="color: var(--accent-purple);"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Engineering Suite</span>
+                            <span class="section-tag" style="color: var(--accent-purple);"><i class="fa-solid fa-wand-magic-sparkles pulse-icon"></i> AI Engineering Suite</span>
                             <h2>DAV AI Specialist Assistant</h2>
                         </div>
                         <span class="badge-pill" style="background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.4); color: var(--accent-purple);">
@@ -95,14 +95,14 @@
                     <p class="text-muted fs-sm margin-bottom-md">Generate system architecture blueprints, perform automated security and code audits, or evaluate incoming client scopes instantly.</p>
 
                     <!-- Tool Selector Tabs -->
-                    <div class="filter-tabs-wrapper margin-bottom-md" style="justify-content: flex-start; gap: 8px;">
-                        <button type="button" class="filter-tab active" id="btn-tab-scope" onclick="switchTeamAITab('scope-tool')">
+                    <div class="filter-tabs-wrapper margin-bottom-md" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-sm btn-primary filter-tab active magnetic-btn" id="btn-tab-scope" onclick="switchTeamAITab('scope-tool')">
                             <i class="fa-solid fa-sitemap"></i> Blueprint Generator
                         </button>
-                        <button type="button" class="filter-tab" id="btn-tab-audit" onclick="switchTeamAITab('audit-tool')">
+                        <button type="button" class="btn btn-sm btn-outline filter-tab magnetic-btn" id="btn-tab-audit" onclick="switchTeamAITab('audit-tool')">
                             <i class="fa-solid fa-shield-halved"></i> Code Auditor
                         </button>
-                        <button type="button" class="filter-tab" id="btn-tab-lead" onclick="switchTeamAITab('lead-tool')">
+                        <button type="button" class="btn btn-sm btn-outline filter-tab magnetic-btn" id="btn-tab-lead" onclick="switchTeamAITab('lead-tool')">
                             <i class="fa-solid fa-chart-pie"></i> Lead Scorer
                         </button>
                     </div>
@@ -128,7 +128,7 @@
                             <label class="fs-sm">Scope Requirements & Features</label>
                             <textarea id="team-ai-requirements" class="form-input" rows="3" placeholder="List core functional modules, authentication needs, preferred tech stack, and database details..."></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="runTeamAIScope()">
+                        <button type="button" class="btn btn-primary magnetic-btn" onclick="runTeamAIScope(event)">
                             <i class="fa-solid fa-gears"></i> Generate Blueprint & Viva Qs
                         </button>
                     </div>
@@ -139,7 +139,7 @@
                             <label class="fs-sm">Code Snippet to Audit (Python / JS / Routes) *</label>
                             <textarea id="team-ai-code" class="form-input" rows="6" placeholder="Paste your code snippet here to check for security vulnerabilities, injection flaws, and performance bottlenecks..."></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="runTeamAICodeAudit()">
+                        <button type="button" class="btn btn-primary magnetic-btn" onclick="runTeamAICodeAudit(event)">
                             <i class="fa-solid fa-shield-virus"></i> Run Security & Quality Audit
                         </button>
                     </div>
@@ -150,36 +150,41 @@
                             <label class="fs-sm">Inquiry Message / Client Scope *</label>
                             <textarea id="team-ai-message" class="form-input" rows="4" placeholder="Paste client message or requirement prompt to assess feasibility, estimated timeline, and draft technical response..."></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="runTeamAILeadAnalyze()">
+                        <button type="button" class="btn btn-primary magnetic-btn" onclick="runTeamAILeadAnalyze(event)">
                             <i class="fa-solid fa-brain"></i> Score Lead & Draft Response
                         </button>
                     </div>
 
-                    <!-- Live AI Output Box -->
-                    <div id="team-ai-output-box" class="glass-card margin-top-md" style="display: none; background: rgba(3, 7, 18, 0.7); border: 1px solid rgba(139, 92, 246, 0.4);">
+                    <!-- Live Streaming AI Output Box -->
+                    <div id="team-ai-output-box" class="glass-card margin-top-md" style="display: none; background: rgba(3, 7, 18, 0.85); border: 1px solid rgba(139, 92, 246, 0.4); position: relative;">
                         <div class="flex-between align-center margin-bottom-xs">
                             <h4 style="color: var(--accent-purple); font-size: 0.95rem;">
-                                <i class="fa-solid fa-square-poll-vertical"></i> DAV AI Generated Assessment:
+                                <i class="fa-solid fa-square-poll-vertical"></i> DAV AI Generated Output:
                             </h4>
-                            <button type="button" class="btn-ghost btn-sm" onclick="document.getElementById('team-ai-output-box').style.display='none'">
-                                <i class="fa-solid fa-xmark"></i> Close
-                            </button>
+                            <div class="flex-align-center gap-xs">
+                                <button type="button" class="btn-ghost btn-sm magnetic-btn" onclick="copyAIOutput()" title="Copy Markdown">
+                                    <i class="fa-solid fa-copy"></i> Copy
+                                </button>
+                                <button type="button" class="btn-ghost btn-sm magnetic-btn" onclick="document.getElementById('team-ai-output-box').style.display='none'">
+                                    <i class="fa-solid fa-xmark"></i> Close
+                                </button>
+                            </div>
                         </div>
                         <div id="team-ai-output-content" class="fs-sm text-main" style="white-space: pre-wrap; line-height: 1.6; max-height: 400px; overflow-y: auto; padding-right: 6px;"></div>
                     </div>
                 </div>
 
                 <!-- Assigned Deliverables List -->
-                <div class="glass-card">
+                <div class="glass-card hover-glow">
                     <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
-                        <h2><i class="fa-solid fa-laptop-code"></i> Assigned Project Deliverables</h2>
+                        <h2><i class="fa-solid fa-laptop-code text-primary"></i> Assigned Project Deliverables</h2>
                         <span class="badge-tech">{{ projects | length if projects else 0 }} Active Tasks</span>
                     </div>
 
                     <div class="projects-list-wrapper margin-top-md">
                         {% if projects %}
                             {% for proj in projects %}
-                                <div class="glass-card margin-bottom-md" style="padding: 20px; background: rgba(255, 255, 255, 0.02);">
+                                <div class="glass-card margin-bottom-md hover-glow" style="padding: 20px; background: rgba(255, 255, 255, 0.02);">
                                     <div class="flex-between align-center wrap-mobile">
                                         <div>
                                             <span class="badge-tech">{{ proj.category }}</span>
@@ -195,10 +200,10 @@
                                     <p class="text-muted fs-sm margin-top-xs">{{ proj.description }}</p>
 
                                     <!-- Tech Stack -->
-                                    <div class="tech-tags-list margin-top-sm">
+                                    <div class="founder-skills-tags margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px;">
                                         {% if proj.tech_stack %}
                                             {% for t in proj.tech_stack %}
-                                                <span class="tag"><i class="fa-solid fa-code"></i> {{ t }}</span>
+                                                <span class="badge-tech" style="font-size: 0.72rem;"><i class="fa-solid fa-code"></i> {{ t }}</span>
                                             {% endfor %}
                                         {% endif %}
                                     </div>
@@ -227,13 +232,13 @@
 
                                         <div class="flex-between align-center margin-top-sm wrap-mobile gap-sm">
                                             {% if proj.deliverables_link %}
-                                                <a href="{{ proj.deliverables_link }}" target="_blank" class="fs-sm text-primary">
+                                                <a href="{{ proj.deliverables_link }}" target="_blank" class="fs-sm text-primary magnetic-btn">
                                                     <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Current Deliverable
                                                 </a>
                                             {% else %}
                                                 <span class="fs-sm text-muted">No deliverable uploaded yet</span>
                                             {% endif %}
-                                            <button type="submit" class="btn btn-primary btn-sm">
+                                            <button type="submit" class="btn btn-primary btn-sm magnetic-btn">
                                                 <i class="fa-solid fa-floppy-disk"></i> Update Task Status
                                             </button>
                                         </div>
@@ -241,8 +246,8 @@
                                 </div>
                             {% endfor %}
                         {% else %}
-                            <div class="empty-state-card text-center padding-xl">
-                                <i class="fa-solid fa-mug-hot fs-xl text-muted" style="font-size: 2.5rem; margin-bottom: 14px;"></i>
+                            <div class="empty-state-card text-center padding-xl hover-glow">
+                                <i class="fa-solid fa-mug-hot fs-xl text-muted floating-icon" style="font-size: 2.5rem; margin-bottom: 14px;"></i>
                                 <h3>No Projects Assigned Currently</h3>
                                 <p class="text-muted fs-sm">When Founder V Akhil assigns a build to your profile, it will appear here for execution.</p>
                             </div>
@@ -254,7 +259,7 @@
             <!-- Right Sidebar: QA Checklist & Escalation -->
             <div class="dashboard-side-col">
                 <!-- Pre-Delivery QA Checklist -->
-                <div class="glass-card margin-bottom-lg">
+                <div class="glass-card margin-bottom-lg hover-glow">
                     <h3><i class="fa-solid fa-clipboard-check text-primary"></i> Pre-Delivery Quality Gate</h3>
                     <p class="text-muted fs-sm margin-top-xs">Verify these steps before setting project to <strong>Completed</strong>:</p>
                     
@@ -267,10 +272,10 @@
                 </div>
 
                 <!-- Founder Escalation Card -->
-                <div class="glass-card">
+                <div class="glass-card hover-glow">
                     <h3><i class="fa-solid fa-shield-halved text-primary"></i> Founder Escalation</h3>
                     <p class="text-muted fs-sm margin-top-xs">Need scope clarification, client deadline extension, or server access?</p>
-                    <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20have%20an%20engineering%20question%20regarding%20an%20assigned%20build." target="_blank" class="btn btn-outline btn-block btn-sm margin-top-md" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
+                    <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20have%20an%20engineering%20question%20regarding%20an%20assigned%20build." target="_blank" class="btn btn-outline btn-block btn-sm margin-top-md magnetic-btn" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
                         <i class="fa-brands fa-whatsapp"></i> Chat with Founder V Akhil
                     </a>
                 </div>
@@ -286,14 +291,37 @@
 <script>
 function switchTeamAITab(tabName) {
     document.querySelectorAll('.ai-tool-panel').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.filter-tabs-wrapper .filter-tab').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.filter-tabs-wrapper .filter-tab').forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+    });
 
     const activePanel = document.getElementById(`ai-tab-${tabName}`);
     if (activePanel) activePanel.style.display = 'block';
 
-    if (tabName === 'scope-tool') document.getElementById('btn-tab-scope').classList.add('active');
-    if (tabName === 'audit-tool') document.getElementById('btn-tab-audit').classList.add('active');
-    if (tabName === 'lead-tool') document.getElementById('btn-tab-lead').classList.add('active');
+    const activeBtn = document.getElementById(`btn-tab-${tabName.replace('-tool', '')}`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.classList.add('btn-primary');
+        activeBtn.classList.remove('btn-outline');
+    }
+}
+
+function streamTextOutput(targetElement, fullText) {
+    targetElement.textContent = '';
+    let index = 0;
+    const speed = 12; // ms per chunk
+
+    function typeNextChunk() {
+        if (index < fullText.length) {
+            const chunk = fullText.substr(index, 3);
+            targetElement.textContent += chunk;
+            index += 3;
+            setTimeout(typeNextChunk, speed);
+        }
+    }
+    typeNextChunk();
 }
 
 async function handleTeamAIRequest(endpoint, payload, triggerBtn) {
@@ -307,9 +335,7 @@ async function handleTeamAIRequest(endpoint, payload, triggerBtn) {
     try {
         const response = await fetch(endpoint, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
@@ -317,50 +343,83 @@ async function handleTeamAIRequest(endpoint, payload, triggerBtn) {
         outputBox.style.display = 'block';
 
         if (data.success) {
-            outputContent.textContent = data.scope || data.audit || data.analysis || 'Analysis completed successfully.';
+            const resultText = data.scope || data.audit || data.analysis || 'Analysis completed successfully.';
+            streamTextOutput(outputContent, resultText);
+            if (typeof showToast === 'function') {
+                showToast('DAV AI assessment generated successfully!', 'success');
+            }
         } else {
             outputContent.textContent = 'DAV AI Error: ' + (data.error || 'Failed to process request.');
+            if (typeof showToast === 'function') {
+                showToast(data.error || 'AI generation error', 'danger');
+            }
         }
     } catch (err) {
         outputBox.style.display = 'block';
         outputContent.textContent = 'Network or server error communicating with DAV AI engine.';
+        if (typeof showToast === 'function') {
+            showToast('Network error contacting AI service.', 'danger');
+        }
     } finally {
         triggerBtn.disabled = false;
         triggerBtn.innerHTML = origText;
     }
 }
 
-function runTeamAIScope() {
+function runTeamAIScope(event) {
     const title = document.getElementById('team-ai-title').value.trim();
     const category = document.getElementById('team-ai-category').value;
     const requirements = document.getElementById('team-ai-requirements').value.trim();
 
     if (!title) {
-        alert('Please enter a project title.');
+        if (typeof showToast === 'function') {
+            showToast('Please enter a project title.', 'warning');
+        } else {
+            alert('Please enter a project title.');
+        }
         return;
     }
 
     handleTeamAIRequest('/api/dav-ai/generate-scope', { title, category, requirements }, event.target);
 }
 
-function runTeamAICodeAudit() {
+function runTeamAICodeAudit(event) {
     const code = document.getElementById('team-ai-code').value.trim();
     if (!code) {
-        alert('Please paste a code snippet to audit.');
+        if (typeof showToast === 'function') {
+            showToast('Please paste a code snippet to audit.', 'warning');
+        } else {
+            alert('Please paste a code snippet to audit.');
+        }
         return;
     }
 
     handleTeamAIRequest('/api/dav-ai/code-audit', { code }, event.target);
 }
 
-function runTeamAILeadAnalyze() {
+function runTeamAILeadAnalyze(event) {
     const message = document.getElementById('team-ai-message').value.trim();
     if (!message) {
-        alert('Please paste inquiry message details to analyze.');
+        if (typeof showToast === 'function') {
+            showToast('Please paste inquiry message details to analyze.', 'warning');
+        } else {
+            alert('Please paste inquiry message details to analyze.');
+        }
         return;
     }
 
     handleTeamAIRequest('/api/dav-ai/analyze-lead', { message, name: 'Specialist Evaluation' }, event.target);
+}
+
+function copyAIOutput() {
+    const content = document.getElementById('team-ai-output-content').textContent;
+    if (content) {
+        navigator.clipboard.writeText(content).then(() => {
+            if (typeof showToast === 'function') {
+                showToast('AI Blueprint copied to clipboard!', 'success');
+            }
+        });
+    }
 }
 </script>
 {% endblock %}
