@@ -1,11 +1,11 @@
 /* ==========================================================================
-   DAV CLOUD SOLUTIONS - MAIN INTERACTIVE JAVASCRIPT
+   DAV CLOUD SOLUTIONS - MAIN INTERACTIVE JAVASCRIPT ENGINE
    Tech Stack: HTML5, CSS3, JavaScript (ES6+), Python Flask, MongoDB
    File: static/js/main.js
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // ----------------------------------------------------------------------
     // 1. THEME TOGGLER (Dark Mode Default / Light Mode Memory)
     // ----------------------------------------------------------------------
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeIcon = document.getElementById('theme-icon');
     const htmlElement = document.documentElement;
 
-    // Load saved theme preference or default to 'dark'
     const savedTheme = localStorage.getItem('theme') || 'dark';
     applyTheme(savedTheme);
 
@@ -58,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Close mobile drawer when clicking a navigation item
         const navItems = navLinksWrapper.querySelectorAll('.nav-item, a');
         navItems.forEach(item => {
             item.addEventListener('click', function() {
@@ -69,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Close when clicking outside of the navbar
         document.addEventListener('click', function(e) {
             if (!navLinksWrapper.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                 navLinksWrapper.classList.remove('mobile-active');
@@ -79,26 +76,269 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ----------------------------------------------------------------------
-    // 3. GLOBAL 3D PERSPECTIVE TILT PHYSICS
+    // 3. INTERACTIVE NEURAL PARTICLE CANVAS
     // ----------------------------------------------------------------------
-    const tiltElements = document.querySelectorAll('.tilt-card');
+    const canvas = document.getElementById('neural-particle-canvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 140 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.speedY = (Math.random() - 0.5) * 0.8;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        let force = (mouse.radius - dist) / mouse.radius;
+                        this.x -= (dx / dist) * force * 1.8;
+                        this.y -= (dy / dist) * force * 1.8;
+                    }
+                }
+            }
+            draw() {
+                const isLight = htmlElement.getAttribute('data-theme') === 'light';
+                ctx.fillStyle = isLight ? 'rgba(99, 102, 241, 0.45)' : 'rgba(129, 140, 248, 0.6)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(Math.floor((canvas.width * canvas.height) / 18000), 80);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const isLight = htmlElement.getAttribute('data-theme') === 'light';
+
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        let opacity = (1 - dist / 120) * (isLight ? 0.15 : 0.22);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        resizeCanvas();
+        animateParticles();
+    }
+
+    // ----------------------------------------------------------------------
+    // 4. TYPEWRITER DYNAMIC HEADLINE ENGINE
+    // ----------------------------------------------------------------------
+    class TxtType {
+        constructor(el, toRotate, period) {
+            this.toRotate = toRotate;
+            this.el = el;
+            this.loopNum = 0;
+            this.period = parseInt(period, 10) || 2000;
+            this.txt = '';
+            this.tick();
+            this.isDeleting = false;
+        }
+        tick() {
+            const i = this.loopNum % this.toRotate.length;
+            const fullTxt = this.toRotate[i];
+
+            if (this.isDeleting) {
+                this.txt = fullTxt.substring(0, this.txt.length - 1);
+            } else {
+                this.txt = fullTxt.substring(0, this.txt.length + 1);
+            }
+
+            this.el.innerHTML = '<span class="wrap">' + this.txt + '</span>';
+            let delta = 150 - Math.random() * 80;
+
+            if (this.isDeleting) delta /= 2;
+
+            if (!this.isDeleting && this.txt === fullTxt) {
+                delta = this.period;
+                this.isDeleting = true;
+            } else if (this.isDeleting && this.txt === '') {
+                this.isDeleting = false;
+                this.loopNum++;
+                delta = 400;
+            }
+
+            setTimeout(() => this.tick(), delta);
+        }
+    }
+
+    const typewriters = document.querySelectorAll('.typewrite');
+    typewriters.forEach(el => {
+        const toRotate = el.getAttribute('data-type');
+        const period = el.getAttribute('data-period');
+        if (toRotate) {
+            new TxtType(el, JSON.parse(toRotate), period);
+        }
+    });
+
+    // ----------------------------------------------------------------------
+    // 5. ANIMATED NUMBER TICKER COUNTERS
+    // ----------------------------------------------------------------------
+    const counters = document.querySelectorAll('.stat-counter');
+    let hasCounted = false;
+
+    function runCounters() {
+        counters.forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-target'));
+            const decimals = parseInt(counter.getAttribute('data-decimals') || '0', 10);
+            const duration = 1800;
+            const startTime = performance.now();
+
+            function updateNumber(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // EaseOutQuad formula
+                const easeProgress = 1 - (1 - progress) * (1 - progress);
+                const currentVal = easeProgress * target;
+
+                counter.textContent = currentVal.toFixed(decimals);
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    counter.textContent = target.toFixed(decimals);
+                }
+            }
+
+            requestAnimationFrame(updateNumber);
+        });
+    }
+
+    const statsSection = document.querySelector('.hero-stats');
+    if (statsSection) {
+        const counterObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasCounted) {
+                    hasCounted = true;
+                    runCounters();
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        counterObserver.observe(statsSection);
+    }
+
+    // ----------------------------------------------------------------------
+    // 6. SCROLL REVEAL (INTERSECTION OBSERVER)
+    // ----------------------------------------------------------------------
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.glass-card, .section-header, .service-card, .pipeline-step, .team-card').forEach(el => {
+        el.classList.add('reveal-on-scroll');
+        revealObserver.observe(el);
+    });
+
+    // ----------------------------------------------------------------------
+    // 7. RADIAL MOUSE SPOTLIGHT & 3D TILT PHYSICS
+    // ----------------------------------------------------------------------
+    const tiltElements = document.querySelectorAll('.tilt-card, .glass-card');
     tiltElements.forEach(card => {
         card.addEventListener('mousemove', function(e) {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            const rotX = (y / (rect.height / 2)) * -6;
-            const rotY = (x / (rect.width / 2)) * 6;
-            card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px) scale(1.01)`;
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+
+            if (card.classList.contains('tilt-card')) {
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotX = ((y - centerY) / centerY) * -6;
+                const rotY = ((x - centerX) / centerX) * 6;
+                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px) scale(1.01)`;
+            }
         });
 
         card.addEventListener('mouseleave', function() {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+            if (card.classList.contains('tilt-card')) {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+            }
         });
     });
 
     // ----------------------------------------------------------------------
-    // 4. SCROLL PROGRESS & FLOATING BACK-TO-TOP HANDLER
+    // 8. MAGNETIC BUTTON PHYSICS
+    // ----------------------------------------------------------------------
+    const magneticButtons = document.querySelectorAll('.magnetic-btn');
+    magneticButtons.forEach(btn => {
+        btn.addEventListener('mousemove', function(e) {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            btn.style.transform = `translate(${x * 0.22}px, ${y * 0.22}px)`;
+        });
+
+        btn.addEventListener('mouseleave', function() {
+            btn.style.transform = 'translate(0px, 0px)';
+        });
+    });
+
+    // ----------------------------------------------------------------------
+    // 9. SCROLL PROGRESS & BACK-TO-TOP HANDLER
     // ----------------------------------------------------------------------
     const progressBar = document.getElementById('scroll-progress-bar');
     const backToTopBtn = document.getElementById('back-to-top-btn');
@@ -126,67 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ----------------------------------------------------------------------
-    // 5. GLOBAL CONTACT & INQUIRY FORM DUAL-DISPATCH
-    // ----------------------------------------------------------------------
-    const contactForm = document.getElementById('main-contact-form') || document.getElementById('web3forms-contact');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
-
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatching Inquiry...';
-            }
-
-            const formData = new FormData(contactForm);
-            const formJSON = Object.fromEntries(formData.entries());
-
-            try {
-                // 1. Dispatch to Web3Forms API (Instant Email Delivery)
-                const web3Response = await fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formJSON)
-                });
-                const web3Data = await web3Response.json();
-
-                // 2. Dispatch to Local Flask Endpoint (MongoDB Persistence)
-                await fetch('/api/submit-inquiry', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formJSON)
-                }).catch(() => {});
-
-                if (web3Data.success) {
-                    showToast('Inquiry received! Our engineering team will reach out shortly with technical scope notes.', 'success');
-                    contactForm.reset();
-                    const orderModal = document.getElementById('project-order-modal');
-                    if (orderModal) orderModal.style.display = 'none';
-                } else {
-                    showToast(web3Data.message || 'Error transmitting inquiry. Please try again.', 'danger');
-                }
-            } catch (err) {
-                showToast('Network error occurred. Please verify your connection.', 'danger');
-            } finally {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnHtml;
-                }
-            }
-        });
-    }
-
-    // ----------------------------------------------------------------------
-    // 6. DYNAMIC FLASH TOAST CREATOR & AUTO DISMISSAL
+    // 10. DYNAMIC FLASH TOAST CREATOR & AUTO DISMISSAL
     // ----------------------------------------------------------------------
     window.showToast = function(message, category = 'info') {
         let flashContainer = document.getElementById('flash-container');
@@ -226,7 +406,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     };
 
-    // Auto-dismiss initial server-rendered flash messages
     const serverToasts = document.querySelectorAll('.flash-toast');
     serverToasts.forEach(toast => {
         setTimeout(() => {
@@ -240,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ----------------------------------------------------------------------
-    // 7. GLOBAL MODAL TOGGLER UTILITY
+    // 11. GLOBAL MODAL TOGGLER UTILITY
     // ----------------------------------------------------------------------
     window.toggleModal = function(modalId) {
         const modal = document.getElementById(modalId);
@@ -251,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // ----------------------------------------------------------------------
-    // 8. SMOOTH SCROLLING FOR HASH ANCHORS
+    // 12. SMOOTH SCROLLING FOR HASH ANCHORS
     // ----------------------------------------------------------------------
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {

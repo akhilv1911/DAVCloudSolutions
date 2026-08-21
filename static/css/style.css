@@ -174,6 +174,10 @@ code, pre {
 .text-success { color: var(--accent-emerald); }
 .text-warning { color: var(--accent-amber); }
 .text-emerald { color: var(--accent-emerald); }
+.text-cyan { color: var(--accent-cyan); }
+.text-rose { color: var(--accent-rose); }
+.text-purple { color: var(--accent-purple); }
+.text-amber { color: var(--accent-amber); }
 
 .fs-sm { font-size: 0.875rem; }
 .fs-md { font-size: 1.05rem; }
@@ -215,7 +219,280 @@ code, pre {
 .team-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 800px; margin: 36px auto 0; }
 
 /* --------------------------------------------------------------------------
-   3. GLASSMORPHISM CARDS & UI COMPONENTS
+   3. ANIMATIONS, PARTICLE CANVAS & AMBIENT AURORA
+   -------------------------------------------------------------------------- */
+
+/* Top Scroll Progress Indicator */
+.scroll-progress-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3.5px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--accent-purple), var(--accent-cyan));
+    z-index: 9999;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* Background Neural Canvas */
+.particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+    opacity: 0.65;
+}
+
+/* Ambient Aurora Glow Mesh */
+.ambient-glow-mesh {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.32;
+    animation: floatMesh 18s ease-in-out infinite alternate;
+}
+
+.glow-orb-1 {
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, #6366f1, transparent 70%);
+    top: -100px;
+    left: -100px;
+}
+
+.glow-orb-2 {
+    width: 540px;
+    height: 540px;
+    background: radial-gradient(circle, #8b5cf6, transparent 70%);
+    bottom: -120px;
+    right: -120px;
+    animation-duration: 24s;
+    animation-delay: -6s;
+}
+
+@keyframes floatMesh {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(70px, 50px) scale(1.15); }
+    100% { transform: translate(-50px, 90px) scale(0.92); }
+}
+
+/* Radar Pulse Indicator */
+.nav-radar-status {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-right: 4px;
+}
+
+.radar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-emerald);
+    box-shadow: 0 0 8px var(--accent-emerald);
+    display: inline-block;
+}
+
+.radar-ripple {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-emerald);
+    opacity: 0;
+    animation: radarPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes radarPulse {
+    0% { transform: scale(0.4); opacity: 0.9; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Scroll-Triggered Fade & Slide Reveals */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Interactive Floating Icons & Badges */
+.floating-badge {
+    animation: floatBadge 4s ease-in-out infinite;
+}
+
+.floating-icon {
+    animation: floatBadge 3.5s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.pulse-icon {
+    animation: pulseIcon 2s ease-in-out infinite;
+}
+
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.85; }
+}
+
+/* Shimmering Card Border Beam */
+.border-beam {
+    position: relative;
+    overflow: hidden;
+}
+
+.border-beam::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: conic-gradient(from 0deg, transparent 0 320deg, var(--primary) 360deg);
+    animation: borderBeamRotate 6s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.65;
+}
+
+.border-beam > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes borderBeamRotate {
+    100% { transform: rotate(360deg); }
+}
+
+/* Pulsing Avatar Aura */
+.pulse-aura {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+    animation: auraPulse 2.5s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes auraPulse {
+    to {
+        box-shadow: 0 0 0 18px rgba(99, 102, 241, 0);
+    }
+}
+
+/* Radial Mouse Spotlight on Hover */
+.hover-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.hover-glow::before {
+    content: '';
+    position: absolute;
+    top: var(--mouse-y, -1000px);
+    left: var(--mouse-x, -1000px);
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.18), transparent 70%);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    z-index: 0;
+}
+
+.hover-glow:hover::before {
+    opacity: 1;
+}
+
+/* Magnetic Button Transition */
+.magnetic-btn {
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+}
+
+/* Infinite Marquee Animation */
+.marquee-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: marqueeScroll 32s linear infinite;
+}
+
+.marquee-wrapper:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.review-card {
+    min-width: 320px;
+    max-width: 360px;
+    flex-shrink: 0;
+}
+
+/* 4-Step Interactive Pipeline Flow */
+.pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.pipeline-step {
+    padding: 24px 18px;
+    position: relative;
+}
+
+.step-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    opacity: 0.3;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+}
+
+.step-icon {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   4. GLASSMORPHISM CARDS & UI COMPONENTS
    -------------------------------------------------------------------------- */
 .glass-card {
     background: var(--bg-card);
@@ -312,25 +589,17 @@ code, pre {
     gap: 8px;
 }
 
-/* Metric Cards */
-.metric-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px;
+/* 3D Tilt Card Elevation */
+.tilt-card {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
 }
 
-.metric-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius-sm);
-    background: rgba(99, 102, 241, 0.12);
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
+.tilt-card:hover {
+    transform: translateY(-8px) scale(1.015);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.2);
 }
 
 /* Buttons */
@@ -477,7 +746,7 @@ code, pre {
 .status-pending { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); }
 
 /* --------------------------------------------------------------------------
-   4. NAVBAR, BRAND LOGO & FOOTER
+   5. NAVBAR, BRAND LOGO, FOOTER & WIDGETS
    -------------------------------------------------------------------------- */
 .navbar-header {
     position: sticky;
@@ -511,7 +780,6 @@ code, pre {
     text-decoration: none;
 }
 
-/* Custom DAV Logo Image Styling */
 .brand-logo-img {
     height: 40px;
     width: 40px;
@@ -529,9 +797,7 @@ code, pre {
     box-shadow: 0 0 12px var(--primary-glow);
 }
 
-.logo-accent {
-    color: var(--primary);
-}
+.logo-accent { color: var(--primary); }
 
 .nav-links {
     display: flex;
@@ -577,6 +843,42 @@ code, pre {
     min-width: 44px;
 }
 
+/* Floating Back To Top Button */
+.floating-back-to-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: var(--bg-card);
+    border: 1px solid var(--border-highlight);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: all var(--transition-smooth);
+    z-index: 990;
+    box-shadow: var(--shadow-glow);
+}
+
+.floating-back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.floating-back-to-top:hover {
+    background: var(--primary);
+    color: #ffffff;
+    transform: translateY(-4px);
+}
+
 /* Footer Wrapper */
 .footer-wrapper {
     background: var(--bg-alt);
@@ -592,19 +894,9 @@ code, pre {
     gap: 36px;
 }
 
-.footer-logo-margin {
-    margin-bottom: 12px;
-}
-
-.footer-logo-img {
-    height: 46px;
-    width: 46px;
-}
-
-.footer-desc {
-    font-size: 0.88rem;
-    line-height: 1.6;
-}
+.footer-logo-margin { margin-bottom: 12px; }
+.footer-logo-img { height: 46px; width: 46px; }
+.footer-desc { font-size: 0.88rem; line-height: 1.6; }
 
 .footer-nav h4, .footer-services h4, .footer-contact h4 { margin-bottom: 14px; font-size: 1rem; }
 .footer-nav ul li, .footer-services ul li { margin-bottom: 8px; }
@@ -620,6 +912,23 @@ code, pre {
 .footer-nav ul li a:hover, .footer-services ul li a:hover { 
     color: var(--primary); 
     transform: translateX(3px);
+}
+
+.system-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 12px;
+}
+
+.status-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-emerald);
+    box-shadow: 0 0 10px var(--accent-emerald);
 }
 
 .contact-pill-item {
@@ -670,7 +979,7 @@ code, pre {
 }
 
 /* --------------------------------------------------------------------------
-   5. HERO & CODE CARD
+   6. HERO & CODE CARD
    -------------------------------------------------------------------------- */
 .hero-section {
     padding: 60px 20px 50px;
@@ -720,7 +1029,7 @@ code, pre {
 }
 
 .stat-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     color: var(--primary);
 }
 
@@ -767,7 +1076,7 @@ code, pre {
 .code-block .kc { color: #38bdf8; }
 
 /* --------------------------------------------------------------------------
-   6. FORMS & FLASH MESSAGES
+   7. FORMS & FLASH MESSAGES
    -------------------------------------------------------------------------- */
 .form-group {
     margin-bottom: 16px;
@@ -842,10 +1151,11 @@ code, pre {
 }
 
 /* --------------------------------------------------------------------------
-   7. RESPONSIVE BREAKPOINTS (Desktop / Tablet / Mobile)
+   8. RESPONSIVE BREAKPOINTS (Desktop / Tablet / Mobile)
    -------------------------------------------------------------------------- */
 @media (max-width: 1200px) {
     .services-grid, .projects-grid, .projects-grid-3col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pipeline-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .grid-4-col { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 }
 
@@ -971,7 +1281,8 @@ code, pre {
     .team-grid, 
     .grid-2-col, 
     .grid-3-col, 
-    .grid-4-col {
+    .grid-4-col,
+    .pipeline-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }

@@ -4,9 +4,7 @@
 
 {% block content %}
 <style>
-    /* ========================================================= */
-    /* GLOWING AVATAR RING & IMAGE CONTAINER                     */
-    /* ========================================================= */
+    /* Glowing Avatar Ring & Image Container */
     .magic-avatar-container {
         position: relative;
         margin: 0 auto 1.5rem auto;
@@ -91,19 +89,6 @@
         font-size: 3rem;
     }
 
-    /* 3D Tilt Card Elevation */
-    .tilt-card {
-        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-        transform-style: preserve-3d;
-        perspective: 1000px;
-    }
-
-    .tilt-card:hover {
-        transform: translateY(-8px) scale(1.015);
-        border-color: rgba(99, 102, 241, 0.45);
-        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.2);
-    }
-
     /* Role Responsibility Pill List */
     .role-responsibilities {
         text-align: left;
@@ -138,8 +123,8 @@
 <!-- ========================================================= -->
 <section class="team-hero-section section-padding text-center">
     <div class="section-container">
-        <div class="badge-pill">
-            <i class="fa-solid fa-users-gear text-primary"></i> Leadership & Technical Roster
+        <div class="badge-pill floating-badge">
+            <i class="fa-solid fa-users-gear text-primary pulse-icon"></i> Leadership & Technical Roster
         </div>
         <h1 class="hero-title margin-top-xs">
             The Minds Behind <span class="gradient-text">DAV Cloud Solutions</span>
@@ -161,10 +146,10 @@
         </div>
 
         <div class="max-w-800 margin-auto margin-top-lg">
-            <div class="glass-card highlight-border-card text-center padding-xl tilt-card">
+            <div class="glass-card highlight-border-card text-center padding-xl tilt-card border-beam hover-glow">
                 
                 <!-- Founder Circular Photo with Glowing Aura -->
-                <div class="magic-avatar-container magic-avatar-founder">
+                <div class="magic-avatar-container magic-avatar-founder pulse-aura">
                     <div class="magic-avatar-frame">
                         <img 
                             src="{{ url_for('static', filename='images/team/akhil.jpeg') }}" 
@@ -186,24 +171,24 @@
                 </p>
 
                 <ul class="role-responsibilities max-w-600 margin-auto margin-top-md">
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Core Engineering:</strong> Full-stack Python architectures (Flask/Django), scalable REST APIs, and MongoDB database schema design.</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Product Quality:</strong> Architectural review of student final-year scopes, MVP delivery pipelines, and staging security.</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Technical Mentorship:</strong> 1-on-1 code walkthroughs, viva review defense sessions, and software execution guidance.</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> <strong>Core Engineering:</strong> Full-stack Python architectures (Flask/Django), scalable REST APIs, and MongoDB database schema design.</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> <strong>Product Quality:</strong> Architectural review of student final-year scopes, MVP delivery pipelines, and staging security.</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> <strong>Technical Mentorship:</strong> 1-on-1 code walkthroughs, viva review defense sessions, and software execution guidance.</li>
                 </ul>
 
-                <div class="founder-skills-tags margin-top-md justify-center" style="display: flex; flex-wrap: wrap; gap: 6px;">
-                    <span class="tag" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;">Full-Stack Architecture</span>
-                    <span class="tag" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;">Python (Flask / Django)</span>
-                    <span class="tag" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;">MongoDB Atlas</span>
-                    <span class="tag" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;">Applied AI Pipelines</span>
-                    <span class="tag" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;">Cloud Infrastructure</span>
+                <div class="founder-skills-tags margin-top-md justify-center" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span class="badge-tech floating-badge"><i class="fa-solid fa-cube"></i> Full-Stack Architecture</span>
+                    <span class="badge-tech floating-badge"><i class="fa-brands fa-python"></i> Python (Flask / Django)</span>
+                    <span class="badge-tech floating-badge"><i class="fa-solid fa-database"></i> MongoDB Atlas</span>
+                    <span class="badge-tech floating-badge"><i class="fa-solid fa-brain"></i> Applied AI Pipelines</span>
+                    <span class="badge-tech floating-badge"><i class="fa-solid fa-cloud"></i> Cloud Infrastructure</span>
                 </div>
 
                 <div class="social-links margin-top-lg justify-center flex-center gap-sm">
-                    <a href="https://www.linkedin.com/in/akhil-v-4b8899278/" target="_blank" class="icon-btn" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="https://github.com/akhilv1911" target="_blank" class="icon-btn" aria-label="GitHub" title="GitHub Profile"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://wa.me/919948685064" target="_blank" class="icon-btn" aria-label="WhatsApp" title="Direct WhatsApp"><i class="fa-brands fa-whatsapp" style="color: var(--accent-emerald);"></i></a>
-                    <a href="mailto:contactdavcloudsolutions@gmail.com" class="icon-btn" aria-label="Email" title="Direct Email"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="https://www.linkedin.com/in/akhil-v-4b8899278/" target="_blank" class="icon-btn magnetic-btn" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/akhilv1911" target="_blank" class="icon-btn magnetic-btn" aria-label="GitHub" title="GitHub Profile"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://wa.me/919948685064" target="_blank" class="icon-btn magnetic-btn" aria-label="WhatsApp" title="Direct WhatsApp"><i class="fa-brands fa-whatsapp" style="color: var(--accent-emerald);"></i></a>
+                    <a href="mailto:contactdavcloudsolutions@gmail.com" class="icon-btn magnetic-btn" aria-label="Email" title="Direct Email"><i class="fa-solid fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -226,8 +211,8 @@
             {% if team %}
                 <!-- Dynamic Team Loop: Fetches from MongoDB admin roster -->
                 {% for member in team %}
-                    <div class="team-card glass-card text-center tilt-card">
-                        <div class="magic-avatar-container magic-avatar-team">
+                    <div class="team-card glass-card text-center tilt-card hover-glow">
+                        <div class="magic-avatar-container magic-avatar-team pulse-aura">
                             <div class="magic-avatar-frame">
                                 {% if member.image_filename %}
                                     <img 
@@ -256,7 +241,7 @@
 
                         {% if member.linkedin_url %}
                             <div class="social-links margin-top-sm justify-center">
-                                <a href="{{ member.linkedin_url }}" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                                <a href="{{ member.linkedin_url }}" target="_blank" class="magnetic-btn" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
                             </div>
                         {% endif %}
                         <div class="placeholder-status margin-top-sm">
@@ -268,8 +253,8 @@
                 <!-- Default Static Fallback Roster -->
 
                 <!-- Core Member 1: UI/UX -->
-                <div class="team-card glass-card text-center tilt-card">
-                    <div class="magic-avatar-container magic-avatar-team">
+                <div class="team-card glass-card text-center tilt-card hover-glow">
+                    <div class="magic-avatar-container magic-avatar-team pulse-aura">
                         <div class="magic-avatar-frame">
                             <img 
                                 src="{{ url_for('static', filename='images/team/awais.jpg') }}" 
@@ -295,7 +280,7 @@
                     </ul>
 
                     <div class="social-links margin-top-sm justify-center">
-                        <a href="https://www.linkedin.com/in/attarmohammadawais/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.linkedin.com/in/attarmohammadawais/" target="_blank" class="magnetic-btn" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
                     </div>
                     <div class="placeholder-status margin-top-sm">
                         <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Specialist</span>
@@ -303,8 +288,8 @@
                 </div>
 
                 <!-- Core Member 2: AI/ML -->
-                <div class="team-card glass-card text-center tilt-card">
-                    <div class="magic-avatar-container magic-avatar-team">
+                <div class="team-card glass-card text-center tilt-card hover-glow">
+                    <div class="magic-avatar-container magic-avatar-team pulse-aura">
                         <div class="magic-avatar-frame">
                             <img 
                                 src="{{ url_for('static', filename='images/team/harsha.jpg') }}" 
@@ -330,7 +315,7 @@
                     </ul>
 
                     <div class="social-links margin-top-sm justify-center">
-                        <a href="https://www.linkedin.com/in/aluvala-ediga-harsha-vardhan-goud-83241a296/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.linkedin.com/in/aluvala-ediga-harsha-vardhan-goud-83241a296/" target="_blank" class="magnetic-btn" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
                     </div>
                     <div class="placeholder-status margin-top-sm">
                         <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Specialist</span>
@@ -338,8 +323,8 @@
                 </div>
 
                 <!-- Core Member 3: Documentation & PPT -->
-                <div class="team-card glass-card text-center tilt-card">
-                    <div class="magic-avatar-container magic-avatar-team">
+                <div class="team-card glass-card text-center tilt-card hover-glow">
+                    <div class="magic-avatar-container magic-avatar-team pulse-aura">
                         <div class="magic-avatar-frame">
                             <img 
                                 src="{{ url_for('static', filename='images/team/huzaifa.jpeg') }}" 
@@ -365,7 +350,7 @@
                     </ul>
 
                     <div class="social-links margin-top-sm justify-center">
-                        <a href="https://www.linkedin.com/in/huzaifa-bairapuram-269366334/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.linkedin.com/in/huzaifa-bairapuram-269366334/" target="_blank" class="magnetic-btn" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
                     </div>
                     <div class="placeholder-status margin-top-sm">
                         <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Specialist</span>
@@ -373,8 +358,8 @@
                 </div>
 
                 <!-- Core Member 4: Technical Documentation & SRS -->
-                <div class="team-card glass-card text-center tilt-card">
-                    <div class="magic-avatar-container magic-avatar-team">
+                <div class="team-card glass-card text-center tilt-card hover-glow">
+                    <div class="magic-avatar-container magic-avatar-team pulse-aura">
                         <div class="magic-avatar-frame">
                             <img 
                                 src="{{ url_for('static', filename='images/team/malik.jpeg') }}" 
@@ -400,7 +385,7 @@
                     </ul>
 
                     <div class="social-links margin-top-sm justify-center">
-                        <a href="https://www.linkedin.com/in/malik-shaik-9972b2240/" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.linkedin.com/in/malik-shaik-9972b2240/" target="_blank" class="magnetic-btn" aria-label="LinkedIn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
                     </div>
                     <div class="placeholder-status margin-top-sm">
                         <span class="status-pill status-completed"><i class="fa-solid fa-check"></i> Active Specialist</span>
@@ -424,8 +409,8 @@
 
         <div class="team-grid margin-top-lg">
             <!-- Unit 1: Backend Systems -->
-            <div class="team-card glass-card text-center tilt-card">
-                <div class="team-avatar" style="margin-bottom: 12px;">
+            <div class="team-card glass-card text-center tilt-card hover-glow">
+                <div class="team-avatar floating-icon" style="margin-bottom: 12px;">
                     <i class="fa-solid fa-code text-primary fs-xl"></i>
                 </div>
                 <h3>Backend Systems</h3>
@@ -434,8 +419,8 @@
             </div>
 
             <!-- Unit 2: Academic Mentorship -->
-            <div class="team-card glass-card text-center tilt-card">
-                <div class="team-avatar" style="margin-bottom: 12px;">
+            <div class="team-card glass-card text-center tilt-card hover-glow">
+                <div class="team-avatar floating-icon" style="margin-bottom: 12px;">
                     <i class="fa-solid fa-graduation-cap text-primary fs-xl"></i>
                 </div>
                 <h3>Academic Guidance</h3>
@@ -444,8 +429,8 @@
             </div>
 
             <!-- Unit 3: Startup MVP Solutions -->
-            <div class="team-card glass-card text-center tilt-card">
-                <div class="team-avatar" style="margin-bottom: 12px;">
+            <div class="team-card glass-card text-center tilt-card hover-glow">
+                <div class="team-avatar floating-icon" style="margin-bottom: 12px;">
                     <i class="fa-solid fa-rocket text-primary fs-xl"></i>
                 </div>
                 <h3>MVP Product Delivery</h3>
@@ -461,43 +446,21 @@
 <!-- ========================================================= -->
 <section class="join-team-section section-padding">
     <div class="section-container text-center">
-        <div class="glass-card highlight-border-card max-w-800 margin-auto">
-            <div class="service-icon margin-auto" style="margin-bottom: 12px;"><i class="fa-solid fa-handshake text-primary fs-xl"></i></div>
+        <div class="glass-card highlight-border-card max-w-800 margin-auto hover-glow">
+            <div class="service-icon floating-icon margin-auto" style="margin-bottom: 12px;"><i class="fa-solid fa-handshake text-primary fs-xl"></i></div>
             <h2>Interested in Partnering or Joining Our Team?</h2>
             <p class="margin-top-xs">
                 We are continually expanding our developer network, research collaborators, and student mentorship initiatives. Connect directly with the <strong>DAV Cloud Solutions</strong> team.
             </p>
             <div class="margin-top-md" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg btn-glow">
+                <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg btn-glow magnetic-btn">
                     <i class="fa-solid fa-paper-plane"></i> Contact Engineering Team
                 </a>
-                <a href="https://wa.me/919948685064" target="_blank" class="btn btn-outline btn-lg">
+                <a href="https://wa.me/919948685064" target="_blank" class="btn btn-outline btn-lg magnetic-btn">
                     <i class="fa-brands fa-whatsapp" style="color: var(--accent-emerald);"></i> WhatsApp Inquiry
                 </a>
             </div>
         </div>
     </div>
 </section>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 3D Tilt Mousemove Physics
-        const tiltCards = document.querySelectorAll('.tilt-card');
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                const rotX = (y / (rect.height / 2)) * -6;
-                const rotY = (x / (rect.width / 2)) * 6;
-                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px) scale(1.015)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
-            });
-        });
-    });
-</script>
 {% endblock %}

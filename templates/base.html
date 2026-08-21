@@ -22,6 +22,9 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- Confetti Micro-Animations Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
     <!-- Favicon (DAV Logo) -->
     <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/logo.jpeg') }}">
 
@@ -36,13 +39,14 @@
 <body class="bg-main text-main">
 
     <!-- ========================================================= -->
-    <!-- 1. TOP SCROLL PROGRESS BAR                                -->
+    <!-- 1. TOP SCROLL PROGRESS BAR INDICATOR                      -->
     <!-- ========================================================= -->
     <div id="scroll-progress-bar" class="scroll-progress-indicator"></div>
 
     <!-- ========================================================= -->
-    <!-- 2. AMBIENT GLOW MESH (AURORA LIGHTING EFFECTS)            -->
+    <!-- 2. NEURAL NETWORK PARTICLE CANVAS & AMBIENT AURORA GLOW   -->
     <!-- ========================================================= -->
+    <canvas id="neural-particle-canvas" class="particle-canvas" aria-hidden="true"></canvas>
     <div class="ambient-glow-mesh" aria-hidden="true">
         <div class="glow-orb glow-orb-1"></div>
         <div class="glow-orb glow-orb-2"></div>
@@ -73,7 +77,7 @@
     <header class="navbar-header" id="header">
         <nav class="nav-container">
             <!-- Brand Logo -->
-            <a href="{% if session.get('user_id') %}{{ url_for('dashboard') }}{% else %}{{ url_for('home') }}{% endif %}" class="brand-logo">
+            <a href="{% if session.get('user_id') %}{{ url_for('dashboard') }}{% else %}{{ url_for('home') }}{% endif %}" class="brand-logo magnetic-btn">
                 <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="DAV Logo" class="brand-logo-img">
                 <div class="brand-text">
                     <span class="logo-accent">DAV</span> <span class="logo-light">Cloud Solutions</span>
@@ -91,8 +95,14 @@
                 </ul>
 
                 <div class="nav-controls">
+                    <!-- Live Server Radar Dot -->
+                    <div class="nav-radar-status" title="DAV Cloud Core Daemon: Online">
+                        <span class="radar-dot"></span>
+                        <span class="radar-ripple"></span>
+                    </div>
+
                     <!-- Theme Toggle Button -->
-                    <button id="theme-toggle-btn" class="icon-btn theme-switch-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
+                    <button id="theme-toggle-btn" class="icon-btn theme-switch-btn magnetic-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
 
@@ -103,7 +113,7 @@
                     </div>
 
                     <!-- Logout Button -->
-                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm" title="Logout">
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm magnetic-btn" title="Logout">
                         <i class="fa-solid fa-right-from-bracket"></i> <span class="hide-mobile">Logout</span>
                     </a>
 
@@ -126,15 +136,21 @@
                 </ul>
 
                 <div class="nav-controls">
+                    <!-- Live Server Radar Dot -->
+                    <div class="nav-radar-status" title="DAV Cloud Core Daemon: Online">
+                        <span class="radar-dot"></span>
+                        <span class="radar-ripple"></span>
+                    </div>
+
                     <!-- Theme Toggle Button -->
-                    <button id="theme-toggle-btn" class="icon-btn theme-switch-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
+                    <button id="theme-toggle-btn" class="icon-btn theme-switch-btn magnetic-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
 
                     <!-- Auth Actions -->
                     <div class="auth-actions-group">
-                        <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Log In</a>
-                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm btn-glow">
+                        <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm magnetic-btn">Log In</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm btn-glow magnetic-btn">
                             <span>Get Started</span> <i class="fa-solid fa-arrow-right-long"></i>
                         </a>
                     </div>
@@ -158,7 +174,7 @@
     <!-- ========================================================= -->
     <!-- 6. FLOATING BACK TO TOP WIDGET                            -->
     <!-- ========================================================= -->
-    <button id="back-to-top-btn" class="floating-back-to-top" aria-label="Back to Top" title="Back to Top">
+    <button id="back-to-top-btn" class="floating-back-to-top magnetic-btn" aria-label="Back to Top" title="Back to Top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 
@@ -168,7 +184,7 @@
     <footer class="footer-wrapper">
         <div class="footer-container">
             <div class="footer-brand">
-                <a href="{{ url_for('home') }}" class="brand-logo footer-logo-margin">
+                <a href="{{ url_for('home') }}" class="brand-logo footer-logo-margin magnetic-btn">
                     <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="DAV Logo" class="brand-logo-img footer-logo-img">
                     <div class="brand-text">
                         <span class="logo-accent">DAV</span> <span class="logo-light">Cloud Solutions</span>
@@ -182,9 +198,9 @@
                 </div>
 
                 <div class="social-links margin-top-sm">
-                    <a href="https://www.linkedin.com/in/akhil-v-4b8899278/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="https://github.com/akhilv1911" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://x.com/Akhil42329344" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/akhil-v-4b8899278/" target="_blank" aria-label="LinkedIn" class="magnetic-btn"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/akhilv1911" target="_blank" aria-label="GitHub" class="magnetic-btn"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://x.com/Akhil42329344" target="_blank" aria-label="X" class="magnetic-btn"><i class="fa-brands fa-x-twitter"></i></a>
                 </div>
             </div>
 
@@ -244,51 +260,7 @@
         </div>
     </footer>
 
-    <!-- Standard Scripts -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // 1. Reading Progress Bar Logic
-            window.addEventListener('scroll', () => {
-                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const progress = totalHeight > 0 ? (window.pageYOffset / totalHeight) * 100 : 0;
-                const progressBar = document.getElementById('scroll-progress-bar');
-                if (progressBar) progressBar.style.width = progress + '%';
-
-                // 2. Back to Top Button Visibility
-                const backToTopBtn = document.getElementById('back-to-top-btn');
-                if (backToTopBtn) {
-                    if (window.scrollY > 350) {
-                        backToTopBtn.classList.add('visible');
-                    } else {
-                        backToTopBtn.classList.remove('visible');
-                    }
-                }
-            });
-
-            // 3. Smooth Scroll to Top Click Handler
-            const backToTopBtn = document.getElementById('back-to-top-btn');
-            if (backToTopBtn) {
-                backToTopBtn.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-
-            // 4. Auto-dismiss Flash Messages
-            const flashToasts = document.querySelectorAll('.flash-toast');
-            if (flashToasts.length > 0) {
-                setTimeout(function() {
-                    flashToasts.forEach(toast => {
-                        toast.style.transition = 'all 0.5s ease';
-                        toast.style.opacity = '0';
-                        toast.style.transform = 'translateY(-10px)';
-                        setTimeout(() => toast.remove(), 500);
-                    });
-                }, 5000);
-            }
-        });
-    </script>
-
-    <!-- Global JavaScript -->
+    <!-- Global JavaScript Engine -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
