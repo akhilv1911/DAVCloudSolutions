@@ -1,45 +1,44 @@
 {% extends "base.html" %}
 
-{% block title %}DAV Cloud Solutions | Home - IT Services, Web Apps & Startup MVPs{% endblock %}
+{% block title %}DAV Cloud Solutions | Custom Software, AI Systems & Scalable MVPs{% endblock %}
 
 {% block content %}
 <!-- ========================================================= -->
-<!-- 1. HERO SECTION                                           -->
+<!-- 1. HERO SECTION WITH 3D MOTION & CODE CARD                -->
 <!-- ========================================================= -->
 <section id="hero" class="hero-section">
     <div class="hero-container">
         <div class="hero-content">
             <div class="badge-pill">
-                <i class="fa-solid fa-rocket"></i> Next-Gen IT Services & Platform
+                <i class="fa-solid fa-cloud-bolt text-primary"></i> Next-Gen IT Services & Engineering Platform
             </div>
             <h1 class="hero-title">
-                Building Scalable IT Solutions for <span class="gradient-text">Students, Startups & Businesses</span>
+                Architecting Scalable Software for <span class="gradient-text">Students, Startups & Enterprises</span>
             </h1>
             <p class="hero-subtitle">
-                At <strong>DAV Cloud Solutions</strong>, we deliver custom web applications, machine learning integration, portfolio builds, and MVP engineering designed for rapid growth and reliability.
+                At <strong>DAV Cloud Solutions</strong>, we engineer full-stack web applications, applied machine learning pipelines, and cloud-native MVPs designed for rapid growth and reliability.
             </p>
             
             <div class="hero-actions">
-                <a href="#contact" class="btn btn-primary btn-lg">
-                    <i class="fa-solid fa-paper-plane"></i> Request Service
+                <a href="#contact" class="btn btn-primary btn-lg btn-glow">
+                    <span><i class="fa-solid fa-paper-plane"></i> Request Custom Scope</span>
                 </a>
-                <!-- New Evergreen Blueprint CTA pre-integrated -->
-                <a href="{{ url_for('register') }}" class="btn btn-outline btn-lg">
-                    <i class="fa-solid fa-file-code"></i> Get Free Project Blueprint
+                <a href="{{ url_for('projects_page') }}" class="btn btn-outline btn-lg">
+                    <i class="fa-solid fa-layer-group"></i> Explore 40+ Projects
                 </a>
             </div>
 
             <!-- Trust Metrics -->
             <div class="hero-stats">
-                <div class="stat-card">
+                <div class="stat-card glass-card">
                     <h3>100%</h3>
                     <p>Verified Deliveries</p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card glass-card">
                     <h3>99.9%</h3>
                     <p>Uptime & Reliability</p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card glass-card">
                     <h3>24/7</h3>
                     <p>Project Tracking</p>
                 </div>
@@ -47,72 +46,78 @@
         </div>
 
         <div class="hero-visual">
-            <div class="glass-card hero-code-card">
-                <div class="card-header-bar">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
-                    <span class="card-title-sm">dav_cloud_solutions.py</span>
+            <div class="glass-card hero-code-card tilt-card highlight-border-card">
+                <div class="card-header-bar flex-between align-center">
+                    <div class="flex-align-center gap-xs">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="card-title-sm"><i class="fa-solid fa-code"></i> dav_cloud_core.py</span>
+                    <span class="badge-tech" style="font-size: 0.7rem;">Active Daemon</span>
                 </div>
-                <!-- Obfuscated class definitions for internal architecture security -->
                 <pre class="code-block"><code><span class="k">class</span> <span class="nc">DAVCloudCore</span>:
     <span class="k">def</span> <span class="nf">__init__</span>(<span class="bp">self</span>):
-        <span class="bp">self</span>.lead = <span class="s2">"V Akhil"</span>
-        <span class="bp">self</span>.stack = [<span class="s2">"Cloud Native"</span>, <span class="s2">"Scalable DB"</span>, <span class="s2">"Applied AI"</span>]
-        <span class="bp">self</span>.target = [<span class="s2">"Students"</span>, <span class="s2">"Business"</span>, <span class="s2">"Startups"</span>]
+        <span class="bp">self</span>.organization = <span class="s2">"DAV Cloud Solutions"</span>
+        <span class="bp">self</span>.stack = [<span class="s2">"Flask"</span>, <span class="s2">"MongoDB Atlas"</span>, <span class="s2">"Applied ML"</span>]
+        <span class="bp">self</span>.engineers = [<span class="s2">"Lead Architect"</span>, <span class="s2">"Specialist Roster"</span>]
 
-    <span class="k">def</span> <span class="nf">deliver</span>(<span class="bp">self</span>, requirements):
-        <span class="k">return</span> {<span class="s2">"status"</span>: <span class="s2">"Production Verified"</span>, <span class="s2">"deployed"</span>: <span class="kc">True</span>}</code></pre>
+    <span class="k">def</span> <span class="nf">deploy_solution</span>(<span class="bp">self</span>, requirement_spec):
+        <span class="k">return</span> {
+            <span class="s2">"architecture"</span>: <span class="s2">"Production Ready"</span>,
+            <span class="s2">"quality_gate"</span>: <span class="s2">"Verified & Tested"</span>,
+            <span class="s2">"live_status"</span>: <span class="kc">True</span>
+        }</code></pre>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ========================================================= -->
-<!-- 2. SERVICES SECTION                                       -->
+<!-- 2. CORE SERVICE OFFERINGS                                 -->
 <!-- ========================================================= -->
 <section id="services" class="services-section section-padding">
     <div class="section-container">
         <div class="section-header text-center">
-            <span class="section-tag">Core Offerings</span>
-            <h2>Tailored Solutions for Every Growth Stage</h2>
-            <p>From academic projects to full-scale enterprise software.</p>
+            <span class="section-tag"><i class="fa-solid fa-cubes"></i> Core Offerings</span>
+            <h2>Engineered Solutions for Every Growth Stage</h2>
+            <p>From university major builds to enterprise production deployments.</p>
         </div>
 
         <div class="services-grid">
-            <!-- Service 1: Students -->
-            <div class="service-card glass-card">
+            <!-- Service 1: Students & Academic -->
+            <div class="service-card glass-card tilt-card">
                 <div class="service-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <h3>Students & Freelancers</h3>
-                <p>Major academic project builds, modern web applications, Machine Learning integration, and ATS-optimized career portfolios.</p>
+                <h3>Academic & Student Engineering</h3>
+                <p>Major final-year project architectures, machine learning research pipelines, and ATS-optimized career portfolio platforms.</p>
                 <ul class="service-features">
-                    <li><i class="fa-solid fa-check"></i> Complete source code & documentation</li>
-                    <li><i class="fa-solid fa-check"></i> 1-on-1 technical walkthrough & viva prep</li>
-                    <li><i class="fa-solid fa-check"></i> Live cloud deployment with shareable URL</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> Complete clean source code & dataset dump</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> 1-on-1 technical walkthrough & viva prep coaching</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> IEEE-standard documentation & presentation PPT</li>
                 </ul>
             </div>
 
             <!-- Service 2: Small Businesses -->
-            <div class="service-card glass-card active-card">
+            <div class="service-card glass-card tilt-card active-card highlight-border-card">
                 <div class="service-icon"><i class="fa-solid fa-store"></i></div>
-                <h3>Small Businesses</h3>
-                <p>Custom business portals, client management tools, automated workflows, and high-visibility directory setups.</p>
+                <h3>Small Business Digital Platforms</h3>
+                <p>Custom business portals, client management tools, automated workflows, and verified business catalog directories.</p>
                 <ul class="service-features">
-                    <li><i class="fa-solid fa-check"></i> Verified Business Directory listing</li>
-                    <li><i class="fa-solid fa-check"></i> Automated client notifications & lead routing</li>
-                    <li><i class="fa-solid fa-check"></i> Scalable enterprise data storage</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> Verified business directory showcase listing</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> Automated client lead routing & email notifications</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> High-availability cloud database storage</li>
                 </ul>
             </div>
 
             <!-- Service 3: Tech Startups -->
-            <div class="service-card glass-card">
-                <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
-                <h3>Tech Startups</h3>
-                <p>Rapid Minimum Viable Product (MVP) development, microservices backend architecture, and production cloud hosting.</p>
+            <div class="service-card glass-card tilt-card">
+                <div class="service-icon"><i class="fa-solid fa-rocket"></i></div>
+                <h3>Startup MVP Architecture</h3>
+                <p>Rapid Minimum Viable Product (MVP) development, scalable microservices backend, and secure cloud deployment.</p>
                 <ul class="service-features">
-                    <li><i class="fa-solid fa-check"></i> Staging Sandbox preview environments</li>
-                    <li><i class="fa-solid fa-check"></i> Secure role-based access & API endpoints</li>
-                    <li><i class="fa-solid fa-check"></i> Production-ready architecture scaling</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> Staging sandbox preview environments</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> Role-based authentication (RBAC) & secure APIs</li>
+                    <li><i class="fa-solid fa-circle-check text-primary"></i> Scalable architecture ready for client onboarding</li>
                 </ul>
             </div>
         </div>
@@ -120,33 +125,33 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 3. ABOUT SECTION                                          -->
+<!-- 3. ABOUT COMPANY & FOUNDER PILLARS                        -->
 <!-- ========================================================= -->
 <section id="about" class="about-section section-padding bg-alt">
     <div class="section-container">
-        <div class="grid-2-col align-center">
+        <div class="grid-2-col align-center" style="gap: 36px;">
             <div class="about-image-wrapper">
-                <div class="glass-card founder-profile-card text-center">
+                <div class="glass-card founder-profile-card text-center tilt-card highlight-border-card">
                     <div class="avatar-circle">
-                        <i class="fa-solid fa-user-gear"></i>
+                        <i class="fa-solid fa-user-shield"></i>
                     </div>
-                    <h3>V Akhil</h3>
-                    <span class="role-badge">Founder & Lead Engineer</span>
-                    <p class="founder-quote">"Building accessible, high-performance IT solutions that bridge the gap between academic ideas and production-grade software."</p>
+                    <h3 class="margin-top-xs">V Akhil</h3>
+                    <span class="role-badge">Founder & Lead Software Architect</span>
+                    <p class="founder-quote">"Building high-performance, accessible software architectures that seamlessly bridge the gap between academic innovation and production-grade engineering."</p>
                 </div>
             </div>
 
             <div class="about-text-content">
-                <span class="section-tag">About DAV Cloud Solutions</span>
-                <h2>Driven by Innovation, Built for Scale</h2>
+                <span class="section-tag"><i class="fa-solid fa-building-flag"></i> Engineering Vision</span>
+                <h2>Driven by Innovation, Built for Performance</h2>
                 <p>
-                    Founded by <strong>V Akhil</strong>, DAV Cloud Solutions specializes in delivering robust web software, custom workflows, and dynamic platform tools.
+                    <strong>DAV Cloud Solutions</strong> is an independent software and product development initiative dedicated to building scalable web applications, robust database systems, and predictive machine learning models.
                 </p>
                 <p>
-                    Whether you are a student launching your first application or a business looking to digitize operations, our structured verification, role-based dashboards, and custom backend engineering ensure seamless execution.
+                    Whether engineering an end-to-end academic project with viva defense guidance or deploying a multi-tenant business portal, our structured verification protocols and custom backend architectures ensure seamless reliability.
                 </p>
-                <div class="about-actions">
-                    <a href="{{ url_for('about_page') }}" class="btn btn-outline">Read Full Story</a>
+                <div class="about-actions margin-top-md">
+                    <a href="{{ url_for('about_page') }}" class="btn btn-outline">Read Founder Story & Mission</a>
                 </div>
             </div>
         </div>
@@ -154,28 +159,28 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 4. FEATURED PROJECTS SHOWCASE                             -->
+<!-- 4. FEATURED DELIVERED BUILDS (3D SHOWCASE)                 -->
 <!-- ========================================================= -->
 <section id="projects" class="projects-section section-padding">
     <div class="section-container">
-        <div class="section-header flex-between">
+        <div class="section-header flex-between wrap-mobile gap-sm">
             <div>
-                <span class="section-tag">Portfolio Showcase</span>
+                <span class="section-tag"><i class="fa-solid fa-laptop-code"></i> Engineering Showcase</span>
                 <h2>Recent Works & Delivered Builds</h2>
             </div>
-            <a href="{{ url_for('projects_page') }}" class="btn btn-ghost">View All Projects <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="{{ url_for('projects_page') }}" class="btn btn-ghost">View All 40+ Projects <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
-        <div class="projects-grid">
+        <div class="projects-grid margin-top-md">
             {% if projects %}
                 {% for proj in projects %}
-                    <div class="project-card glass-card">
-                        <div class="project-header">
+                    <div class="project-card glass-card tilt-card">
+                        <div class="project-header flex-between align-center">
                             <span class="project-category">{{ proj.category }}</span>
                             <span class="status-pill status-completed">Delivered</span>
                         </div>
-                        <h3>{{ proj.title }}</h3>
-                        <p>{{ proj.description | truncate(120) }}</p>
+                        <h3 class="margin-top-xs">{{ proj.title }}</h3>
+                        <p class="text-muted fs-sm">{{ proj.description | truncate(120) }}</p>
                         <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
                             <span class="text-muted fs-sm"><i class="fa-solid fa-circle-check text-success"></i> Status</span>
                             <strong class="text-primary fs-sm">Production Verified</strong>
@@ -183,42 +188,42 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <!-- Project 1: AgriSmart Naa Panta -->
-                <div class="project-card glass-card">
-                    <div class="project-header">
+                <!-- Project 1: AgriSmart -->
+                <div class="project-card glass-card tilt-card">
+                    <div class="project-header flex-between align-center">
                         <span class="project-category"><i class="fa-solid fa-wheat-awn"></i> Agriculture & ML</span>
                         <span class="status-pill status-completed">Delivered</span>
                     </div>
-                    <h3>AgriSmart Naa Panta</h3>
-                    <p>Smart agricultural prediction and crop stress analysis web portal engineered for regional farming optimization.</p>
+                    <h3 class="margin-top-xs">AgriSmart: Predictive Crop Analytics</h3>
+                    <p class="text-muted fs-sm">Agricultural prediction and crop health analysis web portal engineered for regional soil optimization.</p>
                     <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
                         <span class="text-muted fs-sm"><i class="fa-solid fa-server"></i> Deployment</span>
                         <strong class="text-primary fs-sm">Live Cloud App</strong>
                     </div>
                 </div>
 
-                <!-- Project 2: Streamlit E-Learning -->
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> EdTech</span>
+                <!-- Project 2: SLMS Platform -->
+                <div class="project-card glass-card tilt-card">
+                    <div class="project-header flex-between align-center">
+                        <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> Campus SaaS</span>
                         <span class="status-pill status-completed">Delivered</span>
                     </div>
-                    <h3>Interactive Digital Learning Platform</h3>
-                    <p>Modern web application engineered for interactive module delivery, digital assessments, and student progress tracking.</p>
+                    <h3 class="margin-top-xs">Student Leave Management System</h3>
+                    <p class="text-muted fs-sm">Role-based student portal featuring automated faculty approval workflows and verifiable digital passes.</p>
                     <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
                         <span class="text-muted fs-sm"><i class="fa-solid fa-server"></i> Deployment</span>
                         <strong class="text-primary fs-sm">Live Cloud App</strong>
                     </div>
                 </div>
 
-                <!-- Project 3: Financial Analytics -->
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <span class="project-category"><i class="fa-solid fa-chart-line"></i> Data Science & AI</span>
+                <!-- Project 3: FinPredict -->
+                <div class="project-card glass-card tilt-card">
+                    <div class="project-header flex-between align-center">
+                        <span class="project-category"><i class="fa-solid fa-chart-line"></i> Data Science</span>
                         <span class="status-pill status-completed">Delivered</span>
                     </div>
-                    <h3>Financial Forecasting & Market EDA</h3>
-                    <p>Exploratory Data Analysis and machine learning predictive modeling pipeline for high-accuracy financial forecasting.</p>
+                    <h3 class="margin-top-xs">Financial Forecasting & Market EDA</h3>
+                    <p class="text-muted fs-sm">Exploratory Data Analysis and machine learning predictive modeling pipeline for historical market forecasting.</p>
                     <div class="project-footer flex-between align-center margin-top-md padding-top-sm border-top-glass">
                         <span class="text-muted fs-sm"><i class="fa-solid fa-server"></i> Deployment</span>
                         <strong class="text-primary fs-sm">Live Cloud App</strong>
@@ -230,22 +235,21 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 5. CLIENT REVIEWS & SUBMISSION SECTION                    -->
+<!-- 5. VERIFIED CLIENT REVIEWS & MARQUEE                      -->
 <!-- ========================================================= -->
 <section id="reviews-section" class="reviews-section section-padding bg-alt">
     <div class="section-container">
         <div class="section-header text-center">
-            <span class="section-tag">Client Feedback</span>
-            <h2>What Clients Say About Our Delivered Projects</h2>
-            <p>Verified feedback from founders, students, and teams who built with DAV Cloud Solutions.</p>
+            <span class="section-tag"><i class="fa-solid fa-comments"></i> Client Testimonials</span>
+            <h2>Feedback on Delivered Software & Projects</h2>
+            <p>Verified ratings from founders, students, and teams who built with DAV Cloud Solutions.</p>
         </div>
 
-        <!-- Only display scrolling marquee if REAL reviews exist in MongoDB -->
         {% if reviews and reviews|length > 0 %}
-            <div class="marquee-wrapper">
+            <div class="marquee-wrapper margin-top-lg">
                 <div class="marquee-track">
                     {% for r in reviews %}
-                        <div class="review-card">
+                        <div class="review-card glass-card">
                             <div class="review-stars">
                                 {% for _ in range(r.rating) %}★{% endfor %}
                             </div>
@@ -256,9 +260,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                    <!-- Seamless infinite loop duplication for real reviews -->
+                    <!-- Duplicate for infinite marquee loop -->
                     {% for r in reviews %}
-                        <div class="review-card" aria-hidden="true">
+                        <div class="review-card glass-card" aria-hidden="true">
                             <div class="review-stars">
                                 {% for _ in range(r.rating) %}★{% endfor %}
                             </div>
@@ -272,79 +276,80 @@
                 </div>
             </div>
         {% else %}
-            <!-- Clean Empty State (Zero Fake/Demo Reviews) -->
-            <div class="glass-card text-center padding-xl max-w-700 margin-auto" style="margin-bottom: 30px;">
+            <div class="glass-card text-center padding-xl max-w-700 margin-auto margin-bottom-lg">
                 <i class="fa-solid fa-comment-dots fs-xl text-primary" style="font-size: 2.2rem; margin-bottom: 12px;"></i>
-                <h3>No Client Reviews Yet</h3>
-                <p class="text-muted fs-sm margin-top-xs">Completed a project or internship deliverable with us? Submit your review below to get featured on our live platform.</p>
+                <h3>Verified Reviews Showcase</h3>
+                <p class="text-muted fs-sm margin-top-xs">Completed a software build or academic project with us? Submit your review below to get featured on our live platform.</p>
             </div>
         {% endif %}
 
-        <!-- Review Submission Card -->
-        <div class="review-form-container glass-card">
-            <h3 class="text-center">Completed a Project With Us? Leave Your Review</h3>
+        <!-- Review Submission Form -->
+        <div class="review-form-container glass-card highlight-border-card max-w-800 margin-auto margin-top-lg">
+            <h3 class="text-center"><i class="fa-solid fa-star text-warning"></i> Leave a Project Review</h3>
             <p class="text-center text-muted fs-sm margin-bottom-md">Share your experience to be featured in our verified client showcase.</p>
+            
             <form action="{{ url_for('submit_review') }}" method="POST" class="review-form">
                 <div class="grid-2-col" style="gap: 14px;">
                     <div class="form-group">
-                        <label>Your Name / Business Name *</label>
+                        <label class="fs-sm">Your Name / Business Name *</label>
                         <input type="text" name="client_name" class="form-input" placeholder="e.g. Rahul Sharma" required>
                     </div>
                     <div class="form-group">
-                        <label>Delivered Project Title *</label>
-                        <input type="text" name="project_title" class="form-input" placeholder="e.g. AgriPredict Platform" required>
+                        <label class="fs-sm">Delivered Project Title *</label>
+                        <input type="text" name="project_title" class="form-input" placeholder="e.g. Smart Leave Management System" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Rating</label>
-                    <select name="rating" class="form-input">
-                        <option value="5">★★★★★ (5/5 Excellent)</option>
+                    <label class="fs-sm">Rating Experience</label>
+                    <select name="rating" class="form-input form-select">
+                        <option value="5">★★★★★ (5/5 Outstanding Quality)</option>
                         <option value="4">★★★★☆ (4/5 Very Good)</option>
-                        <option value="3">★★★☆☆ (3/5 Good)</option>
+                        <option value="3">★★★☆☆ (3/5 Met Expectations)</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label>Your Feedback & Review *</label>
-                    <textarea name="feedback" class="form-input" rows="3" placeholder="Describe the quality of delivery, responsiveness, and architecture..." required></textarea>
+                    <label class="fs-sm">Your Feedback & Comments *</label>
+                    <textarea name="feedback" class="form-input" rows="3" placeholder="Describe the quality of delivery, code clarity, and architectural performance..." required></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block">
-                    <i class="fa-solid fa-star"></i> Post Verified Review
+                    <i class="fa-solid fa-check"></i> Submit Verified Review
                 </button>
             </form>
         </div>
     </div>
 </section>
+
 <!-- ========================================================= -->
-<!-- 6. TEAM PREVIEW SECTION                                   -->
+<!-- 6. CORE TEAM PREVIEW                                      -->
 <!-- ========================================================= -->
 <section id="team" class="team-section section-padding">
     <div class="section-container">
         <div class="section-header text-center">
-            <span class="section-tag">Leadership & Execution</span>
-            <h2>Meet the Core Team</h2>
-            <p>Empowering DAV Cloud Solutions with technical rigor.</p>
+            <span class="section-tag"><i class="fa-solid fa-users"></i> Specialist Network</span>
+            <h2>Core Engineering Roster</h2>
+            <p>Empowering DAV Cloud Solutions with specialized technical capabilities.</p>
         </div>
 
-        <div class="team-grid">
-            <div class="team-card glass-card text-center">
+        <div class="grid-2-col max-w-800 margin-auto" style="gap: 24px;">
+            <div class="team-card glass-card text-center tilt-card">
                 <div class="team-avatar">
-                    <i class="fa-solid fa-user-ninja"></i>
+                    <i class="fa-solid fa-user-tie"></i>
                 </div>
-                <h3>V Akhil</h3>
-                <span class="team-role">Founder & Lead Engineer</span>
-                <p>Full-Stack Architect specializing in Scalable Microservices, Applied AI, and Cloud Infrastructure.</p>
+                <h3 class="margin-top-xs">V Akhil</h3>
+                <span class="team-role">Founder & Lead Software Architect</span>
+                <p class="text-muted fs-sm margin-top-xs">Specializing in Python backends (Flask/Django), Cloud Database integration (MongoDB/SQL), and Applied Machine Learning.</p>
             </div>
 
-            <div class="team-card glass-card text-center placeholder-card">
+            <div class="team-card glass-card text-center tilt-card">
                 <div class="team-avatar">
-                    <i class="fa-solid fa-users"></i>
+                    <i class="fa-solid fa-laptop-code"></i>
                 </div>
-                <h3>Core Engineering Team</h3>
-                <span class="team-role">AI, UI/UX & Technical Documentation</span>
-                <p>Awais (UI/UX), Harsha (AI/ML), Huzaifa (Docs/Analysis) & Malik (Docs/Analysis).</p>
+                <h3 class="margin-top-xs">Specialist Engineering Team</h3>
+                <span class="team-role">UI/UX, AI Modeling & Technical Docs</span>
+                <p class="text-muted fs-sm margin-top-xs">Specialized technical members handling UI component design, model tuning, and IEEE documentation.</p>
             </div>
         </div>
 
@@ -355,41 +360,49 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 7. PROJECT COST ESTIMATOR WIDGET                          -->
+<!-- 7. INTERACTIVE PROJECT ESTIMATOR CALCULATOR               -->
 <!-- ========================================================= -->
 <section id="estimator" class="estimator-section section-padding bg-alt">
     <div class="section-container">
-        <div class="glass-card estimator-box">
+        <div class="glass-card estimator-box highlight-border-card max-w-800 margin-auto">
             <div class="section-header text-center">
-                <span class="section-tag">Interactive Calculator</span>
-                <h2>Instant Project Estimator</h2>
-                <p>Get a quick estimate range for your custom IT requirements.</p>
+                <span class="section-tag"><i class="fa-solid fa-calculator"></i> Transparent Pricing</span>
+                <h2>Interactive Project Cost Estimator</h2>
+                <p>Calculate an instant preliminary estimate based on your scope modules.</p>
             </div>
 
-            <div class="estimator-controls">
+            <div class="estimator-controls margin-top-md">
                 <div class="form-group">
-                    <label for="calc-type">Select Requirement Type:</label>
-                    <select id="calc-type" class="form-input">
+                    <label for="calc-type" class="fs-sm">Target Scope Track:</label>
+                    <select id="calc-type" class="form-input form-select">
                         <option value="student">Student Academic Project / Portfolio</option>
-                        <option value="business">Small Business Portal / Web App</option>
-                        <option value="startup">Startup MVP / Scalable Architecture</option>
+                        <option value="business">Small Business Portal / Web Application</option>
+                        <option value="startup">Startup MVP / Scalable Cloud Architecture</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label>Select Key Modules:</label>
-                    <div class="checkbox-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px;">
-                        <label><input type="checkbox" class="calc-addon" value="2000"> Scalable Cloud Database Integration</label>
-                        <label><input type="checkbox" class="calc-addon" value="3000"> Machine Learning Model Integration</label>
-                        <label><input type="checkbox" class="calc-addon" value="1500"> Secure Auth & Email Protocol</label>
-                        <label><input type="checkbox" class="calc-addon" value="2500"> Custom Business Directory Setup</label>
+                    <label class="fs-sm">Select Architectural Modules:</label>
+                    <div class="checkbox-group" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 8px;">
+                        <label class="glass-card" style="padding: 10px 14px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" class="calc-addon" value="2000"> Cloud Database Integration
+                        </label>
+                        <label class="glass-card" style="padding: 10px 14px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" class="calc-addon" value="3000"> Applied ML / AI Model Pipeline
+                        </label>
+                        <label class="glass-card" style="padding: 10px 14px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" class="calc-addon" value="1500"> Two-Tier Auth & Email Verify
+                        </label>
+                        <label class="glass-card" style="padding: 10px 14px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" class="calc-addon" value="2500"> Business Directory Showcase
+                        </label>
                     </div>
                 </div>
 
-                <div class="estimator-result text-center margin-top-md">
-                    <h4>Estimated Investment Range:</h4>
-                    <div class="price-display" id="estimated-price" style="font-size: 1.8rem; font-weight: 800; color: var(--primary); margin: 10px 0;">₹3,000 - ₹4,050</div>
-                    <p class="text-muted fs-sm">*Final pricing confirmed upon scope review by Founder V Akhil.</p>
+                <div class="estimator-result text-center margin-top-lg padding-top-md border-top-glass">
+                    <span class="fs-sm text-muted">Estimated Investment Window:</span>
+                    <div class="price-display" id="estimated-price" style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 6px 0;">₹3,000 - ₹4,050</div>
+                    <p class="text-muted fs-sm">*Final project quotes are customized and finalized upon complete technical scope review.</p>
                 </div>
             </div>
         </div>
@@ -397,15 +410,15 @@
 </section>
 
 <!-- ========================================================= -->
-<!-- 8. DIRECT CONTACT & INQUIRY SECTION                       -->
+<!-- 8. DIRECT CONTACT & CLIENT INQUIRY SECTION                -->
 <!-- ========================================================= -->
 <section id="contact" class="contact-section section-padding">
     <div class="section-container">
-        <div class="grid-2-col">
+        <div class="grid-2-col" style="gap: 36px;">
             <div class="contact-info">
-                <span class="section-tag">Get in Touch</span>
+                <span class="section-tag"><i class="fa-solid fa-paper-plane"></i> Direct Communication</span>
                 <h2>Start Your Project with DAV Cloud Solutions</h2>
-                <p>Send an instant inquiry. Our system routes your request directly to Founder V Akhil for scope analysis and delivers an alert to our inbox.</p>
+                <p>Submit your software requirements. Our team reviews the architecture feasibility and dispatches an immediate scope breakdown.</p>
                 
                 <div class="info-list margin-top-md">
                     <div class="info-item flex-align-center gap-sm margin-bottom-sm">
@@ -418,22 +431,22 @@
                     <div class="info-item flex-align-center gap-sm margin-bottom-sm">
                         <i class="fa-brands fa-whatsapp fs-lg" style="color: var(--accent-emerald);"></i>
                         <div>
-                            <strong>WhatsApp Support:</strong>
+                            <strong>WhatsApp Instant Dispatch:</strong>
                             <p class="text-muted">+91 9948685064</p>
                         </div>
                     </div>
                     <div class="info-item flex-align-center gap-sm">
-                        <i class="fa-solid fa-user-shield fs-lg text-primary"></i>
+                        <i class="fa-solid fa-shield-halved fs-lg text-primary"></i>
                         <div>
-                            <strong>Direct Founder Support:</strong>
-                            <p class="text-muted">V Akhil (Lead Architect)</p>
+                            <strong>Technical Verification:</strong>
+                            <p class="text-muted">Two-Tier Protocol Active</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="contact-form-card glass-card">
-                <h3>Send Quick Message</h3>
+            <div class="contact-form-card glass-card highlight-border-card">
+                <h3>Submit Project Requirements</h3>
                 
                 <form id="main-contact-form" class="margin-top-md">
                     <!-- Web3Forms Meta Inputs -->
@@ -443,38 +456,38 @@
                     <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
                     <div class="form-group">
-                        <label for="contact-name">Full Name <span style="color: var(--accent-rose);">*</span></label>
-                        <input type="text" name="name" id="contact-name" class="form-input" placeholder="Enter your name" required>
+                        <label for="contact-name" class="fs-sm">Full Name <span style="color: var(--accent-rose);">*</span></label>
+                        <input type="text" name="name" id="contact-name" class="form-input" placeholder="e.g. Rahul Sharma" required>
                     </div>
 
                     <div class="grid-2-col" style="gap: 14px;">
                         <div class="form-group">
-                            <label for="contact-email">Email Address <span style="color: var(--accent-rose);">*</span></label>
-                            <input type="email" name="email" id="contact-email" class="form-input" placeholder="Enter your email" required>
+                            <label for="contact-email" class="fs-sm">Email Address <span style="color: var(--accent-rose);">*</span></label>
+                            <input type="email" name="email" id="contact-email" class="form-input" placeholder="name@domain.com" required>
                         </div>
                         <div class="form-group">
-                            <label for="contact-phone">WhatsApp Number <span style="color: var(--accent-rose);">*</span></label>
+                            <label for="contact-phone" class="fs-sm">WhatsApp Number <span style="color: var(--accent-rose);">*</span></label>
                             <input type="tel" name="phone" id="contact-phone" class="form-input" placeholder="+91 9876543210" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="contact-role">I am a:</label>
-                        <select name="user_category" id="contact-role" class="form-input">
-                            <option value="Student">Student / Freelancer</option>
-                            <option value="Small Business Owner">Small Business Owner</option>
-                            <option value="Startup Founder">Startup Founder</option>
-                            <option value="Other">Other Inquiry</option>
+                        <label for="contact-role" class="fs-sm">Domain Track:</label>
+                        <select name="user_category" id="contact-role" class="form-input form-select">
+                            <option value="Student Final Year Project">Student Academic / Final Year Project</option>
+                            <option value="Small Business Web Portal">Small Business Web Portal</option>
+                            <option value="Startup MVP Architecture">Startup MVP Architecture</option>
+                            <option value="Other Technical Inquiry">Other Technical Inquiry</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="contact-message">Project Requirement Details <span style="color: var(--accent-rose);">*</span></label>
-                        <textarea name="message" id="contact-message" class="form-input" rows="4" placeholder="Describe what software, architecture, or project you need..." required></textarea>
+                        <label for="contact-message" class="fs-sm">Project Specifications & Deadline <span style="color: var(--accent-rose);">*</span></label>
+                        <textarea name="message" id="contact-message" class="form-input" rows="4" placeholder="Describe desired tech stack, functional modules, and project deadline..." required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fa-solid fa-paper-plane"></i> Submit Inquiry Directly to Founder
+                    <button type="submit" class="btn btn-primary btn-block btn-glow">
+                        <i class="fa-solid fa-paper-plane"></i> Dispatch Inquiry to Engineering Team
                     </button>
                 </form>
             </div>
@@ -486,12 +499,27 @@
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Estimator Calculation Logic
+        // 1. 3D Tilt Mousemove Physics
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const rotX = (y / (rect.height / 2)) * -6;
+                const rotY = (x / (rect.width / 2)) * 6;
+                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px) scale(1.01)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+            });
+        });
+
+        // 2. Interactive Estimator Calculation Logic
         const typeSelect = document.getElementById('calc-type');
         const checkboxes = document.querySelectorAll('.calc-addon');
         const priceDisplay = document.getElementById('estimated-price');
 
-        // Sanitized Base Prices to hide internal tiered pricing from client-side JS
         const basePrices = {
             'student': 3000,
             'business': 8000,
@@ -509,10 +537,9 @@
             });
 
             let minPrice = base + addons;
-            let maxPrice = Math.round(minPrice * 1.35); // Optimized range buffer
+            let maxPrice = Math.round(minPrice * 1.35);
 
             if (priceDisplay) {
-                // Formatting for India Locale (₹)
                 priceDisplay.textContent = `₹${minPrice.toLocaleString('en-IN')} - ₹${maxPrice.toLocaleString('en-IN')}`;
             }
         }
@@ -522,7 +549,7 @@
             checkboxes.forEach(cb => cb.addEventListener('change', calculateEstimate));
         }
 
-        // Dual-Dispatch Contact Form Handler (Web3Forms + Flask/MongoDB)
+        // 3. Dual-Dispatch Contact Form Handler (Web3Forms + Local Flask/MongoDB)
         const contactForm = document.getElementById('main-contact-form');
         if (contactForm) {
             contactForm.addEventListener('submit', async function(e) {
@@ -530,14 +557,13 @@
                 const btn = contactForm.querySelector('button[type="submit"]');
                 const origText = btn.innerHTML;
                 btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatching...';
 
-                // Securely capture form data without passing internal schema definitions
                 const formData = new FormData(contactForm);
                 const formJSON = Object.fromEntries(formData.entries());
 
                 try {
-                    // 1. Dispatch to Web3Forms API (Instant Email Notification)
+                    // 1. Dispatch to Web3Forms API
                     const web3Response = await fetch('https://api.web3forms.com/submit', {
                         method: 'POST',
                         headers: {
@@ -548,8 +574,7 @@
                     });
                     const web3Data = await web3Response.json();
 
-                    // 2. Dispatch to Flask Backend (MongoDB Ingestion & Client Linking)
-                    // We pass standard formJSON; backend sanitizes and defines MongoDB schema mapping
+                    // 2. Dispatch to Local Flask/MongoDB Endpoint
                     await fetch('/api/submit-inquiry', {
                         method: 'POST',
                         headers: {
@@ -559,7 +584,7 @@
                     });
 
                     if (web3Data.success) {
-                        alert('Inquiry successfully received! Founder V Akhil will review your scope and get in touch.');
+                        alert('Inquiry successfully received! Our engineering team will review your scope and get in touch shortly.');
                         contactForm.reset();
                     } else {
                         alert(web3Data.message || 'Error submitting inquiry. Please try again.');

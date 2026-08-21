@@ -5,7 +5,209 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. MODALS & OVERLAYS
+   1. AMBIENT GLOW MESH & READING PROGRESS BAR
+   -------------------------------------------------------------------------- */
+.scroll-progress-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4);
+    z-index: 99999;
+    transition: width 0.1s ease-out;
+}
+
+.ambient-glow-mesh {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: 0.16;
+    pointer-events: none;
+}
+
+.glow-orb-1 {
+    width: 480px;
+    height: 480px;
+    background: #6366f1;
+    top: -120px;
+    right: -100px;
+}
+
+.glow-orb-2 {
+    width: 420px;
+    height: 420px;
+    background: #8b5cf6;
+    bottom: 8%;
+    left: -120px;
+}
+
+/* --------------------------------------------------------------------------
+   2. 3D INTERACTIVE TILT & ROTATIONAL CARDS
+   -------------------------------------------------------------------------- */
+.tilt-card {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    will-change: transform;
+}
+
+.tilt-card:hover {
+    transform: translateY(-8px) scale(1.015);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.2);
+}
+
+/* 3D Flip Card Mechanics (Optional Two-Sided Project Views) */
+.flip-card {
+    background-color: transparent;
+    perspective: 1000px;
+    height: 100%;
+    min-height: 280px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.flip-card-front {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+.flip-card-back {
+    background: #0f172a;
+    border: 1px solid var(--primary);
+    transform: rotateY(180deg);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   3. BRAND BADGES, STATUS PULSES & FLOATING LAUNCHERS
+   -------------------------------------------------------------------------- */
+.logo-icon-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    margin-right: 8px;
+}
+
+.brand-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.system-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    font-size: 0.78rem;
+    margin-top: 14px;
+}
+
+.status-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.floating-back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #0f172a;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    color: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(16px);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.floating-back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.floating-back-to-top:hover {
+    background: #6366f1;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+}
+
+/* WhatsApp Accent Utility */
+.btn-wa {
+    color: var(--accent-emerald, #10b981) !important;
+    border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-wa:hover {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. MODALS & OVERLAYS
    -------------------------------------------------------------------------- */
 .modal-overlay {
     position: fixed;
@@ -62,86 +264,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. PROMOTIONAL SEASONAL DISCOUNT POPUP MODAL
-   -------------------------------------------------------------------------- */
-.promo-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(3, 7, 18, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    padding: 20px;
-    animation: fadeIn 0.3s ease-out;
-}
-
-.promo-modal-card {
-    background: #0f172a;
-    border: 1px solid rgba(99, 102, 241, 0.4);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(99, 102, 241, 0.2);
-    padding: 36px 28px;
-    border-radius: var(--radius-lg);
-    max-width: 460px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.promo-modal-close {
-    position: absolute;
-    top: 14px;
-    right: 16px;
-    background: none;
-    border: none;
-    font-size: 26px;
-    color: var(--text-muted);
-    cursor: pointer;
-    line-height: 1;
-    transition: color var(--transition-fast);
-}
-
-.promo-modal-close:hover {
-    color: #ffffff;
-}
-
-.promo-badge {
-    background: rgba(99, 102, 241, 0.15);
-    color: #818cf8;
-    font-size: 0.82rem;
-    font-weight: 700;
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: var(--radius-full);
-    margin-bottom: 14px;
-    border: 1px solid rgba(99, 102, 241, 0.3);
-}
-
-.promo-modal-card h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.promo-modal-card p {
-    font-size: 0.95rem;
-    color: #cbd5e1;
-    line-height: 1.5;
-}
-
-.btn-promo-start {
-    width: 100%;
-    margin-top: 20px;
-    font-weight: 700;
-    padding: 13px 20px;
-}
-
-/* --------------------------------------------------------------------------
-   3. DATA TABLES & RESPONSIVE CONTAINERS
+   5. DATA TABLES & RESPONSIVE CONTAINERS
    -------------------------------------------------------------------------- */
 .table-responsive {
     width: 100%;
@@ -200,7 +323,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. CLIENT REVIEWS MARQUEE & FEEDBACK COMPONENT
+   6. CLIENT REVIEWS MARQUEE & FEEDBACK COMPONENT
    -------------------------------------------------------------------------- */
 .reviews-section {
     position: relative;
@@ -277,7 +400,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. MILESTONE PROGRESS TRACKERS
+   7. MILESTONE PROGRESS TRACKERS
    -------------------------------------------------------------------------- */
 .milestone-tracker {
     display: flex;
@@ -337,7 +460,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   6. CATALOG & DIRECTORY CARDS
+   8. CATALOG & DIRECTORY CONTROLS
    -------------------------------------------------------------------------- */
 .catalog-controls-container {
     max-width: 800px;
@@ -393,6 +516,23 @@
     color: var(--primary);
 }
 
+.tech-pill-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tech-pill-btn:hover, .tech-pill-btn.active {
+    background: hsla(var(--primary-hue), 90%, 56%, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
 /* Project / Business Card Layout */
 .project-card, .business-card {
     display: flex;
@@ -434,36 +574,8 @@
     color: var(--text-muted);
 }
 
-.price-contact {
-    color: var(--accent-amber);
-    font-weight: 600;
-}
-
 /* --------------------------------------------------------------------------
-   7. DAV AI ENGINE SUB-CARDS (ADMIN DASHBOARD)
-   -------------------------------------------------------------------------- */
-.dav-ai-command-box {
-    border: 1px solid rgba(139, 92, 246, 0.4);
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
-}
-
-.ai-subcard {
-    background: rgba(139, 92, 246, 0.05);
-    border: 1px solid rgba(139, 92, 246, 0.2);
-    border-radius: var(--radius-sm);
-    padding: 16px;
-}
-
-.ai-subcard h4 {
-    color: var(--accent-purple);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-}
-
-/* --------------------------------------------------------------------------
-   8. KEYFRAME ANIMATIONS
+   9. KEYFRAME ANIMATIONS
    -------------------------------------------------------------------------- */
 @keyframes fadeIn {
     from { opacity: 0; }

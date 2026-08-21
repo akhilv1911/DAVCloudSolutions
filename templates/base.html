@@ -17,13 +17,13 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/cloud-bolt.svg">
+    <!-- Favicon (DAV Logo) -->
+    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/logo.jpeg') }}">
 
     <!-- Custom CSS Stylesheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -36,18 +36,31 @@
 <body class="bg-main text-main">
 
     <!-- ========================================================= -->
-    <!-- FLASH MESSAGES SYSTEM (Anchored to Top of Body)            -->
+    <!-- 1. TOP SCROLL PROGRESS BAR                                -->
+    <!-- ========================================================= -->
+    <div id="scroll-progress-bar" class="scroll-progress-indicator"></div>
+
+    <!-- ========================================================= -->
+    <!-- 2. AMBIENT GLOW MESH (AURORA LIGHTING EFFECTS)            -->
+    <!-- ========================================================= -->
+    <div class="ambient-glow-mesh" aria-hidden="true">
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 3. FLASH MESSAGES SYSTEM                                  -->
     <!-- ========================================================= -->
     <div class="flash-messages-container" id="flash-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="flash-toast flash-{{ category }}" role="alert">
+                    <div class="flash-toast flash-{{ category }} glass-card" role="alert">
                         <div class="flash-content">
                             <i class="fa-solid {% if category == 'success' %}fa-circle-check{% elif category == 'danger' %}fa-circle-xmark{% elif category == 'warning' %}fa-triangle-exclamation{% else %}fa-circle-info{% endif %}"></i>
                             <span>{{ message }}</span>
                         </div>
-                        <button type="button" class="flash-close-btn" onclick="this.parentElement.remove();">&times;</button>
+                        <button type="button" class="flash-close-btn" onclick="this.parentElement.remove();" aria-label="Close message">&times;</button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -55,17 +68,20 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- MAIN NAVIGATION BAR                                       -->
+    <!-- 4. MODERN GLASSMORPHISM HEADER & NAV BAR                  -->
     <!-- ========================================================= -->
     <header class="navbar-header" id="header">
         <nav class="nav-container">
             <!-- Brand Logo -->
             <a href="{% if session.get('user_id') %}{{ url_for('dashboard') }}{% else %}{{ url_for('home') }}{% endif %}" class="brand-logo">
-                <span class="logo-accent">DAV</span> Cloud Solutions
+                <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="DAV Logo" class="brand-logo-img">
+                <div class="brand-text">
+                    <span class="logo-accent">DAV</span> <span class="logo-light">Cloud Solutions</span>
+                </div>
             </a>
 
             {% if session.get('user_id') %}
-                <!-- LOGGED-IN NAVIGATION (USER & ADMIN) -->
+                <!-- LOGGED-IN NAVIGATION -->
                 <ul class="nav-links" id="nav-links">
                     <li>
                         <a href="{{ url_for('dashboard') }}" class="nav-item {% if request.path.startswith('/dashboard') %}active{% endif %}">
@@ -76,48 +92,56 @@
 
                 <div class="nav-controls">
                     <!-- Theme Toggle Button -->
-                    <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
+                    <button id="theme-toggle-btn" class="icon-btn theme-switch-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
 
+                    <!-- Session User Capsule -->
+                    <div class="user-profile-capsule">
+                        <span class="user-avatar-dot"><i class="fa-solid fa-user-check"></i></span>
+                        <span class="user-name-short">{{ session.get('full_name', 'User').split()[0] }}</span>
+                    </div>
+
                     <!-- Logout Button -->
                     <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm" title="Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        <i class="fa-solid fa-right-from-bracket"></i> <span class="hide-mobile">Logout</span>
                     </a>
 
                     <!-- Mobile Menu Button -->
-                    <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
-                        <i class="fa-solid fa-bars"></i>
+                    <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Mobile Navigation">
+                        <i class="fa-solid fa-bars-staggered"></i>
                     </button>
                 </div>
 
             {% else %}
                 <!-- PUBLIC VISITOR NAVIGATION -->
                 <ul class="nav-links" id="nav-links">
-                    <li><a href="{{ url_for('home') }}#hero" class="nav-item">Home</a></li>
-                    <li><a href="{{ url_for('home') }}#services" class="nav-item">Services</a></li>
-                    <li><a href="{{ url_for('about_page') }}" class="nav-item {% if request.endpoint == 'about_page' %}active{% endif %}">About</a></li>
-                    <li><a href="{{ url_for('team_page') }}" class="nav-item {% if request.endpoint == 'team_page' %}active{% endif %}">Team</a></li>
-                    <li><a href="{{ url_for('projects_page') }}" class="nav-item {% if request.endpoint == 'projects_page' %}active{% endif %}">Projects List</a></li>
-                    <li><a href="{{ url_for('business_catalog') }}" class="nav-item {% if request.endpoint == 'business_catalog' %}active{% endif %}">Business Catalog</a></li>
-                    <li><a href="{{ url_for('home') }}#contact" class="nav-item">Contact</a></li>
+                    <li><a href="{{ url_for('home') }}#hero" class="nav-item"><i class="fa-solid fa-house"></i> Home</a></li>
+                    <li><a href="{{ url_for('home') }}#services" class="nav-item"><i class="fa-solid fa-cubes-stacked"></i> Services</a></li>
+                    <li><a href="{{ url_for('about_page') }}" class="nav-item {% if request.endpoint == 'about_page' %}active{% endif %}"><i class="fa-solid fa-building-user"></i> About</a></li>
+                    <li><a href="{{ url_for('team_page') }}" class="nav-item {% if request.endpoint == 'team_page' %}active{% endif %}"><i class="fa-solid fa-user-group"></i> Team</a></li>
+                    <li><a href="{{ url_for('projects_page') }}" class="nav-item {% if request.endpoint == 'projects_page' %}active{% endif %}"><i class="fa-solid fa-layer-group"></i> Projects</a></li>
+                    <li><a href="{{ url_for('business_catalog') }}" class="nav-item {% if request.endpoint == 'business_catalog' %}active{% endif %}"><i class="fa-solid fa-store"></i> Catalog</a></li>
+                    <li><a href="{{ url_for('home') }}#contact" class="nav-item"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
                 </ul>
 
                 <div class="nav-controls">
                     <!-- Theme Toggle Button -->
-                    <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
+                    <button id="theme-toggle-btn" class="icon-btn theme-switch-btn" title="Toggle Theme" aria-label="Toggle Dark and Light Mode">
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
 
-                    <!-- Standard Auth Actions (Optimized for Mobile Header Support) -->
+                    <!-- Auth Actions -->
                     <div class="auth-actions-group">
                         <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Log In</a>
-                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Get Started</a>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm btn-glow">
+                            <span>Get Started</span> <i class="fa-solid fa-arrow-right-long"></i>
+                        </a>
                     </div>
 
-                    <!-- Mobile Menu Button -->
-                    <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Menu">
-                        <i class="fa-solid fa-bars"></i>
+                    <!-- Mobile Hamburger -->
+                    <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Mobile Navigation">
+                        <i class="fa-solid fa-bars-staggered"></i>
                     </button>
                 </div>
             {% endif %}
@@ -125,21 +149,39 @@
     </header>
 
     <!-- ========================================================= -->
-    <!-- DYNAMIC BODY CONTENT BLOCK                                -->
+    <!-- 5. DYNAMIC BODY CONTENT BLOCK                             -->
     <!-- ========================================================= -->
-    <main class="main-content-wrapper">
+    <main class="main-content-wrapper" id="main-content">
         {% block content %}{% endblock %}
     </main>
 
     <!-- ========================================================= -->
-    <!-- GLOBAL FOOTER                                             -->
+    <!-- 6. FLOATING BACK TO TOP WIDGET                            -->
+    <!-- ========================================================= -->
+    <button id="back-to-top-btn" class="floating-back-to-top" aria-label="Back to Top" title="Back to Top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- ========================================================= -->
+    <!-- 7. ENTERPRISE FOOTER                                      -->
     <!-- ========================================================= -->
     <footer class="footer-wrapper">
         <div class="footer-container">
             <div class="footer-brand">
-                <h3><span class="logo-accent">DAV</span> Cloud Solutions</h3>
-                <p>Empowering Students, Small Businesses, and Tech Startups with high-performance IT Services, Web Applications, and Custom Solutions.</p>
-                <div class="social-links">
+                <a href="{{ url_for('home') }}" class="brand-logo footer-logo-margin">
+                    <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="DAV Logo" class="brand-logo-img footer-logo-img">
+                    <div class="brand-text">
+                        <span class="logo-accent">DAV</span> <span class="logo-light">Cloud Solutions</span>
+                    </div>
+                </a>
+                <p class="footer-desc">Empowering Students, Small Businesses, and Tech Startups with high-performance IT Services, Web Applications, and Custom Machine Learning Pipelines.</p>
+                
+                <div class="system-status-indicator">
+                    <span class="status-pulse-dot"></span>
+                    <span class="status-pulse-text">DAV Cloud Services: <strong>Operational</strong></span>
+                </div>
+
+                <div class="social-links margin-top-sm">
                     <a href="https://www.linkedin.com/in/akhil-v-4b8899278/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                     <a href="https://github.com/akhilv1911" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
                     <a href="https://x.com/Akhil42329344" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
@@ -147,48 +189,98 @@
             </div>
 
             <div class="footer-nav">
-                <h4>Quick Links</h4>
+                <h4>Navigation</h4>
                 <ul>
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('about_page') }}">About Founder & Company</a></li>
-                    <li><a href="{{ url_for('projects_page') }}">Projects Gallery</a></li>
-                    <li><a href="{{ url_for('team_page') }}">Core Team</a></li>
+                    <li><a href="{{ url_for('home') }}"><i class="fa-solid fa-chevron-right"></i> Home</a></li>
+                    <li><a href="{{ url_for('about_page') }}"><i class="fa-solid fa-chevron-right"></i> Founder & Vision</a></li>
+                    <li><a href="{{ url_for('projects_page') }}"><i class="fa-solid fa-chevron-right"></i> Verified Projects</a></li>
+                    <li><a href="{{ url_for('team_page') }}"><i class="fa-solid fa-chevron-right"></i> Specialist Team</a></li>
                 </ul>
             </div>
 
             <div class="footer-services">
-                <h4>Services & Support</h4>
+                <h4>Core Domains</h4>
                 <ul>
-                    <li><a href="{{ url_for('home') }}#services">Student Project Guidance</a></li>
-                    <li><a href="{{ url_for('home') }}#services">Small Business Digital Setup</a></li>
-                    <li><a href="{{ url_for('home') }}#services">Startup MVP Development</a></li>
-                    <li><a href="{{ url_for('business_catalog') }}">Verified Business Catalog</a></li>
+                    <li><a href="{{ url_for('home') }}#services"><i class="fa-solid fa-chevron-right"></i> Major Academic Guidance</a></li>
+                    <li><a href="{{ url_for('home') }}#services"><i class="fa-solid fa-chevron-right"></i> Business Portals & SEO</a></li>
+                    <li><a href="{{ url_for('home') }}#services"><i class="fa-solid fa-chevron-right"></i> Startup MVP Engineering</a></li>
+                    <li><a href="{{ url_for('business_catalog') }}"><i class="fa-solid fa-chevron-right"></i> Verified Directory</a></li>
                 </ul>
             </div>
 
             <div class="footer-contact">
-                <h4>Founder Details</h4>
-                <p><i class="fa-solid fa-user-tie"></i> Founder: <strong>V Akhil</strong></p>
-                <p><i class="fa-solid fa-envelope"></i> contactdavcloudsolutions@gmail.com</p>
-                <p><i class="fa-solid fa-shield-halved"></i> Secure Verification Protocol Enabled</p>
+                <h4>Connect with Engineering</h4>
+                <div class="contact-pill-item">
+                    <i class="fa-solid fa-user-tie text-primary"></i>
+                    <div>
+                        <span class="contact-label">Lead Architect</span>
+                        <strong>V Akhil</strong>
+                    </div>
+                </div>
+                <div class="contact-pill-item margin-top-xs">
+                    <i class="fa-solid fa-envelope text-primary"></i>
+                    <div>
+                        <span class="contact-label">Support Email</span>
+                        <span>contactdavcloudsolutions@gmail.com</span>
+                    </div>
+                </div>
+                <div class="contact-pill-item margin-top-xs">
+                    <i class="fa-solid fa-shield-halved text-emerald"></i>
+                    <div>
+                        <span class="contact-label">Security Protocol</span>
+                        <span>Two-Tier Auth Enabled</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; {{ current_year if current_year else '2026' }} <strong>DAV Cloud Solutions</strong>. All Rights Reserved.</p>
+            <div class="footer-bottom-inner flex-between wrap-mobile">
+                <p>&copy; {{ current_year if current_year else '2026' }} <strong>DAV Cloud Solutions</strong>. All Rights Reserved.</p>
+                <div class="footer-legal-links">
+                    <span>Engineered for Scale & Speed</span>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- Standard Scripts -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Auto-dismiss Flash Messages after 5 seconds
+            // 1. Reading Progress Bar Logic
+            window.addEventListener('scroll', () => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = totalHeight > 0 ? (window.pageYOffset / totalHeight) * 100 : 0;
+                const progressBar = document.getElementById('scroll-progress-bar');
+                if (progressBar) progressBar.style.width = progress + '%';
+
+                // 2. Back to Top Button Visibility
+                const backToTopBtn = document.getElementById('back-to-top-btn');
+                if (backToTopBtn) {
+                    if (window.scrollY > 350) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                }
+            });
+
+            // 3. Smooth Scroll to Top Click Handler
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // 4. Auto-dismiss Flash Messages
             const flashToasts = document.querySelectorAll('.flash-toast');
             if (flashToasts.length > 0) {
                 setTimeout(function() {
                     flashToasts.forEach(toast => {
-                        toast.style.transition = 'opacity 0.5s ease';
+                        toast.style.transition = 'all 0.5s ease';
                         toast.style.opacity = '0';
+                        toast.style.transform = 'translateY(-10px)';
                         setTimeout(() => toast.remove(), 500);
                     });
                 }, 5000);

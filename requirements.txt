@@ -22,3 +22,6 @@ gunicorn>=21.2.0
 
 # Network & HTTP Helpers (For external API integrations like Web3Forms)
 requests>=2.31.0
+
+# Google gen-api
+google-genai>=0.1.1

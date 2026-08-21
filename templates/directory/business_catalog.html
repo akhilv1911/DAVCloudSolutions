@@ -1,78 +1,93 @@
 {% extends "base.html" %}
 
-{% block title %}Client Portfolio & Delivered Work | DAV Cloud Solutions{% endblock %}
+{% block title %}Verified Client Portfolio & Deliverables | DAV Cloud Solutions{% endblock %}
 
 {% block content %}
 <!-- ========================================================= -->
-<!-- 1. PORTFOLIO HERO SECTION                                 -->
+<!-- 1. PORTFOLIO HERO & SEARCH CONTROLS                       -->
 <!-- ========================================================= -->
 <section class="directory-hero-section section-padding text-center">
     <div class="section-container">
         <div class="badge-pill">
-            <i class="fa-solid fa-briefcase"></i> Real Client Deliverables
+            <i class="fa-solid fa-briefcase text-primary"></i> Verified Deliverables Catalog
         </div>
-        <h1 class="hero-title">
-            Projects Successfully <span class="gradient-text">Delivered</span>
+        <h1 class="hero-title margin-top-xs">
+            Client Projects Successfully <span class="gradient-text">Engineered & Delivered</span>
         </h1>
-        <p class="hero-subtitle max-w-700">
-            Real software solutions engineered and delivered across Smart Agriculture, EdTech Platforms, and Data Analytics.
+        <p class="hero-subtitle max-w-700 margin-auto">
+            Explore our track record of production-grade software architectures delivered across Smart Agriculture, EdTech Platforms, and Data Science.
         </p>
 
         <!-- Search & Filter Controls -->
-        <div class="catalog-controls-container margin-top-lg">
-            <div class="search-bar-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <div class="catalog-controls-container margin-top-lg max-w-800 margin-auto">
+            <div class="search-bar-wrapper" style="position: relative;">
+                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
                 <input 
                     type="text" 
                     id="business-search" 
                     class="form-input search-input" 
-                    placeholder="Search deliverables by project title, domain, or tech stack..."
+                    placeholder="Search by title, industry domain, or stack (e.g. Flask, ML, Streamlit)..."
+                    style="padding-left: 48px; font-size: 0.95rem; border-radius: var(--radius-full);"
                 >
             </div>
 
             <!-- Domain Filter Badges -->
-            <div class="filter-tabs-wrapper margin-top-md">
-                <button class="filter-tab active" data-industry="all">
-                    <i class="fa-solid fa-layer-group"></i> All Projects
+            <div class="filter-tabs-wrapper margin-top-md" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+                <button class="btn btn-sm btn-primary filter-tab active" data-industry="all">
+                    <i class="fa-solid fa-layer-group"></i> All Deliverables
                 </button>
-                <button class="filter-tab" data-industry="agriculture">
+                <button class="btn btn-sm btn-outline filter-tab" data-industry="agriculture">
                     <i class="fa-solid fa-wheat-awn"></i> Agriculture & ML
                 </button>
-                <button class="filter-tab" data-industry="edtech">
+                <button class="btn btn-sm btn-outline filter-tab" data-industry="edtech">
                     <i class="fa-solid fa-graduation-cap"></i> EdTech
                 </button>
-                <button class="filter-tab" data-industry="data science">
-                    <i class="fa-solid fa-chart-line"></i> Data Science
+                <button class="btn btn-sm btn-outline filter-tab" data-industry="data science">
+                    <i class="fa-solid fa-chart-line"></i> Data Science & EDA
                 </button>
+            </div>
+
+            <!-- Dynamic Results Count -->
+            <div class="margin-top-sm text-muted fs-sm" id="catalog-count-bar">
+                Showing all verified builds
             </div>
         </div>
     </div>
 </section>
 
 <!-- ========================================================= -->
-<!-- 2. REVENUE & DELIVERABLES STATS                           -->
+<!-- 2. DELIVERABLES IMPACT METRICS                            -->
 <!-- ========================================================= -->
 <section class="stats-section section-padding-sm">
     <div class="section-container">
         <div class="grid-3-col">
-            <div class="glass-card text-center">
-                <h2 class="gradient-text fs-xxl">₹14,200</h2>
-                <p class="text-muted fs-sm">Total Revenue Generated</p>
+            <div class="glass-card text-center tilt-card">
+                <div class="metric-icon" style="color: var(--accent-emerald, #10b981); margin-bottom: 8px;">
+                    <i class="fa-solid fa-indian-rupee-sign fs-xl"></i>
+                </div>
+                <h2 class="gradient-text fs-xxl">₹14,200+</h2>
+                <p class="text-muted fs-sm">Total Project Value Deployed</p>
             </div>
-            <div class="glass-card text-center">
-                <h2 class="gradient-text fs-xxl">3</h2>
-                <p class="text-muted fs-sm">Projects Delivered</p>
-            </div>
-            <div class="glass-card text-center">
+            <div class="glass-card text-center tilt-card">
+                <div class="metric-icon text-primary" style="margin-bottom: 8px;">
+                    <i class="fa-solid fa-circle-check fs-xl"></i>
+                </div>
                 <h2 class="gradient-text fs-xxl">100%</h2>
-                <p class="text-muted fs-sm">Successful Completion</p>
+                <p class="text-muted fs-sm">On-Time Client Milestone Delivery</p>
+            </div>
+            <div class="glass-card text-center tilt-card">
+                <div class="metric-icon text-warning" style="margin-bottom: 8px;">
+                    <i class="fa-solid fa-cloud-arrow-up fs-xl"></i>
+                </div>
+                <h2 class="gradient-text fs-xxl">Production</h2>
+                <p class="text-muted fs-sm">Live Cloud Deployed & Tested</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ========================================================= -->
-<!-- 3. REAL DELIVERED PROJECTS GRID                           -->
+<!-- 3. REAL DELIVERED PROJECTS GRID (3D TILT CARDS)           -->
 <!-- ========================================================= -->
 <section class="directory-grid-section section-padding bg-alt">
     <div class="section-container">
@@ -80,138 +95,268 @@
 
             {% if projects %}
                 {% for p in projects %}
-                    <div class="project-card glass-card business-card" data-industry="{{ p.category | lower }}">
-                        <div class="project-header">
+                    <div class="project-card glass-card business-card tilt-card highlight-border-card" data-industry="{{ p.category | lower }}">
+                        <div class="project-header flex-between align-center">
                             <span class="project-category">
-                                <i class="fa-solid fa-code"></i> {{ p.category }}
+                                <i class="fa-solid fa-code text-primary"></i> {{ p.category }}
                             </span>
                             <span class="status-pill status-completed">
-                                <i class="fa-solid fa-check-circle"></i> Delivered
+                                <i class="fa-solid fa-circle-check"></i> {{ p.status | default('Delivered') }}
                             </span>
                         </div>
 
-                        <h3>{{ p.title }}</h3>
+                        <h3 class="margin-top-xs">{{ p.title }}</h3>
                         <p class="fs-sm text-muted margin-top-xs">{{ p.description }}</p>
 
                         {% if p.tech_stack %}
-                            <div class="founder-skills-tags margin-top-xs">
+                            <div class="founder-skills-tags margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px;">
                                 {% for tech in p.tech_stack %}
-                                    <span class="tag">{{ tech }}</span>
+                                    <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; border: 1px solid rgba(99, 102, 241, 0.25);">{{ tech }}</span>
                                 {% endfor %}
                             </div>
                         {% endif %}
 
-                        <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
-                            <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Client Cost</span>
-                            <strong class="text-primary fs-lg">₹{{ p.amount_charged }}</strong>
+                        <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center wrap-mobile gap-sm">
+                            <div>
+                                <span class="text-muted fs-sm" style="display: block; font-size: 0.72rem;">Deployment Tier</span>
+                                <strong class="text-primary fs-sm">Enterprise Deployed</strong>
+                            </div>
+                            <div class="flex-align-center gap-xs">
+                                <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20saw%20your%20delivered%20project%20{{ p.title | urlencode }}%20and%20want%20a%20similar%20build" target="_blank" class="btn btn-sm btn-outline btn-wa" title="Inquire on WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                                </a>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
             {% else %}
-                <!-- Project 1: AgriSmart Naa Panta -->
-                <div class="project-card glass-card business-card" data-industry="agriculture">
-                    <div class="project-header">
-                        <span class="project-category"><i class="fa-solid fa-wheat-awn"></i> Agriculture & ML</span>
-                        <span class="status-pill status-completed"><i class="fa-solid fa-check-circle"></i> Delivered</span>
+                <!-- Fallback Deliverable 1: AgriSmart -->
+                <div class="project-card glass-card business-card tilt-card highlight-border-card" data-industry="agriculture">
+                    <div class="project-header flex-between align-center">
+                        <span class="project-category"><i class="fa-solid fa-wheat-awn text-primary"></i> Agriculture & ML</span>
+                        <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> Delivered</span>
                     </div>
-                    <h3>AgriSmart Naa Panta</h3>
+                    <h3 class="margin-top-xs">AgriSmart Naa Panta</h3>
                     <p class="fs-sm text-muted margin-top-xs">
-                        Comprehensive agricultural prediction and smart crop management platform built for regional farming needs.
+                        Comprehensive agricultural prediction and smart crop management platform built for regional farming and soil health monitoring.
                     </p>
-                    <div class="founder-skills-tags margin-top-xs">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">MongoDB</span>
-                        <span class="tag">Machine Learning</span>
+                    <div class="founder-skills-tags margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Python Backend</span>
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Flask</span>
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">MongoDB Atlas</span>
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Applied ML</span>
                     </div>
-                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
-                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Amount Charged</span>
-                        <strong class="text-primary fs-lg">₹6,000</strong>
+                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center wrap-mobile gap-sm">
+                        <div>
+                            <span class="text-muted fs-sm" style="display: block; font-size: 0.72rem;">Deployment Tier</span>
+                            <strong class="text-primary fs-sm">Enterprise Deployed</strong>
+                        </div>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20a%20build%20like%20AgriSmart" target="_blank" class="btn btn-sm btn-outline btn-wa">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </a>
                     </div>
                 </div>
 
-                <!-- Project 2: Streamlit E-Learning -->
-                <div class="project-card glass-card business-card" data-industry="edtech">
-                    <div class="project-header">
-                        <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> EdTech</span>
-                        <span class="status-pill status-completed"><i class="fa-solid fa-check-circle"></i> Delivered</span>
+                <!-- Fallback Deliverable 2: Streamlit E-Learning -->
+                <div class="project-card glass-card business-card tilt-card highlight-border-card" data-industry="edtech">
+                    <div class="project-header flex-between align-center">
+                        <span class="project-category"><i class="fa-solid fa-graduation-cap text-primary"></i> EdTech</span>
+                        <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> Delivered</span>
                     </div>
-                    <h3>Streamlit E-Learning Platform</h3>
+                    <h3 class="margin-top-xs">Streamlit E-Learning Platform</h3>
                     <p class="fs-sm text-muted margin-top-xs">
-                        Interactive learning management web application built using Streamlit for seamless course delivery and student engagement.
+                        Interactive learning management web application built using Streamlit for seamless course delivery, student quizzes, and progress analytics.
                     </p>
-                    <div class="founder-skills-tags margin-top-xs">
-                        <span class="tag">Python</span>
-                        <span class="tag">Streamlit</span>
-                        <span class="tag">Data Processing</span>
+                    <div class="founder-skills-tags margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Python Architecture</span>
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Streamlit</span>
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Interactive UI</span>
                     </div>
-                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
-                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Amount Charged</span>
-                        <strong class="text-primary fs-lg">₹3,200</strong>
+                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center wrap-mobile gap-sm">
+                        <div>
+                            <span class="text-muted fs-sm" style="display: block; font-size: 0.72rem;">Deployment Tier</span>
+                            <strong class="text-primary fs-sm">Enterprise Deployed</strong>
+                        </div>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20a%20build%20like%20Streamlit%20E-Learning" target="_blank" class="btn btn-sm btn-outline btn-wa">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </a>
                     </div>
                 </div>
 
-                <!-- Project 3: Apple Stock Prediction (EDA) -->
-                <div class="project-card glass-card business-card" data-industry="data science">
-                    <div class="project-header">
-                        <span class="project-category"><i class="fa-solid fa-chart-line"></i> Data Science</span>
-                        <span class="status-pill status-completed"><i class="fa-solid fa-check-circle"></i> Delivered</span>
+                <!-- Fallback Deliverable 3: Apple Stock Prediction -->
+                <div class="project-card glass-card business-card tilt-card highlight-border-card" data-industry="data science">
+                    <div class="project-header flex-between align-center">
+                        <span class="project-category"><i class="fa-solid fa-chart-line text-primary"></i> Data Science</span>
+                        <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> Delivered</span>
                     </div>
-                    <h3>Apple Stock Price Prediction & EDA</h3>
+                    <h3 class="margin-top-xs">Apple Stock Price Prediction & EDA</h3>
                     <p class="fs-sm text-muted margin-top-xs">
-                        In-depth Exploratory Data Analysis (EDA) and predictive machine learning models for Apple stock market forecasting.
+                        In-depth Exploratory Data Analysis (EDA) and predictive machine learning models for historical market volatility and price forecasting.
                     </p>
-                    <div class="founder-skills-tags margin-top-xs">
-                        <span class="tag">Python</span>
-                        <span class="tag">Pandas</span>
-                        <span class="tag">Scikit-Learn</span>
-                        <span class="tag">Matplotlib</span>
+                    <div class="founder-skills-tags margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Python</span>
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Data Science Pipeline</span>
+                        <span class="tag" style="background: rgba(99, 102, 241, 0.12); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">Predictive ML</span>
                     </div>
-                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center">
-                        <span class="text-muted fs-sm"><i class="fa-solid fa-receipt"></i> Amount Charged</span>
-                        <strong class="text-primary fs-lg">₹5,000</strong>
+                    <div class="project-footer margin-top-md padding-top-sm border-top-glass flex-between align-center wrap-mobile gap-sm">
+                        <div>
+                            <span class="text-muted fs-sm" style="display: block; font-size: 0.72rem;">Deployment Tier</span>
+                            <strong class="text-primary fs-sm">Enterprise Deployed</strong>
+                        </div>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20a%20build%20like%20Apple%20Stock%20EDA" target="_blank" class="btn btn-sm btn-outline btn-wa">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </a>
                     </div>
                 </div>
             {% endif %}
 
         </div>
+
+        <!-- No Results Fallback State -->
+        <div id="no-business-results" class="glass-card text-center padding-xl margin-top-lg" style="display: none; max-width: 500px; margin-left: auto; margin-right: auto;">
+            <i class="fa-solid fa-magnifying-glass fs-xl text-muted" style="font-size: 2.5rem;"></i>
+            <h3 class="margin-top-sm">No Matching Deliverables Found</h3>
+            <p class="text-muted fs-sm margin-top-xs">We didn't find any completed builds matching your query. Contact our engineering team for a custom scope breakdown.</p>
+            <button class="btn btn-primary margin-top-md" onclick="resetBusinessFilters()">
+                <i class="fa-solid fa-rotate-left"></i> Reset All Filters
+            </button>
+        </div>
     </div>
 </section>
 
 <!-- ========================================================= -->
-<!-- 4. SUBMIT NEW PROJECT CALLOUT                             -->
+<!-- 4. CUSTOM PROJECT REQUEST CTA                             -->
 <!-- ========================================================= -->
 <section class="cta-section section-padding">
     <div class="section-container text-center">
         <div class="glass-card highlight-border-card max-w-800 margin-auto">
-            <h2>Have a Project You Need Built?</h2>
+            <h2>Need a Custom Software Solution Built & Delivered?</h2>
             <p class="margin-top-xs">
-                From academic research projects to custom machine learning models and web portals, work directly with Founder <strong>V Akhil</strong> and the DAV Cloud engineering team.
+                From academic research architectures to custom machine learning models and web portals, collaborate with the <strong>DAV Cloud Solutions</strong> engineering team for rapid deployment.
             </p>
-            <div class="cta-actions margin-top-md">
-                <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg">
-                    <i class="fa-solid fa-paper-plane"></i> Request Project Quote
+            <div class="cta-actions margin-top-md" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg btn-glow">
+                    <i class="fa-solid fa-paper-plane"></i> Request Custom Project Scope
+                </a>
+                <a href="{{ url_for('projects_page') }}" class="btn btn-outline btn-lg">
+                    <i class="fa-solid fa-layer-group"></i> Browse All 40+ Projects
                 </a>
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    /* 3D Perspective Tilt Card Physics */
+    .tilt-card {
+        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+    .tilt-card:hover {
+        transform: translateY(-8px) scale(1.015);
+        border-color: rgba(99, 102, 241, 0.45);
+        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.2);
+    }
+    .btn-wa {
+        color: var(--accent-emerald, #10b981);
+        border-color: rgba(16, 185, 129, 0.4);
+    }
+    .btn-wa:hover {
+        background: #10b981;
+        color: #ffffff !important;
+        border-color: #10b981;
+    }
+</style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filterTabs = document.querySelectorAll('.filter-tab');
-        const businessCards = document.querySelectorAll('.business-card');
+    let currentDomain = 'all';
+
+    function resetBusinessFilters() {
         const searchInput = document.getElementById('business-search');
+        if (searchInput) searchInput.value = '';
 
-        let currentDomain = 'all';
+        document.querySelectorAll('.filter-tab').forEach(t => {
+            t.classList.remove('active');
+            t.classList.remove('btn-primary');
+            t.classList.add('btn-outline');
+        });
 
-        // Tab Filter Trigger
+        const defaultTab = document.querySelector('.filter-tab[data-industry="all"]');
+        if (defaultTab) {
+            defaultTab.classList.add('active');
+            defaultTab.classList.add('btn-primary');
+            defaultTab.classList.remove('btn-outline');
+        }
+
+        currentDomain = 'all';
+        filterCatalog();
+    }
+
+    function filterCatalog() {
+        const searchInput = document.getElementById('business-search');
+        const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const businessCards = document.querySelectorAll('.business-card');
+        const noResults = document.getElementById('no-business-results');
+        const countBar = document.getElementById('catalog-count-bar');
+
+        let visibleCount = 0;
+
+        businessCards.forEach(card => {
+            const cardDomain = (card.getAttribute('data-industry') || '').toLowerCase();
+            const cardText = card.textContent.toLowerCase();
+
+            const matchesDomain = (currentDomain === 'all' || cardDomain === currentDomain || cardDomain.includes(currentDomain));
+            const matchesSearch = (query === '' || cardText.includes(query));
+
+            if (matchesDomain && matchesSearch) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (noResults) {
+            noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
+
+        if (countBar) {
+            countBar.textContent = `Showing ${visibleCount} verified deliverable${visibleCount === 1 ? '' : 's'}`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 3D Tilt Mousemove Physics
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const rotX = (y / (rect.height / 2)) * -6;
+                const rotY = (x / (rect.width / 2)) * 6;
+                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px) scale(1.015)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+            });
+        });
+
+        // Tab Filter Triggers
+        const filterTabs = document.querySelectorAll('.filter-tab');
         filterTabs.forEach(tab => {
             tab.addEventListener('click', function() {
-                filterTabs.forEach(t => t.classList.remove('active'));
+                filterTabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.remove('btn-primary');
+                    t.classList.add('btn-outline');
+                });
                 this.classList.add('active');
+                this.classList.add('btn-primary');
+                this.classList.remove('btn-outline');
                 
                 currentDomain = this.getAttribute('data-industry').toLowerCase();
                 filterCatalog();
@@ -219,27 +364,9 @@
         });
 
         // Search Input Trigger
+        const searchInput = document.getElementById('business-search');
         if (searchInput) {
             searchInput.addEventListener('input', filterCatalog);
-        }
-
-        // Filter Execution
-        function filterCatalog() {
-            const query = searchInput.value.toLowerCase().trim();
-
-            businessCards.forEach(card => {
-                const cardDomain = card.getAttribute('data-industry').toLowerCase();
-                const cardText = card.textContent.toLowerCase();
-
-                const matchesDomain = (currentDomain === 'all' || cardDomain.includes(currentDomain));
-                const matchesSearch = (query === '' || cardText.includes(query));
-
-                if (matchesDomain && matchesSearch) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
         }
     });
 </script>

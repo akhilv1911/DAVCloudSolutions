@@ -1,7 +1,6 @@
 /* ==========================================================================
    DAV CLOUD SOLUTIONS - MAIN INTERACTIVE JAVASCRIPT
    Tech Stack: HTML5, CSS3, JavaScript (ES6+), Python Flask, MongoDB
-   Founder: V Akhil
    File: static/js/main.js
    ========================================================================== */
 
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isOpen = navLinksWrapper.classList.contains('mobile-active');
             if (isOpen) {
                 navLinksWrapper.classList.remove('mobile-active');
-                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars-staggered"></i>';
             } else {
                 navLinksWrapper.classList.add('mobile-active');
                 mobileMenuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -65,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             item.addEventListener('click', function() {
                 navLinksWrapper.classList.remove('mobile-active');
                 if (mobileMenuBtn) {
-                    mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+                    mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars-staggered"></i>';
                 }
             });
         });
@@ -74,61 +73,122 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('click', function(e) {
             if (!navLinksWrapper.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                 navLinksWrapper.classList.remove('mobile-active');
-                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars-staggered"></i>';
             }
         });
     }
 
     // ----------------------------------------------------------------------
-    // 3. WEB3FORMS AJAX SUBMISSION & FEEDBACK
+    // 3. GLOBAL 3D PERSPECTIVE TILT PHYSICS
     // ----------------------------------------------------------------------
-    const web3formsContact = document.getElementById('web3forms-contact');
+    const tiltElements = document.querySelectorAll('.tilt-card');
+    tiltElements.forEach(card => {
+        card.addEventListener('mousemove', function(e) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rotX = (y / (rect.height / 2)) * -6;
+            const rotY = (x / (rect.width / 2)) * 6;
+            card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px) scale(1.01)`;
+        });
 
-    if (web3formsContact) {
-        web3formsContact.addEventListener('submit', function(e) {
+        card.addEventListener('mouseleave', function() {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+        });
+    });
+
+    // ----------------------------------------------------------------------
+    // 4. SCROLL PROGRESS & FLOATING BACK-TO-TOP HANDLER
+    // ----------------------------------------------------------------------
+    const progressBar = document.getElementById('scroll-progress-bar');
+    const backToTopBtn = document.getElementById('back-to-top-btn');
+
+    window.addEventListener('scroll', function() {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalHeight > 0 && progressBar) {
+            const progress = (window.pageYOffset / totalHeight) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        if (backToTopBtn) {
+            if (window.scrollY > 350) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        }
+    });
+
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // ----------------------------------------------------------------------
+    // 5. GLOBAL CONTACT & INQUIRY FORM DUAL-DISPATCH
+    // ----------------------------------------------------------------------
+    const contactForm = document.getElementById('main-contact-form') || document.getElementById('web3forms-contact');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const submitBtn = web3formsContact.querySelector('button[type="submit"]');
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
 
-            // Update button state during transmission
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Transmitting Request...';
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatching Inquiry...';
             }
 
-            const formData = new FormData(web3formsContact);
+            const formData = new FormData(contactForm);
+            const formJSON = Object.fromEntries(formData.entries());
 
-            fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showToast('Inquiry submitted successfully! Founder V Akhil will review your scope shortly.', 'success');
-                    web3formsContact.reset();
+            try {
+                // 1. Dispatch to Web3Forms API (Instant Email Delivery)
+                const web3Response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formJSON)
+                });
+                const web3Data = await web3Response.json();
+
+                // 2. Dispatch to Local Flask Endpoint (MongoDB Persistence)
+                await fetch('/api/submit-inquiry', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formJSON)
+                }).catch(() => {});
+
+                if (web3Data.success) {
+                    showToast('Inquiry received! Our engineering team will reach out shortly with technical scope notes.', 'success');
+                    contactForm.reset();
+                    const orderModal = document.getElementById('project-order-modal');
+                    if (orderModal) orderModal.style.display = 'none';
                 } else {
-                    showToast(data.message || 'Transmission failed. Please check your access key and try again.', 'danger');
+                    showToast(web3Data.message || 'Error transmitting inquiry. Please try again.', 'danger');
                 }
-            })
-            .catch(error => {
-                console.error('Web3Forms Error:', error);
-                showToast('Network error occurred while submitting contact form.', 'danger');
-            })
-            .finally(() => {
+            } catch (err) {
+                showToast('Network error occurred. Please verify your connection.', 'danger');
+            } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnHtml;
                 }
-            });
+            }
         });
     }
 
     // ----------------------------------------------------------------------
-    // 4. DYNAMIC FLASH TOAST CREATOR & AUTO DISMISSAL
+    // 6. DYNAMIC FLASH TOAST CREATOR & AUTO DISMISSAL
     // ----------------------------------------------------------------------
-    function showToast(message, category = 'info') {
+    window.showToast = function(message, category = 'info') {
         let flashContainer = document.getElementById('flash-container');
 
         if (!flashContainer) {
@@ -139,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const toast = document.createElement('div');
-        toast.className = `flash-toast flash-${category}`;
+        toast.className = `flash-toast flash-${category} glass-card`;
         toast.setAttribute('role', 'alert');
 
         const iconClass = category === 'success' ? 'fa-circle-check' :
@@ -156,16 +216,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         flashContainer.appendChild(toast);
 
-        // Auto-dismiss toast with fade animation after 5 seconds
         setTimeout(() => {
             if (toast && toast.parentElement) {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(-10px)';
-                toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
+                toast.style.transition = 'all 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
             }
         }, 5000);
-    }
+    };
 
     // Auto-dismiss initial server-rendered flash messages
     const serverToasts = document.querySelectorAll('.flash-toast');
@@ -174,14 +233,25 @@ document.addEventListener('DOMContentLoaded', function() {
             if (toast && toast.parentElement) {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(-10px)';
-                toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
+                toast.style.transition = 'all 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
             }
-        }, 6000);
+        }, 5000);
     });
 
     // ----------------------------------------------------------------------
-    // 5. SMOOTH SCROLLING FOR HASH ANCHORS
+    // 7. GLOBAL MODAL TOGGLER UTILITY
+    // ----------------------------------------------------------------------
+    window.toggleModal = function(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            const isVisible = modal.style.display === 'flex';
+            modal.style.display = isVisible ? 'none' : 'flex';
+        }
+    };
+
+    // ----------------------------------------------------------------------
+    // 8. SMOOTH SCROLLING FOR HASH ANCHORS
     // ----------------------------------------------------------------------
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {

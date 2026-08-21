@@ -1,73 +1,77 @@
 {% extends "base.html" %}
 
-{% block title %}Projects Catalog | DAV Cloud Solutions{% endblock %}
+{% block title %}Engineered Projects Catalog | DAV Cloud Solutions{% endblock %}
 
 {% block content %}
 <!-- ========================================================= -->
-<!-- 1. CATALOG HERO & SEARCH SECTION                          -->
+<!-- 1. CATALOG HERO & INTERACTIVE FILTER CONTROLS             -->
 <!-- ========================================================= -->
 <section class="projects-hero-section section-padding text-center">
     <div class="section-container">
         <div class="badge-pill">
-            <i class="fa-solid fa-diagram-project"></i> Project Showcase & Catalog
+            <i class="fa-solid fa-layer-group"></i> Production & Academic Catalog
         </div>
         <h1 class="hero-title margin-top-xs">
-            Explore Our Comprehensive <span class="gradient-text">IT & Software Projects</span>
+            Explore Engineered <span class="gradient-text">Software & AI Architectures</span>
         </h1>
         <p class="hero-subtitle max-w-700 margin-auto">
-            Browse our catalog of engineered projects across Student Academic Domains, Small Business Portals, and Startup MVPs.
+            Browse our complete catalog of 40+ production-grade builds across Applied Machine Learning, Full-Stack Web SaaS, Data Analytics, and Cloud Infrastructure.
         </p>
 
         <!-- Search & Filter Controls -->
         <div class="catalog-controls-container margin-top-lg max-w-800 margin-auto">
             <div class="search-bar-wrapper" style="position: relative;">
-                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
                 <input 
                     type="text" 
                     id="project-search" 
                     class="form-input" 
-                    placeholder="Search by title, domain, or technology (e.g., Python, AI, Cloud, SaaS)..."
-                    style="padding-left: 44px; font-size: 1rem; border-radius: var(--radius-full);"
+                    placeholder="Search by title, algorithm, or stack (e.g. YOLOv8, Flask, MongoDB, React, PyTorch)..."
+                    style="padding-left: 48px; font-size: 0.95rem; border-radius: var(--radius-full);"
                 >
             </div>
 
             <!-- Domain Category Tabs -->
             <div class="filter-tabs-wrapper margin-top-md" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
                 <button class="btn btn-sm btn-primary filter-tab active" data-filter="all">
-                    <i class="fa-solid fa-layer-group"></i> All Projects
+                    <i class="fa-solid fa-border-all"></i> All Projects (40+)
                 </button>
-                <button class="btn btn-sm btn-outline filter-tab" data-filter="student">
-                    <i class="fa-solid fa-graduation-cap"></i> Student & Academic
+                <button class="btn btn-sm btn-outline filter-tab" data-filter="aiml">
+                    <i class="fa-solid fa-brain"></i> AI & Machine Learning
                 </button>
-                <button class="btn btn-sm btn-outline filter-tab" data-filter="business">
-                    <i class="fa-solid fa-store"></i> Small Business
+                <button class="btn btn-sm btn-outline filter-tab" data-filter="web-saas">
+                    <i class="fa-solid fa-laptop-code"></i> Full-Stack & SaaS
                 </button>
-                <button class="btn btn-sm btn-outline filter-tab" data-filter="startup">
-                    <i class="fa-solid fa-rocket"></i> Startup MVPs
+                <button class="btn btn-sm btn-outline filter-tab" data-filter="datascience">
+                    <i class="fa-solid fa-chart-pie"></i> Data Science & EDA
+                </button>
+                <button class="btn btn-sm btn-outline filter-tab" data-filter="cloud-infra">
+                    <i class="fa-solid fa-server"></i> Cloud & Databases
                 </button>
             </div>
 
             <!-- Quick Technology Pills -->
             <div class="tech-pills-wrapper margin-top-sm" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; font-size: 0.8rem;">
-                <span class="text-muted fs-sm" style="align-self: center; margin-right: 4px;">Quick Filter:</span>
+                <span class="text-muted fs-sm" style="align-self: center; margin-right: 4px;">Quick Stack:</span>
                 <button type="button" class="tech-pill-btn" data-tech="python">Python</button>
-                <button type="button" class="tech-pill-btn" data-tech="cloud">Cloud Architecture</button>
-                <button type="button" class="tech-pill-btn" data-tech="machine learning">Machine Learning</button>
-                <button type="button" class="tech-pill-btn" data-tech="ai">Applied AI / NLP</button>
+                <button type="button" class="tech-pill-btn" data-tech="flask">Flask</button>
+                <button type="button" class="tech-pill-btn" data-tech="mongodb">MongoDB</button>
+                <button type="button" class="tech-pill-btn" data-tech="nlp">NLP & LLM</button>
                 <button type="button" class="tech-pill-btn" data-tech="opencv">Computer Vision</button>
-                <button type="button" class="tech-pill-btn" data-tech="saas">SaaS / Payments</button>
+                <button type="button" class="tech-pill-btn" data-tech="react">React / UI</button>
+                <button type="button" class="tech-pill-btn" data-tech="saas">SaaS Core</button>
             </div>
 
             <!-- Dynamic Results Count -->
             <div class="margin-top-sm text-muted fs-sm" id="results-count-bar">
-                Showing all projects
+                Showing all 40+ curated projects
             </div>
         </div>
     </div>
 </section>
 
 <!-- ========================================================= -->
-<!-- 2. PROJECTS GRID CONTAINER                                -->
+<!-- 2. 3D INTERACTIVE PROJECTS CATALOG GRID                   -->
 <!-- ========================================================= -->
 <section class="projects-catalog-section section-padding bg-alt">
     <div class="section-container">
@@ -75,698 +79,830 @@
         <div class="projects-grid-3col" id="projects-container">
 
             <!-- ================================================= -->
-            <!-- DOMAIN 1: STUDENT & ACADEMIC PROJECTS             -->
+            <!-- DOMAIN 1: APPLIED AI & MACHINE LEARNING (1-10)     -->
             <!-- ================================================= -->
 
-            <!-- Project 1 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python cloud backend html5 css3 javascript">
+            <!-- 1. AgriVision -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python opencv yolov8 flask machine learning ai">
                 <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> Student Project</span>
-                    <span class="badge-tech">Cloud Backend</span>
+                    <span class="project-category"><i class="fa-solid fa-leaf"></i> Agriculture AI</span>
+                    <span class="badge-tech">Computer Vision</span>
                 </div>
-                <h3 class="margin-top-xs">Student Leave Management System</h3>
-                <p class="text-muted fs-sm margin-top-xs">Role-based portal for students to submit leave applications, view status logs, and allow faculty guides to approve/reject requests.</p>
+                <h3 class="margin-top-xs">AgriVision: Plant Disease Detection & Cure Recommender</h3>
+                <p class="text-muted fs-sm margin-top-xs">Real-time crop leaf disease segmentation using YOLOv8 with automated chemical and organic cure recommendations.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Cloud Backend, HTML5, JavaScript
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Student%20Leave%20Management%20System" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);" title="Chat on WhatsApp">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Student Leave Management System', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 2 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python machine learning ai cloud data-science">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-brain"></i> Machine Learning</span>
-                    <span class="badge-tech">Applied AI / ML</span>
-                </div>
-                <h3 class="margin-top-xs">AgriPredict Crop Yield & Disease Engine</h3>
-                <p class="text-muted fs-sm margin-top-xs">Agricultural ML system predicting optimal crops and plant diseases based on soil NPK parameters and weather data.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Scikit-Learn, Pandas, Cloud Storage
+                    <strong>Tech Stack:</strong> Python, YOLOv8, OpenCV, Flask Backend, Cloud DB
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
                     <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20AgriPredict%20Crop%20Yield" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AgriPredict Crop Yield & Disease Engine', 'Machine Learning')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20AgriVision%20Plant%20Disease%20Project" target="_blank" class="btn btn-sm btn-outline btn-wa" title="Inquire on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AgriVision Plant Disease Detector', 'AI & Machine Learning')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 3 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python nlp ai security cloud">
+            <!-- 2. LexiThreat AI -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python nlp random-forest spacy ai threat security">
                 <div class="project-header flex-between align-center">
                     <span class="project-category"><i class="fa-solid fa-shield-halved"></i> Cyber Security</span>
                     <span class="badge-tech">NLP Threat Analysis</span>
                 </div>
-                <h3 class="margin-top-xs">Political Security Threat Prediction Framework</h3>
-                <p class="text-muted fs-sm margin-top-xs">Text classification and sentiment analysis tool assessing security threat levels from news feeds and social posts.</p>
+                <h3 class="margin-top-xs">LexiThreat AI: Security Threat & Lexicon Analysis Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Dual-stage NLP threat detection pipeline utilizing lexicon-based analysis paired with Random Forest classification.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, NLTK, SpaCy, Cloud Backend
+                    <strong>Tech Stack:</strong> Python, NLTK, SpaCy, Random Forest, Flask API
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
                     <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Political%20Security%20Threat%20Prediction" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Political Security Threat Prediction Framework', 'Cyber Security & NLP')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20LexiThreat%20AI%20Project" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('LexiThreat AI Threat Predictor', 'AI & Machine Learning')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 4 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python cloud web-app reporting">
+            <!-- 3. MediScan Diagnostic -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python pytorch cnn deep-learning healthcare vision">
                 <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-address-card"></i> Web App</span>
-                    <span class="badge-tech">Dynamic Analytics</span>
-                </div>
-                <h3 class="margin-top-xs">Smart Attendance & Performance Tracker</h3>
-                <p class="text-muted fs-sm margin-top-xs">Student attendance logger featuring performance charts, low attendance alerts, and downloadable PDF reports.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, PDF Engine
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Smart%20Attendance%20Tracker" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Smart Attendance & Performance Tracker', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 5 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="cloud storage repository javascript">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-book"></i> Academic Tool</span>
-                    <span class="badge-tech">Cloud Storage</span>
-                </div>
-                <h3 class="margin-top-xs">Research Paper Filing & Repository System</h3>
-                <p class="text-muted fs-sm margin-top-xs">Centralized filing system for faculty guides and students to submit, archive, and peer-review research paper drafts.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, High-Availability Cloud Storage
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Research%20Paper%20Repository" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Research Paper Filing & Repository System', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 6 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python api developer-tool cloud">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-laptop-code"></i> Developer Tool</span>
-                    <span class="badge-tech">API Integration</span>
-                </div>
-                <h3 class="margin-top-xs">Personal Developer Portfolio & Resume Generator</h3>
-                <p class="text-muted fs-sm margin-top-xs">Dynamic portfolio generator that automatically fetches GitHub repositories and builds downloadable PDF resumes.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, GitHub REST API, ATS Formatter
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 2–4 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Portfolio%20Generator" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Personal Developer Portfolio & Resume Generator', 'Developer Portfolio')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 7 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="machine learning healthcare ai python">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-heart-pulse"></i> Healthcare ML</span>
-                    <span class="badge-tech">Predictive Analytics</span>
-                </div>
-                <h3 class="margin-top-xs">AI Disease Risk Predictor</h3>
-                <p class="text-muted fs-sm margin-top-xs">Early medical symptom checking engine calculating risk metrics for diabetes, heart conditions, and kidney disease.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Scikit-Learn, Predictive Model Pipeline
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20AI%20Disease%20Risk%20Predictor" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AI Disease Risk Predictor', 'Machine Learning')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 8 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python cloud websockets campus">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-building-columns"></i> Campus App</span>
-                    <span class="badge-tech">Live Portal</span>
-                </div>
-                <h3 class="margin-top-xs">College Placement & Campus Interview Portal</h3>
-                <p class="text-muted fs-sm margin-top-xs">Coordinates company visits, student eligibility filtering, resume submissions, and interview schedule alerts.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Records, Real-Time Alerts
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20College%20Placement%20Portal" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('College Placement & Campus Interview Portal', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 9 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="nlp ai python transformers">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-comments"></i> NLP App</span>
-                    <span class="badge-tech">Language Intelligence</span>
-                </div>
-                <h3 class="margin-top-xs">Automated Student Essay & Assignment Scorer</h3>
-                <p class="text-muted fs-sm margin-top-xs">NLP engine evaluating student essay submissions for grammar, relevance, keyword density, and plagiarism score.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, NLTK, SpaCy, Language Scoring
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Essay%20Scorer" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Automated Student Essay & Assignment Scorer', 'Cyber Security & NLP')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 10 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="cloud tracking maps geolocation">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-bus"></i> IoT / Tracking</span>
-                    <span class="badge-tech">Transit API</span>
-                </div>
-                <h3 class="margin-top-xs">College Bus Route & GPS Tracker</h3>
-                <p class="text-muted fs-sm margin-top-xs">Real-time transit application showing campus bus locations, driver contacts, and expected arrival times.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Geolocation Maps, Leaflet.js
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Bus%20Route%20Tracker" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('College Bus Route & GPS Tracker', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 11 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="security cryptography cloud encryption">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-vault"></i> Security</span>
-                    <span class="badge-tech">Encrypted Vault</span>
-                </div>
-                <h3 class="margin-top-xs">Encrypted Academic Document Storage System</h3>
-                <p class="text-muted fs-sm margin-top-xs">Secure vault for storing degree certificates and marks memos using AES-256 encryption and link expiration.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, High-Grade AES Encryption, Secure Store
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Encrypted%20Document%20Storage" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Encrypted Academic Document Storage System', 'Cyber Security & NLP')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 12 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python javascript gamification edtech">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-gamepad"></i> EdTech</span>
-                    <span class="badge-tech">Interactive UI</span>
-                </div>
-                <h3 class="margin-top-xs">Interactive Coding Quiz & Leaderboard Platform</h3>
-                <p class="text-muted fs-sm margin-top-xs">Gamified learning platform with timed programming quizzes, instant score compilation, and rank leaderboards.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Web Framework, Cloud Data, Vanilla JS
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Coding%20Quiz%20Platform" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Interactive Coding Quiz & Leaderboard Platform', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 13 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="cloud marketplace student-network">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-cart-flatbed"></i> Campus Marketplace</span>
-                    <span class="badge-tech">P2P Network</span>
-                </div>
-                <h3 class="margin-top-xs">Peer-to-Peer Campus Book Exchange</h3>
-                <p class="text-muted fs-sm margin-top-xs">Allows students to buy, sell, or trade used textbooks, lab coats, and electronics within their campus network.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, CSS Grid
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Book%20Exchange%20Platform" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Peer-to-Peer Campus Book Exchange', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 14 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="opencv face_recognition vision computer-vision python">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-camera"></i> Computer Vision</span>
-                    <span class="badge-tech">Biometric Vision</span>
-                </div>
-                <h3 class="margin-top-xs">Face Recognition Attendance System</h3>
-                <p class="text-muted fs-sm margin-top-xs">Automated classroom attendance logger using webcam frames and OpenCV face embedding matches.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, OpenCV, Neural Face Embeddings
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Face%20Recognition%20Attendance" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Face Recognition Attendance System', 'Machine Learning')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 15 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python nlp ai chatbot cloud">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-robot"></i> AI Chatbot</span>
-                    <span class="badge-tech">NLP Intelligence</span>
-                </div>
-                <h3 class="margin-top-xs">Campus Helpdesk Assistant Bot</h3>
-                <p class="text-muted fs-sm margin-top-xs">AI-powered inquiry bot answering student questions regarding admission fees, exam schedules, and syllabus links.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, NLTK, Conversational AI
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Campus%20Helpdesk%20Bot" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Campus Helpdesk Assistant Bot', 'Cyber Security & NLP')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 16 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="cloud tailwind javascript ordering">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-utensils"></i> Campus App</span>
-                    <span class="badge-tech">Digital Orders</span>
-                </div>
-                <h3 class="margin-top-xs">Digital Canteen Token & Pre-Ordering System</h3>
-                <p class="text-muted fs-sm margin-top-xs">Reduces canteen queues by enabling students to pre-order food items, pay online, and receive digital pickup tokens.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, Tailwind CSS
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Canteen%20Token%20System" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Digital Canteen Token & Pre-Ordering System', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 17 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="machine learning weather cloud analytics">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-cloud-sun"></i> IoT / ML</span>
-                    <span class="badge-tech">Energy Modeling</span>
-                </div>
-                <h3 class="margin-top-xs">Smart Campus Energy Consumption Predictor</h3>
-                <p class="text-muted fs-sm margin-top-xs">Analyzes lab and classroom electricity usage patterns to recommend energy-saving schedules.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Machine Learning Models, Analytics UI
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Energy%20Predictor" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Smart Campus Energy Consumption Predictor', 'Machine Learning')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 18 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="python cloud community networking">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-handshake"></i> Management</span>
-                    <span class="badge-tech">Community Portal</span>
-                </div>
-                <h3 class="margin-top-xs">Alumni Network & Mentorship Connect</h3>
-                <p class="text-muted fs-sm margin-top-xs">Connects current students with graduated alumni for career guidance, mock interviews, and job referrals.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, High-Availability Cloud, Bootstrap 5
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Alumni%20Network%20Portal" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Alumni Network & Mentorship Connect', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 19 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="deep learning cnn vision opencv python">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-laptop-medical"></i> ML App</span>
+                    <span class="project-category"><i class="fa-solid fa-hospital-user"></i> Healthcare AI</span>
                     <span class="badge-tech">Deep Learning CNN</span>
                 </div>
-                <h3 class="margin-top-xs">Skin Disease Classification via Image Analysis</h3>
-                <p class="text-muted fs-sm margin-top-xs">Deep learning CNN model predicting skin conditions from user-uploaded dermatological images.</p>
+                <h3 class="margin-top-xs">MediScan: Chest X-Ray Multi-Pathology Diagnostic</h3>
+                <p class="text-muted fs-sm margin-top-xs">Deep convolutional network identifying Pneumonia, COVID-19, and Atelectasis from high-resolution chest radiography.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Deep Learning (CNN), OpenCV, Cloud
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–9 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Skin%20Disease%20Classification" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Skin Disease Classification via Image Analysis', 'Machine Learning')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 20 -->
-            <div class="project-card glass-card" data-domain="student" data-stack="finance fintech cloud student python">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-chart-line"></i> FinTech Student</span>
-                    <span class="badge-tech">Financial Modeling</span>
-                </div>
-                <h3 class="margin-top-xs">Student Personal Budget & Savings Planner</h3>
-                <p class="text-muted fs-sm margin-top-xs">Tracks daily expenses, categorizes spending, and provides savings goal suggestions for college students.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, Chart.js
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Budget%20Planner" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Student Personal Budget & Savings Planner', 'Student Academic Project')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ================================================= -->
-            <!-- DOMAIN 2: SMALL BUSINESS SOLUTIONS                -->
-            <!-- ================================================= -->
-
-            <!-- Project 21 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="cloud whatsapp webhooks retail store">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-store"></i> Business Portal</span>
-                    <span class="badge-tech">WhatsApp Integration</span>
-                </div>
-                <h3 class="margin-top-xs">Local Retail Store Digital Catalog & Order Tracker</h3>
-                <p class="text-muted fs-sm margin-top-xs">Online product catalog for local shops allowing customers to browse inventory and send WhatsApp/Email orders.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Web Framework, Cloud Data, WhatsApp Webhooks
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Retail%20Digital%20Catalog" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Local Retail Store Digital Catalog & Order Tracker', 'Small Business Solution')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 22 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="python operations inventory cloud">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-boxes-stacked"></i> Operations</span>
-                    <span class="badge-tech">Automated Alerts</span>
-                </div>
-                <h3 class="margin-top-xs">Smart Inventory & Stock Alert Manager</h3>
-                <p class="text-muted fs-sm margin-top-xs">Tracks stock levels in real time, generates low-inventory email alerts, and logs supplier purchase orders.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, Scalable Cloud Store, Live DataTables
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Inventory%20Manager" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Smart Inventory & Stock Alert Manager', 'Small Business Solution')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 23 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="finance billing tax pdf invoicing">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-file-invoice-dollar"></i> Finance</span>
-                    <span class="badge-tech">Automated Invoicing</span>
-                </div>
-                <h3 class="margin-top-xs">Automated GST Billing & Invoice Portal</h3>
-                <p class="text-muted fs-sm margin-top-xs">Generates tax-compliant GST invoices, tracks pending client payments, and outputs downloadable PDF receipts.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Records, ReportLab Engine
-                </div>
-                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
-                    <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20GST%20Billing%20Portal" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Automated GST Billing & Invoice Portal', 'Small Business Solution')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 24 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="crm leads customers business">
-                <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-users"></i> CRM</span>
-                    <span class="badge-tech">CRM Pipeline</span>
-                </div>
-                <h3 class="margin-top-xs">Small Business Customer Relationship Manager</h3>
-                <p class="text-muted fs-sm margin-top-xs">Centralizes customer contacts, lead status stages, service call logs, and automated follow-up reminders.</p>
-                <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Database, Interactive UI
+                    <strong>Tech Stack:</strong> PyTorch, ResNet-50 CNN, Grad-CAM Visualization, Flask
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–10 Days</span>
                     <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Business%20CRM" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Small Business Customer Relationship Manager', 'Small Business Solution')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20MediScan%20Chest%20XRay%20AI" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('MediScan X-Ray Diagnostic Engine', 'Healthcare AI')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 25 -->
-            <div class="project-card glass-card" data-domain="business" data-stack="booking scheduling calendar business">
+            <!-- 4. SmartResume AI -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python nlp transformers bert pdf llm ai">
                 <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-calendar-check"></i> Booking</span>
-                    <span class="badge-tech">Calendar System</span>
+                    <span class="project-category"><i class="fa-solid fa-file-waveform"></i> EdTech AI</span>
+                    <span class="badge-tech">BERT NLP Pipeline</span>
                 </div>
-                <h3 class="margin-top-xs">Salon & Clinic Appointment Scheduling System</h3>
-                <p class="text-muted fs-sm margin-top-xs">Online calendar for customers to select time slots, choose staff members, and receive SMS/email confirmations.</p>
+                <h3 class="margin-top-xs">SmartResume: ATS Scorer & Skill Gap Extractor</h3>
+                <p class="text-muted fs-sm margin-top-xs">Automated resume parser matching candidate profiles against job descriptions with semantic similarity metrics.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python, High-Availability Cloud, FullCalendar
+                    <strong>Tech Stack:</strong> Python, Sentence-Transformers, PyPDF, MongoDB Atlas
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20SmartResume%20AI" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('SmartResume ATS Score Engine', 'AI & Machine Learning')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. NeuroFraud -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python machine-learning xgboost fintech fraud ai">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-credit-card"></i> FinTech AI</span>
+                    <span class="badge-tech">Anomaly Detection</span>
+                </div>
+                <h3 class="margin-top-xs">NeuroFraud: Real-Time Payment Anomaly Detection</h3>
+                <p class="text-muted fs-sm margin-top-xs">Extreme gradient boosting pipeline handling heavily imbalanced transaction logs using SMOTE and Isolation Forests.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, XGBoost, Scikit-Learn, Flask REST API
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                     <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
                     <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20Appointment%20Scheduler" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Salon & Clinic Appointment Scheduling System', 'Small Business Solution')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20NeuroFraud%20System" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('NeuroFraud Anomaly Engine', 'FinTech ML')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. VoiceSentiment Engine -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python audio speech nlp speechrecognition ai">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-microphone-lines"></i> Audio AI</span>
+                    <span class="badge-tech">Speech Sentiment</span>
+                </div>
+                <h3 class="margin-top-xs">VoiceSentiment: Multi-Lingual Speech Emotion Analyzer</h3>
+                <p class="text-muted fs-sm margin-top-xs">Extracts MFCC audio features to recognize customer sentiment and tonal urgency in customer support calls.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Librosa, Whisper Audio Pipeline, TensorFlow
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20VoiceSentiment%20Engine" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('VoiceSentiment Emotion Analyzer', 'Audio AI')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. RetailDemand Forecast -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python lstm time-series forecasting retail ai">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-chart-line"></i> Supply Chain</span>
+                    <span class="badge-tech">LSTM Time-Series</span>
+                </div>
+                <h3 class="margin-top-xs">RetailDemand: Predictive Inventory & Stock Optimization</h3>
+                <p class="text-muted fs-sm margin-top-xs">Recurrent neural network forecasting seasonal product demand spikes to prevent retail inventory overstocking.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, PyTorch LSTM, Pandas, Interactive Plotly
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20RetailDemand%20Forecast" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('RetailDemand Forecast System', 'AI & Machine Learning')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. LegalBrief AI -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python llm gemini rag legal nlp ai">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-scale-balanced"></i> LegalTech AI</span>
+                    <span class="badge-tech">RAG Architecture</span>
+                </div>
+                <h3 class="margin-top-xs">LegalBrief AI: Contract Risk Analysis & Clause Summarizer</h3>
+                <p class="text-muted fs-sm margin-top-xs">Retrieval-Augmented Generation (RAG) platform indexing 100+ page NDAs to highlight non-standard liability clauses.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Gemini Core API, LangChain, Vector Embeddings
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–9 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20LegalBrief%20AI" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('LegalBrief AI Clause Analyzer', 'LegalTech AI')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. DriverGuard Vision -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python opencv dlib vision drowsiness safety ai">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-car-on"></i> Smart Mobility</span>
+                    <span class="badge-tech">Facial Landmark Mesh</span>
+                </div>
+                <h3 class="margin-top-xs">DriverGuard: Real-Time Drowsiness & Yawn Alert System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Calculates Eye Aspect Ratio (EAR) and Mouth Aspect Ratio (MAR) at 30 FPS to trigger instant audio drowsiness alarms.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, OpenCV, Dlib 68-Point Mesh, Audio Triggers
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20DriverGuard%20Vision" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('DriverGuard Drowsiness Detector', 'Computer Vision')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. AutoGrade ML -->
+            <div class="project-card glass-card tilt-card" data-domain="aiml" data-stack="python ocr tesseract nlp grading edtech ai">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-graduation-cap"></i> Academic AI</span>
+                    <span class="badge-tech">OCR & Semantic Match</span>
+                </div>
+                <h3 class="margin-top-xs">AutoGrade: Handwritten Exam Evaluator & Scorer</h3>
+                <p class="text-muted fs-sm margin-top-xs">Extracts student handwritten answer sheets via OCR and calculates semantic similarity against master faculty keys.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Tesseract OCR, Transformer Semantic Matching, Flask
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–9 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20AutoGrade%20ML" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AutoGrade Handwritten Evaluator', 'Academic AI')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                     </div>
                 </div>
             </div>
 
             <!-- ================================================= -->
-            <!-- DOMAIN 3: TECH STARTUP MVPs                       -->
+            <!-- DOMAIN 2: FULL-STACK WEB & SAAS PLATFORMS (11-20)  -->
             <!-- ================================================= -->
 
-            <!-- Project 26 -->
-            <div class="project-card glass-card" data-domain="startup" data-stack="saas cloud payments auth multi-tenant">
+            <!-- 11. SLMS Pro -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python flask mongodb sqlite rbac auth web-saas">
                 <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-cloud"></i> SaaS MVP</span>
-                    <span class="badge-tech">Multi-Tenant Core</span>
+                    <span class="project-category"><i class="fa-solid fa-building-columns"></i> Campus SaaS</span>
+                    <span class="badge-tech">Role-Based Access</span>
                 </div>
-                <h3 class="margin-top-xs">Multi-Tenant Subscription SaaS Engine</h3>
-                <p class="text-muted fs-sm margin-top-xs">Turnkey SaaS MVP with tenant isolation, tiered pricing plans, automated billing webhooks, and team management.</p>
+                <h3 class="margin-top-xs">SLMS Pro: Multi-Tier Student Leave Management System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Enterprise workflow portal for student leave applications, automated warden/faculty approvals, and real-time pass issuance.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Cloud Microservices, Payment Webhooks, JWT Auth
+                    <strong>Tech Stack:</strong> Python, Flask, MongoDB Atlas, Secure Session Auth
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 10–14 Days</span>
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
                     <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20SaaS%20MVP%20Engine" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Multi-Tenant Subscription SaaS Engine', 'Startup MVP Architecture')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20SLMS%20Pro" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('SLMS Pro Leave Management', 'Full-Stack Web')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 27 -->
-            <div class="project-card glass-card" data-domain="startup" data-stack="e-commerce marketplace payments cloud startup">
+            <!-- 12. DevPortfoliX -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python flask react api subdomains web-saas">
                 <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-cart-shopping"></i> E-Commerce MVP</span>
-                    <span class="badge-tech">Multi-Vendor Platform</span>
+                    <span class="project-category"><i class="fa-solid fa-id-card"></i> Developer Platform</span>
+                    <span class="badge-tech">Dynamic Subdomains</span>
                 </div>
-                <h3 class="margin-top-xs">Multi-Vendor E-Commerce Marketplace MVP</h3>
-                <p class="text-muted fs-sm margin-top-xs">Complete multi-seller platform with commission calculations, vendor management dashboards, and checkout systems.</p>
+                <h3 class="margin-top-xs">DevPortfoliX: Developer Brand & Dynamic Portfolio Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Automated portfolio builder linking GitHub activity, hosted project demos, and live ATS resume downloads.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Backend, Cloud Storage, Razorpay / Stripe
+                    <strong>Tech Stack:</strong> Python Backend, GitHub REST API, Jinja2, MongoDB
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 12–16 Days</span>
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 3–5 Days</span>
                     <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20E-Commerce%20Marketplace" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Multi-Vendor E-Commerce Marketplace MVP', 'Startup MVP Architecture')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20DevPortfoliX" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('DevPortfoliX Brand Builder', 'Full-Stack Web')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 28 -->
-            <div class="project-card glass-card" data-domain="startup" data-stack="python ai llm saas cloud">
+            <!-- 13. SecureVault -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python cryptography aes-256 cloud encrypted web-saas">
                 <div class="project-header flex-between align-center">
-                    <span class="project-category"><i class="fa-solid fa-microchip"></i> AI SaaS</span>
-                    <span class="badge-tech">Generative AI Core</span>
+                    <span class="project-category"><i class="fa-solid fa-vault"></i> Enterprise Cloud</span>
+                    <span class="badge-tech">AES-256 Encryption</span>
                 </div>
-                <h3 class="margin-top-xs">AI Content & Copywriting Generator SaaS</h3>
-                <p class="text-muted fs-sm margin-top-xs">Generates marketing copy, social media captions, and blog posts using LLM prompt pipelines and token credit billing.</p>
+                <h3 class="margin-top-xs">SecureVault: Encrypted Document & Contract Sharing Portal</h3>
+                <p class="text-muted fs-sm margin-top-xs">Zero-knowledge document storage featuring expiring links, dynamic watermarks, and granular download permissions.</p>
                 <div class="project-tech-stack margin-top-sm">
-                    <strong>Tech Stack:</strong> Python Web Backend, Generative AI APIs, Cloud Data
+                    <strong>Tech Stack:</strong> Python, AES-256 Cryptography, High-Availability Cloud
                 </div>
                 <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
-                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 8–12 Days</span>
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
                     <div class="flex-align-center gap-xs">
-                        <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20AI%20Copywriting%20SaaS" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AI Content & Copywriting Generator SaaS', 'Startup MVP Architecture')">
-                            <i class="fa-solid fa-paper-plane"></i> Request Build
-                        </button>
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20SecureVault" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('SecureVault Encrypted Share', 'Full-Stack Web')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. TenantSync -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python flask payments razorpay property web-saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-building-user"></i> PropTech SaaS</span>
+                    <span class="badge-tech">Automated Escrow</span>
+                </div>
+                <h3 class="margin-top-xs">TenantSync: Property Management & Rent Escrow Platform</h3>
+                <p class="text-muted fs-sm margin-top-xs">Complete landlord-tenant portal with maintenance ticket dispatching, digital lease generation, and automated rent reminders.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Razorpay Webhooks, MongoDB Atlas, WhatsApp API
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 8–11 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20TenantSync" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('TenantSync PropTech SaaS', 'SaaS MVP')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15. EventHorizon -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python qrcode ticketing flask web-saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-ticket"></i> Event Platform</span>
+                    <span class="badge-tech">Dynamic QR Verification</span>
+                </div>
+                <h3 class="margin-top-xs">EventHorizon: College Fest & Workshop Ticketing Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">High-concurrency ticket booking engine generating dynamic cryptographically signed QR badges for gate check-in scanners.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, PyQRCode, Redis Cache, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20EventHorizon" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('EventHorizon Ticketing Engine', 'Full-Stack Web')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 16. DocuSign Lite -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python pdf pki signature legal web-saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-signature"></i> Legal Tech</span>
+                    <span class="badge-tech">PKI Digital Signature</span>
+                </div>
+                <h3 class="margin-top-xs">DocuSign Lite: Binding Digital Signature & Audit Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Allows multi-party PDF document signing with verifiable audit trail timestamps and SHA-256 integrity checks.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, PyMuPDF, PKI Signatures, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20DocuSign%20Lite" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('DocuSign Lite Platform', 'Full-Stack Web')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 17. OmniFlow CRM -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python crm leads whatsapp automation web-saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-users-gear"></i> Business Tools</span>
+                    <span class="badge-tech">WhatsApp Automation</span>
+                </div>
+                <h3 class="margin-top-xs">OmniFlow: Lead Capture & Client Pipeline CRM</h3>
+                <p class="text-muted fs-sm margin-top-xs">Visual kanban lead pipeline tracking with automated WhatsApp template follow-ups and revenue attribution.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python Backend, Meta Cloud API, Interactive JS UI
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–9 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20OmniFlow%20CRM" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('OmniFlow CRM Platform', 'Small Business Solution')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 18. HyperLocal Dispatch -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python maps delivery logistics web-saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-truck-fast"></i> Logistics</span>
+                    <span class="badge-tech">Live Route Map</span>
+                </div>
+                <h3 class="margin-top-xs">HyperLocal: Regional Merchant Dispatch & Route Dashboard</h3>
+                <p class="text-muted fs-sm margin-top-xs">Connects neighborhood stores with local delivery agents, featuring live GPS breadcrumbs and order lifecycle tracking.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Leaflet.js, OpenStreetMap API, WebSockets
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 7–10 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20HyperLocal%20Dispatch" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('HyperLocal Dispatch Hub', 'Full-Stack Web')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 19. Kovida Learning -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python gamification edtech bilingual web-saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-book-open-reader"></i> EdTech Platform</span>
+                    <span class="badge-tech">Bilingual Interface</span>
+                </div>
+                <h3 class="margin-top-xs">Kovida: Gamified Learning & Quiz Platform</h3>
+                <p class="text-muted fs-sm margin-top-xs">Interactive e-learning portal with dual English/Telugu localization, XP badge mechanics, and timed coding challenges.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Flask, MongoDB Atlas, Chart.js Analytics
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20Kovida%20Learning" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('Kovida Gamified EdTech', 'Full-Stack Web')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 20. CloudInvoice -->
+            <div class="project-card glass-card tilt-card" data-domain="web-saas" data-stack="python billing gst pdf accounting web-saas">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-file-invoice"></i> FinTech Billing</span>
+                    <span class="badge-tech">GST Auto-Ledger</span>
+                </div>
+                <h3 class="margin-top-xs">CloudInvoice: GST-Compliant Multi-Currency Billing Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Calculates automated tax slabs, generates downloadable PDF receipts, and sends automated overdue payment reminders.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python Backend, ReportLab PDF Engine, Cloud Store
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20CloudInvoice" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('CloudInvoice GST Portal', 'Small Business Solution')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                     </div>
                 </div>
             </div>
 
             <!-- ================================================= -->
-            <!-- DYNAMIC BACKEND DATABASE PROJECTS                 -->
+            <!-- DOMAIN 3: DATA SCIENCE & ANALYTICS (21-30)        -->
+            <!-- ================================================= -->
+
+            <!-- 21. FinPredict -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python data-science pandas eda finance datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-arrow-trend-up"></i> Market Analytics</span>
+                    <span class="badge-tech">Exploratory EDA</span>
+                </div>
+                <h3 class="margin-top-xs">FinPredict: High-Cap Stock Forecasting & Volatility EDA</h3>
+                <p class="text-muted fs-sm margin-top-xs">Comprehensive statistical analysis and machine learning pipeline mapping historical market trends and risk metrics.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Pandas, Statsmodels, Plotly Dashboards
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20FinPredict%20EDA" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('FinPredict Market EDA', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 22. GovPolicy EDA -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python eda demographic seaborn data-science datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-landmark"></i> Public Policy</span>
+                    <span class="badge-tech">Demographic Mapping</span>
+                </div>
+                <h3 class="margin-top-xs">GovPolicy: Welfare Distribution & Regional Impact EDA</h3>
+                <p class="text-muted fs-sm margin-top-xs">Data analysis framework evaluating public subsidy allocation across rural districts to identify coverage gaps.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, GeoPandas, Seaborn, Interactive Dash
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20GovPolicy%20EDA" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('GovPolicy Demographic EDA', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 23. CustomerChurn 360 -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python shap explainability churn datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-user-xmark"></i> Telecom Analytics</span>
+                    <span class="badge-tech">SHAP Explainability</span>
+                </div>
+                <h3 class="margin-top-xs">CustomerChurn 360: Subscriber Retention Predictor</h3>
+                <p class="text-muted fs-sm margin-top-xs">Machine learning classification model backed with SHAP force plots explaining why customers cancel service subscriptions.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, LightGBM, SHAP Explainability, Streamlit
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20CustomerChurn%20360" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('CustomerChurn 360 Predictor', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 24. AirQuality Pulse -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python aqi environmental spatial sensor datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-smog"></i> Environmental</span>
+                    <span class="badge-tech">Spatial Interpolation</span>
+                </div>
+                <h3 class="margin-top-xs">AirQuality Pulse: Urban AQI Sensor & Trend Predictor</h3>
+                <p class="text-muted fs-sm margin-top-xs">Interpolates PM2.5, PM10, and NO2 sensor readings across urban centers to forecast 24-hour smog density.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Kriging Spatial Analytics, Folium Heatmaps
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20AirQuality%20Pulse" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AirQuality Pulse Analyzer', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 25. BasketMining Pro -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python apriori association-rules retail datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-basket-shopping"></i> E-Commerce EDA</span>
+                    <span class="badge-tech">Apriori Association</span>
+                </div>
+                <h3 class="margin-top-xs">BasketMining Pro: Cross-Selling Association Rule Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Applies Apriori and FP-Growth algorithms on point-of-sale logs to identify high-confidence product pairings.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, MLxtend, NetworkX Graph Visuals
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20BasketMining%20Pro" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('BasketMining Pro Engine', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 26. CryptoSentiment Tracker -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python sentiment crypto twitter reddit datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-brands fa-bitcoin"></i> Web3 Analytics</span>
+                    <span class="badge-tech">Social Correlation</span>
+                </div>
+                <h3 class="margin-top-xs">CryptoSentiment: Real-Time Social Sentiment & Price Tracker</h3>
+                <p class="text-muted fs-sm margin-top-xs">Streams real-time developer tweets and Reddit threads to correlate social sentiment surges with crypto volume swings.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, VADER Sentiment, Binance API, Streamlit
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20CryptoSentiment" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('CryptoSentiment Social Tracker', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 27. SmartEnergy EDA -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python energy smart-grid regression datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-bolt-lightning"></i> Smart Grid</span>
+                    <span class="badge-tech">Load Forecasting</span>
+                </div>
+                <h3 class="margin-top-xs">SmartEnergy: Commercial Electricity Load Curve EDA</h3>
+                <p class="text-muted fs-sm margin-top-xs">Time-decayed regression engine forecasting power consumption peaks to assist industrial substations in load shedding.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Prophet Forecasting, Matplotlib, Flask
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20SmartEnergy%20EDA" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('SmartEnergy Load Forecaster', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 28. ClinicalTrial Insights -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python biostatistics survival-analysis medical datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-dna"></i> BioStatistics</span>
+                    <span class="badge-tech">Survival Analysis</span>
+                </div>
+                <h3 class="margin-top-xs">ClinicalTrial: Oncology Drug Efficacy & Survival EDA</h3>
+                <p class="text-muted fs-sm margin-top-xs">Kaplan-Meier survival curves and Cox proportional hazard models evaluating cancer patient recovery rates.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Lifelines Library, SciPy, Plotly Analytics
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20ClinicalTrial%20EDA" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('ClinicalTrial Survival EDA', 'BioStatistics EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 29. JobMarket Pulse -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python scraper salary-benchmarking nlp datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-briefcase"></i> Labor Analytics</span>
+                    <span class="badge-tech">Skill Scraping Pipeline</span>
+                </div>
+                <h3 class="margin-top-xs">JobMarket Pulse: Tech Skill Demand & Salary Benchmark</h3>
+                <p class="text-muted fs-sm margin-top-xs">Aggregates real-time tech job postings to compute salary percentiles across backend, AI, and cloud frameworks.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, BeautifulSoup, RegEx Pipeline, Dash
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20JobMarket%20Pulse" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('JobMarket Salary Pulse', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 30. SportMetric -->
+            <div class="project-card glass-card tilt-card" data-domain="datascience" data-stack="python sports-analytics cricket win-prediction datascience">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-baseball-bat-ball"></i> Sports Science</span>
+                    <span class="badge-tech">Dynamic Win Probability</span>
+                </div>
+                <h3 class="margin-top-xs">SportMetric: T20 Match Win Probability & Ball-by-Ball EDA</h3>
+                <p class="text-muted fs-sm margin-top-xs">Dynamic win predictor tracking required run rates, wickets in hand, and bowler economy in real time.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Logistic Regression, Streamlit UI
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–5 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20SportMetric" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('SportMetric Win Predictor', 'Data Science & EDA')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- DOMAIN 4: CLOUD & DATABASE INFRASTRUCTURE (31-40)  -->
+            <!-- ================================================= -->
+
+            <!-- 31. MultiTenant Partition -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python mongodb sharding cloud database cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-database"></i> Cloud Database</span>
+                    <span class="badge-tech">MongoDB Sharding</span>
+                </div>
+                <h3 class="margin-top-xs">MultiTenant DB: Scalable Partition & Isolation Engine</h3>
+                <p class="text-muted fs-sm margin-top-xs">Automated schema routing pattern isolating organization records across shared clusters with tenant-level keys.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, PyMongo, MongoDB Atlas Clusters
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20MultiTenant%20DB" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('MultiTenant DB Partitioning', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 32. CloudSync S3 -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python aws s3 cloud redundancy backup cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-cloud-arrow-up"></i> Cloud Storage</span>
+                    <span class="badge-tech">Multi-Region Redundancy</span>
+                </div>
+                <h3 class="margin-top-xs">CloudSync: Automated Multi-Cloud S3 Redundancy Pipeline</h3>
+                <p class="text-muted fs-sm margin-top-xs">Asynchronous bucket synchronizer replicating media assets across AWS and Cloudflare R2 with checksum validation.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Boto3 SDK, Celery Workers, Redis
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20CloudSync%20S3" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('CloudSync S3 Redundancy Engine', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 33. APIGuard Gateway -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python redis rate-limiting gateway security cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-shield-virus"></i> Cloud Security</span>
+                    <span class="badge-tech">Token Bucket Proxy</span>
+                </div>
+                <h3 class="margin-top-xs">APIGuard: Distributed Rate-Limiting & DDoS Gateway</h3>
+                <p class="text-muted fs-sm margin-top-xs">High-speed reverse proxy enforcing token bucket rate-limits per IP address and API key using in-memory Redis keys.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Redis In-Memory, Reverse Proxy Middleware
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20APIGuard" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('APIGuard Distributed Gateway', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 34. AuditLog Pro -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python security blockchain sha-256 audit-trail cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-list-check"></i> Governance</span>
+                    <span class="badge-tech">Cryptographic Hash Chains</span>
+                </div>
+                <h3 class="margin-top-xs">AuditLog Pro: Tamper-Evident System Event Tracker</h3>
+                <p class="text-muted fs-sm margin-top-xs">Records all enterprise database modifications in an append-only cryptographic ledger verifying record authenticity.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, SHA-256 Blockchain Structure, MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20AuditLog%20Pro" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('AuditLog Tamper-Proof Tracker', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 35. DockerCluster Monitor -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python docker devops monitoring health cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-brands fa-docker"></i> DevOps Engine</span>
+                    <span class="badge-tech">Container Auto-Healer</span>
+                </div>
+                <h3 class="margin-top-xs">DockerCluster: Container Health & Auto-Restart Sentinel</h3>
+                <p class="text-muted fs-sm margin-top-xs">Lightweight daemon monitoring CPU memory spikes and memory leaks, executing automated container recycling.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Docker Engine SDK, Alert Dispatcher
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 4–6 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20DockerCluster" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('DockerCluster Sentinel Monitor', 'DevOps & Cloud')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 36. SQL-to-NoSQL Bridge -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python sql postgresql mongodb migration cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-arrows-split-up-and-left"></i> Data Migration</span>
+                    <span class="badge-tech">Dynamic Schema Converter</span>
+                </div>
+                <h3 class="margin-top-xs">SQL-to-NoSQL Bridge: Dynamic Relational-to-Document Migrator</h3>
+                <p class="text-muted fs-sm margin-top-xs">Maps foreign key relationships in PostgreSQL/MySQL into nested BSON document trees in MongoDB with zero data truncation.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, SQLAlchemy, PyMongo, Batch Processors
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20SQL%20to%20NoSQL%20Bridge" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('SQL-to-NoSQL Bridge Engine', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 37. CacheMaster Distributed -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python redis caching high-concurrency cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-microchip"></i> High Concurrency</span>
+                    <span class="badge-tech">Cache Invalidation</span>
+                </div>
+                <h3 class="margin-top-xs">CacheMaster: Distributed Redis Cache Invalidation System</h3>
+                <p class="text-muted fs-sm margin-top-xs">Solves cache stampedes on hot query routes using probabilistic early expiration and distributed locking.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Redis Cluster, Redlock Algorithm
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20CacheMaster" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('CacheMaster Distributed Engine', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 38. IoT Telemetry Hub -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python mqtt iot time-series streaming cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-tower-broadcast"></i> IoT Streaming</span>
+                    <span class="badge-tech">MQTT Telemetry</span>
+                </div>
+                <h3 class="margin-top-xs">IoT Telemetry Hub: High-Throughput Stream Ingestion Pipeline</h3>
+                <p class="text-muted fs-sm margin-top-xs">Ingests 5,000+ sensor frames per second via MQTT message queues, formatting them into partitioned time-series logs.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, Paho-MQTT, TimescaleDB / MongoDB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–9 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20IoT%20Telemetry%20Hub" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('IoT Telemetry Stream Hub', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 39. ZeroDowntime Migrator -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python blue-green deployment schema devops cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-rotate"></i> Continuous Deploy</span>
+                    <span class="badge-tech">Blue-Green Schema Versioning</span>
+                </div>
+                <h3 class="margin-top-xs">ZeroDowntime: Blue-Green Database Schema Versioning Pipeline</h3>
+                <p class="text-muted fs-sm margin-top-xs">Applies dual-write schema changes and dual-read validation patterns to enable zero-downtime database upgrades.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python, PyMongo, Flask Microservices, Docker
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 6–8 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20ZeroDowntime%20Migrator" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('ZeroDowntime Schema Pipeline', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 40. SecureTrace -->
+            <div class="project-card glass-card tilt-card" data-domain="cloud-infra" data-stack="python vehicle verification police qr cloud-infra">
+                <div class="project-header flex-between align-center">
+                    <span class="project-category"><i class="fa-solid fa-id-card-clip"></i> GovTech System</span>
+                    <span class="badge-tech">Digital Vehicle Ledger</span>
+                </div>
+                <h3 class="margin-top-xs">SecureTrace: Digital Vehicle RC, Insurance & Police Verification</h3>
+                <p class="text-muted fs-sm margin-top-xs">Decentralized document verification system enabling law enforcement to audit vehicle licenses and insurance in seconds.</p>
+                <div class="project-tech-stack margin-top-sm">
+                    <strong>Tech Stack:</strong> Python Backend, QR Authentication, Cloud DB
+                </div>
+                <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
+                    <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> 5–7 Days</span>
+                    <div class="flex-align-center gap-xs">
+                        <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20SecureTrace%20System" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('SecureTrace Digital Vehicle Ledger', 'Cloud Infrastructure')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- DYNAMIC MONGODB DATABASE INJECTIONS               -->
             <!-- ================================================= -->
             {% if projects %}
                 {% for proj in projects %}
-                    <div class="project-card glass-card" data-domain="{{ proj.category | lower }}" data-stack="{{ proj.tech_stack | join(' ') | lower if proj.tech_stack is iterable and proj.tech_stack is not string else 'python cloud web' }}">
+                    <div class="project-card glass-card tilt-card" data-domain="{{ proj.category | lower | replace(' ', '-') }}" data-stack="{{ proj.tech_stack | join(' ') | lower if proj.tech_stack is iterable and proj.tech_stack is not string else 'python cloud web' }}">
                         <div class="project-header flex-between align-center">
                             <span class="project-category">{{ proj.category }}</span>
-                            <span class="badge-tech">Verified Build</span>
+                            <span class="badge-tech">Verified Enterprise Build</span>
                         </div>
                         <h3 class="margin-top-xs">{{ proj.title }}</h3>
                         <p class="text-muted fs-sm margin-top-xs">{{ proj.description }}</p>
@@ -781,12 +917,8 @@
                         <div class="project-meta-info margin-top-sm flex-between align-center wrap-mobile gap-sm">
                             <span class="fs-sm text-muted"><i class="fa-solid fa-clock"></i> Custom Scope</span>
                             <div class="flex-align-center gap-xs">
-                                <a href="https://wa.me/919948685064?text=Hi%20Akhil,%20I%20am%20interested%20in%20{{ proj.title | urlencode }}" target="_blank" class="btn btn-sm btn-outline" style="color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.4);">
-                                    <i class="fa-brands fa-whatsapp"></i>
-                                </a>
-                                <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('{{ proj.title | escape }}', '{{ proj.category | escape }}')">
-                                    <i class="fa-solid fa-paper-plane"></i> Request Build
-                                </button>
+                                <a href="https://wa.me/919948685064?text=Hi%20DAV%20Team,%20I%20am%20interested%20in%20{{ proj.title | urlencode }}" target="_blank" class="btn btn-sm btn-outline btn-wa"><i class="fa-brands fa-whatsapp"></i></a>
+                                <button class="btn btn-sm btn-outline-primary" onclick="openOrderModal('{{ proj.title | escape }}', '{{ proj.category | escape }}')"><i class="fa-solid fa-paper-plane"></i> Request Build</button>
                             </div>
                         </div>
                     </div>
@@ -799,7 +931,7 @@
         <div id="no-results-state" class="glass-card text-center padding-xl margin-top-lg" style="display: none; max-width: 500px; margin-left: auto; margin-right: auto;">
             <i class="fa-solid fa-magnifying-glass fs-xl text-muted" style="font-size: 2.5rem;"></i>
             <h3 class="margin-top-sm">No Matching Projects Found</h3>
-            <p class="text-muted fs-sm margin-top-xs">We didn't find any catalog projects matching your search criteria. Submit a custom request to Founder V Akhil.</p>
+            <p class="text-muted fs-sm margin-top-xs">We didn't find any catalog projects matching your search criteria. Submit a custom requirement to the DAV engineering team.</p>
             <button class="btn btn-primary margin-top-md" onclick="resetFilters()">
                 <i class="fa-solid fa-rotate-left"></i> Reset All Filters
             </button>
@@ -811,10 +943,10 @@
 <!-- ========================================================= -->
 <!-- 3. PROJECT DIRECT REQUEST / INQUIRY MODAL                 -->
 <!-- ========================================================= -->
-<div class="modal-overlay" id="project-order-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
+<div class="modal-overlay" id="project-order-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center; padding: 20px;">
     <div class="modal-card glass-card highlight-border-card" style="width: 100%; max-width: 540px; padding: 28px;">
         <div class="modal-header flex-between align-center" style="margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-paper-plane"></i> Request Project Build & Quote</h3>
+            <h3 style="font-size: 1.25rem;"><i class="fa-solid fa-paper-plane text-primary"></i> Request Project Build & Quote</h3>
             <button type="button" class="icon-btn" onclick="toggleModal('project-order-modal')" style="width: 32px; height: 32px;">&times;</button>
         </div>
         
@@ -847,31 +979,31 @@
             </div>
 
             <div class="form-group">
-                <label for="order-custom-notes" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">Customization Notes (Optional)</label>
-                <textarea name="notes" id="order-custom-notes" class="form-input" rows="3" placeholder="Mention deadline, specific features or documentation requirements..."></textarea>
+                <label for="order-custom-notes" style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block;">Customization Scope & Deliverable Notes</label>
+                <textarea name="notes" id="order-custom-notes" class="form-input" rows="3" placeholder="Mention deadline, specific features, dataset choices or documentation requirements..."></textarea>
             </div>
 
             <div class="modal-actions flex-between gap-sm margin-top-md" style="justify-content: flex-end;">
                 <button type="button" class="btn btn-ghost" onclick="toggleModal('project-order-modal')">Cancel</button>
-                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Send Inquiry to Founder</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Send Inquiry to Engineering Team</button>
             </div>
         </form>
     </div>
 </div>
 
 <!-- ========================================================= -->
-<!-- 4. CUSTOM PROJECT REQUEST CTA                             -->
+<!-- 4. CUSTOM ARCHITECTURE REQUEST CTA                        -->
 <!-- ========================================================= -->
 <section class="cta-section section-padding">
     <div class="section-container text-center">
         <div class="glass-card highlight-border-card max-w-800 margin-auto">
-            <h2>Don't See Your Exact Requirement?</h2>
+            <h2>Need a Completely Custom System Architecture?</h2>
             <p class="margin-top-xs">
-                Founder <strong>V Akhil</strong> and the DAV Cloud Solutions team build fully customized, ground-up software tailored to your specific requirements.
+                The DAV Cloud Solutions engineering team designs and deploys tailored ground-up software, machine learning pipelines, and cloud APIs suited to your exact specifications.
             </p>
             <div class="cta-actions margin-top-md" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
                 <a href="{{ url_for('home') }}#contact" class="btn btn-primary btn-lg">
-                    <i class="fa-solid fa-paper-plane"></i> Request Custom Scope & Quote
+                    <i class="fa-solid fa-paper-plane"></i> Request Custom Architecture & Scope
                 </a>
                 <a href="{{ url_for('register') }}" class="btn btn-outline btn-lg">
                     <i class="fa-solid fa-user-plus"></i> Register to Start Project
@@ -882,6 +1014,26 @@
 </section>
 
 <style>
+    /* 3D Tilt Card & Interactive Hover Physics */
+    .tilt-card {
+        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+    .tilt-card:hover {
+        transform: translateY(-8px) scale(1.015);
+        border-color: rgba(99, 102, 241, 0.45);
+        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.2);
+    }
+    .btn-wa {
+        color: var(--accent-emerald, #10b981);
+        border-color: rgba(16, 185, 129, 0.4);
+    }
+    .btn-wa:hover {
+        background: #10b981;
+        color: #ffffff !important;
+        border-color: #10b981;
+    }
     .tech-pill-btn {
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid var(--border-color);
@@ -964,7 +1116,7 @@
             const stack = (card.getAttribute('data-stack') || '').toLowerCase();
             const text = card.textContent.toLowerCase();
 
-            const matchesDomain = (currentDomain === 'all' || domain.includes(currentDomain));
+            const matchesDomain = (currentDomain === 'all' || domain === currentDomain || domain.includes(currentDomain));
             const matchesTech = (currentTech === '' || stack.includes(currentTech));
             const matchesSearch = (query === '' || text.includes(query) || stack.includes(query));
 
@@ -981,11 +1133,27 @@
         }
 
         if (countBar) {
-            countBar.textContent = `Showing ${visibleCount} matching project${visibleCount === 1 ? '' : 's'}`;
+            countBar.textContent = `Showing ${visibleCount} matching engineered project${visibleCount === 1 ? '' : 's'}`;
         }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        // 3D Tilt Mousemove Physics
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const rotX = (y / (rect.height / 2)) * -6;
+                const rotY = (x / (rect.width / 2)) * 6;
+                card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px) scale(1.015)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+            });
+        });
+
         // Domain Filter Tabs
         document.querySelectorAll('.filter-tab').forEach(tab => {
             tab.addEventListener('click', function() {
@@ -1056,14 +1224,14 @@
                     });
 
                     if (web3Data.success) {
-                        alert('Inquiry received! Founder V Akhil will contact you on WhatsApp/Email with the delivery schedule.');
+                        alert('Inquiry received! Our engineering team will reach out via WhatsApp/Email shortly with the architecture blueprint and delivery schedule.');
                         inquiryForm.reset();
                         toggleModal('project-order-modal');
                     } else {
                         alert(web3Data.message || 'Error submitting inquiry. Please try again.');
                     }
                 } catch (err) {
-                    alert('Network error occurred. Please verify your connection.');
+                    alert('Network error occurred. Please check your connection.');
                 } finally {
                     btn.disabled = false;
                     btn.innerHTML = orig;
