@@ -373,8 +373,18 @@
 }
 
 /* --------------------------------------------------------------------------
-   7. RESPONSIVE DASHBOARD BREAKPOINTS
+   7. MOBILE LOGOUT & WORKSPACE RESPONSIVENESS
    -------------------------------------------------------------------------- */
+.mobile-drawer-logout {
+    display: none;
+}
+
+.dashboard-banner-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 @media (max-width: 1024px) {
     .grid-2-col-wide {
         grid-template-columns: 1fr;
@@ -390,14 +400,47 @@
         font-size: 1.5rem;
     }
 
-    .welcome-actions {
-        width: 100%;
-        margin-top: 16px;
-        flex-direction: column;
+    .mobile-drawer-logout {
+        display: block !important;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .welcome-actions .btn {
-        width: 100%;
+    .hide-mobile {
+        display: none !important;
+    }
+
+    .header-logout-btn {
+        display: inline-flex !important;
+        padding: 0 !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: var(--radius-sm) !important;
+    }
+
+    .header-logout-btn i {
+        font-size: 1rem !important;
+        margin: 0 !important;
+    }
+
+    .dashboard-welcome-card .welcome-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        width: 100% !important;
+        margin-top: 14px !important;
+    }
+
+    .dashboard-welcome-card .welcome-actions .btn {
+        flex: 1 1 120px !important;
+        min-height: 38px !important;
+        padding: 6px 12px !important;
+        font-size: 0.85rem !important;
     }
 
     .metric-card {

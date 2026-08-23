@@ -30,11 +30,15 @@
                     </p>
                 </div>
                 <div class="welcome-actions margin-top-mobile flex-between gap-sm">
-                    <button class="btn btn-primary magnetic-btn" onclick="toggleModal('mvp-builder-modal')">
-                        <i class="fa-solid fa-rocket"></i> Request Custom MVP
+                    <button class="btn btn-primary btn-sm magnetic-btn" onclick="toggleModal('mvp-builder-modal')">
+                        <i class="fa-solid fa-rocket"></i> Request MVP
                     </button>
-                    <a href="{{ url_for('business_catalog') }}" class="btn btn-outline magnetic-btn">
-                        <i class="fa-solid fa-building-circle-check"></i> View Directory Listing
+                    <a href="{{ url_for('business_catalog') }}" class="btn btn-outline btn-sm magnetic-btn hide-mobile">
+                        <i class="fa-solid fa-building-circle-check"></i> View Directory
+                    </a>
+                    <!-- Dedicated Direct Logout Button for Mobile & Desktop -->
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm magnetic-btn dashboard-banner-logout" title="Log out of session">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
                 </div>
             </div>

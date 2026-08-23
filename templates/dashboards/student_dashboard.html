@@ -17,12 +17,16 @@
                     <p class="text-muted">Track your academic projects, access source code deliverables, prepare for viva reviews, or schedule 1-on-1 mentorship with Founder V Akhil.</p>
                 </div>
                 <div class="welcome-actions margin-top-mobile flex-between gap-sm">
-                    <button class="btn btn-primary magnetic-btn" onclick="toggleModal('request-project-modal')">
-                        <i class="fa-solid fa-plus"></i> Request New Project
+                    <button class="btn btn-primary btn-sm magnetic-btn" onclick="toggleModal('request-project-modal')">
+                        <i class="fa-solid fa-plus"></i> Request Project
                     </button>
-                    <button class="btn btn-outline magnetic-btn" onclick="toggleModal('mentorship-modal')">
+                    <button class="btn btn-outline btn-sm magnetic-btn hide-mobile" onclick="toggleModal('mentorship-modal')">
                         <i class="fa-solid fa-calendar-check"></i> Book Mentorship
                     </button>
+                    <!-- Dedicated Direct Logout Action for Mobile & Desktop -->
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm magnetic-btn dashboard-banner-logout" title="Log out of session">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
                 </div>
             </div>
         </div>

@@ -15,7 +15,11 @@
                     <p class="text-muted">Manage your assigned builds, leverage the DAV AI suite, upload deliverables for Founder review, and track project progress.</p>
                 </div>
                 <div class="welcome-actions margin-top-mobile flex-between gap-sm">
-                    <span class="status-pill status-completed"><i class="fa-solid fa-circle-check"></i> Active Specialist</span>
+                    <span class="status-pill status-completed hide-mobile"><i class="fa-solid fa-circle-check"></i> Active Specialist</span>
+                    <!-- Dedicated Direct Logout Button for Mobile & Desktop -->
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm magnetic-btn dashboard-banner-logout" title="Log out of session">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
                 </div>
             </div>
         </div>

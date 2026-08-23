@@ -92,6 +92,22 @@
                             <i class="fa-solid fa-gauge-high"></i> Dashboard
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url_for('home') }}" class="nav-item">
+                            <i class="fa-solid fa-house"></i> Main Website
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('projects_page') }}" class="nav-item">
+                            <i class="fa-solid fa-layer-group"></i> Catalog
+                        </a>
+                    </li>
+                    <!-- Dedicated Mobile Drawer Logout Item -->
+                    <li class="mobile-drawer-logout">
+                        <a href="{{ url_for('logout') }}" class="nav-item text-danger" style="color: var(--accent-rose, #f43f5e) !important;">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout ({{ session.get('full_name', 'User').split()[0] }})
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="nav-controls">
@@ -106,18 +122,18 @@
                         <i class="fa-solid fa-moon" id="theme-icon"></i>
                     </button>
 
-                    <!-- Session User Capsule -->
-                    <div class="user-profile-capsule">
+                    <!-- Session User Capsule (Hidden on mobile to save width) -->
+                    <div class="user-profile-capsule hide-mobile">
                         <span class="user-avatar-dot"><i class="fa-solid fa-user-check"></i></span>
                         <span class="user-name-short">{{ session.get('full_name', 'User').split()[0] }}</span>
                     </div>
 
-                    <!-- Logout Button -->
-                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm magnetic-btn" title="Logout">
+                    <!-- Header Logout Button (Auto-condenses into square icon on mobile) -->
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm magnetic-btn header-logout-btn" title="Logout">
                         <i class="fa-solid fa-right-from-bracket"></i> <span class="hide-mobile">Logout</span>
                     </a>
 
-                    <!-- Mobile Menu Button -->
+                    <!-- Mobile Menu Hamburger -->
                     <button class="mobile-nav-toggle" id="mobile-menu-btn" aria-label="Toggle Mobile Navigation">
                         <i class="fa-solid fa-bars-staggered"></i>
                     </button>
@@ -191,7 +207,7 @@
                     </div>
                 </a>
                 <p class="footer-desc">Empowering Students, Small Businesses, and Tech Startups with high-performance IT Services, Web Applications, and Custom Machine Learning Pipelines.</p>
-                
+
                 <div class="system-status-indicator">
                     <span class="status-pulse-dot"></span>
                     <span class="status-pulse-text">DAV Cloud Services: <strong>Operational</strong></span>
