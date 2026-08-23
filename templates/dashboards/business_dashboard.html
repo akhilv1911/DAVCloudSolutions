@@ -36,7 +36,7 @@
                     <a href="{{ url_for('business_catalog') }}" class="btn btn-outline btn-sm magnetic-btn hide-mobile">
                         <i class="fa-solid fa-building-circle-check"></i> View Directory
                     </a>
-                    <!-- Dedicated Direct Logout Button for Mobile & Desktop -->
+                    <!-- Dedicated Direct Logout Action for Mobile & Desktop -->
                     <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm magnetic-btn dashboard-banner-logout" title="Log out of session">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
@@ -77,13 +77,15 @@
             </div>
         </div>
 
-        <div class="grid-2-col" style="grid-template-columns: 2.1fr 1fr; gap: 28px;">
-            <!-- ========================================================= -->
-            <!-- 2. ACTIVE MVP BUILDS & STAGING SANDBOX LINKS              -->
-            <!-- ========================================================= -->
+        <!-- ========================================================= -->
+        <!-- 2. MAIN WORKSPACE GRID (COLLAPSIBLE ON MOBILE)             -->
+        <!-- ========================================================= -->
+        <div class="grid-2-col-wide">
+            
+            <!-- Left Main Column: Active Builds & Documents -->
             <div class="dashboard-main-col">
                 <div class="glass-card margin-bottom-lg hover-glow">
-                    <div class="card-header-bar flex-between align-center">
+                    <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
                         <h2><i class="fa-solid fa-cubes text-primary"></i> Active Software Builds & Staging URLs</h2>
                         <button class="btn btn-sm btn-ghost magnetic-btn" onclick="location.reload();">
                             <i class="fa-solid fa-rotate-right"></i> Refresh
@@ -170,7 +172,7 @@
                 <!-- 3. DOCUMENT & NDA VAULT                                   -->
                 <!-- ========================================================= -->
                 <div class="glass-card hover-glow">
-                    <div class="card-header-bar flex-between align-center">
+                    <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
                         <h2><i class="fa-solid fa-vault text-primary"></i> Secure Document & NDA Vault</h2>
                         <span class="badge-tech">AES-256 Encrypted Storage</span>
                     </div>
@@ -306,62 +308,6 @@
         </form>
     </div>
 </div>
-
-<style>
-    .milestone-tracker {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        padding: 12px 0;
-    }
-    .tracker-step {
-        text-align: center;
-        flex: 1;
-        position: relative;
-    }
-    .tracker-step::after {
-        content: '';
-        position: absolute;
-        top: 14px;
-        left: 50%;
-        width: 100%;
-        height: 2px;
-        background: var(--border-color);
-        z-index: 0;
-    }
-    .tracker-step:last-child::after {
-        display: none;
-    }
-    .tracker-step.completed::after {
-        background: var(--primary);
-    }
-    .step-dot {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: var(--bg-main);
-        color: #fff;
-        border: 2px solid var(--border-color);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 6px;
-        font-size: 0.8rem;
-        position: relative;
-        z-index: 1;
-        transition: all 0.3s ease;
-    }
-    .tracker-step.completed .step-dot {
-        background: var(--primary);
-        border-color: var(--primary);
-        box-shadow: 0 0 10px var(--primary-glow);
-    }
-    .tracker-step.ready-step .step-dot {
-        background: var(--accent-emerald);
-        border-color: var(--accent-emerald);
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-    }
-</style>
 {% endblock %}
 
 {% block extra_js %}
