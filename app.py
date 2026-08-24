@@ -1017,10 +1017,11 @@ def api_dav_ai_analyze_lead():
 
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model="gemini-3.6-flash",
+            model="gemini-3.7-flash",
             contents=prompt,
         )
-        return jsonify({"success": True, "analysis": response.text})
+        analysis_text = getattr(response, "text", None) or str(response)
+        return jsonify({"success": True, "analysis": analysis_text})
     except Exception as e:
         return jsonify(
             {"success": False, "error": f"DAV AI Engine Error: {str(e)}"}
@@ -1035,7 +1036,6 @@ def api_dav_ai_generate_scope():
     title = data.get("title", "").strip()
     category = data.get("category", "Student Academic Project").strip()
     
-    # Check all possible payload keys sent by admin/team frontend forms
     requirements = (
         data.get("requirements")
         or data.get("message")
@@ -1072,13 +1072,14 @@ def api_dav_ai_generate_scope():
 
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model="gemini-3.6-flash",
+            model="gemini-3.7-flash",
             contents=prompt,
         )
+        scope_text = getattr(response, "text", None) or str(response)
         return jsonify({
             "success": True,
-            "scope": response.text,
-            "analysis": response.text  # Universal fallback key mapping
+            "scope": scope_text,
+            "analysis": scope_text
         })
     except Exception as e:
         return jsonify(
@@ -1122,10 +1123,11 @@ def api_dav_ai_code_audit():
 
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model="gemini-3.6-flash",
+            model="gemini-3.7-flash",
             contents=prompt,
         )
-        return jsonify({"success": True, "audit": response.text})
+        audit_text = getattr(response, "text", None) or str(response)
+        return jsonify({"success": True, "audit": audit_text})
     except Exception as e:
         return jsonify(
             {"success": False, "error": f"DAV AI Engine Error: {str(e)}"}
