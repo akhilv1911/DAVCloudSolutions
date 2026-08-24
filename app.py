@@ -967,7 +967,7 @@ def admin_delete_team_member(member_id):
 
 
 # ==============================================================================
-# LIVE DAV AI INTERNAL AGENT ENDPOINTS (GEMINI POWERED WITH FALLBACK)
+# LIVE DAV AI INTERNAL AGENT ENDPOINTS (GEMINI POWERED WITH FALLBACK & TRY-CATCH)
 # ==============================================================================
 
 def call_gemini_with_fallback(client, prompt):
@@ -996,40 +996,40 @@ def call_gemini_with_fallback(client, prompt):
 @admin_or_team_required
 def api_dav_ai_analyze_lead():
     """Live AI endpoint: Lead scoring, tech feasibility, and scope assessment."""
-    data = request.get_json() or {}
-    inquiry_id = data.get("inquiry_id")
-
-    lead_name = data.get("name", "Guest Lead")
-    category = data.get("user_category", "Student Project")
-    message = data.get("message", "")
-
-    if inquiry_id:
-        db = get_db()
-        inquiry = db.inquiries.find_one({"_id": ObjectId(inquiry_id)})
-        if inquiry:
-            lead_name = inquiry.get("name", lead_name)
-            category = inquiry.get("user_category", category)
-            message = inquiry.get("message", message)
-
-    user_role = session.get("role", "team")
-
-    prompt = f"""
-    You are the Senior Technical Architect at DAV Cloud Solutions assisting the Core Engineering Team.
-    Analyze this incoming client/student inquiry (Requested by: {user_role.upper()} Specialist):
-
-    Client Name: {lead_name}
-    Track: {category}
-    Scope/Requirements: {message}
-
-    Provide a concise technical assessment formatted in clean Markdown with:
-    1. **Lead Score & Feasibility**: (High / Medium / Low) with 1-line justification.
-    2. **Recommended Tech Architecture**: (e.g. Scalable Microservices, Cloud Data, React, Applied ML).
-    3. **Estimated Delivery Timeline**: (e.g. 3-5 days, 1 week).
-    4. **Suggested Price Quote (₹)**: (e.g. ₹3,500 - ₹6,000).
-    5. **Next Technical Actions**: Concrete engineering steps and response draft for the client.
-    """
-
     try:
+        data = request.get_json() or {}
+        inquiry_id = data.get("inquiry_id")
+
+        lead_name = data.get("name", "Guest Lead")
+        category = data.get("user_category", "Student Project")
+        message = data.get("message", "")
+
+        if inquiry_id:
+            db = get_db()
+            inquiry = db.inquiries.find_one({"_id": ObjectId(inquiry_id)})
+            if inquiry:
+                lead_name = inquiry.get("name", lead_name)
+                category = inquiry.get("user_category", category)
+                message = inquiry.get("message", message)
+
+        user_role = session.get("role", "team")
+
+        prompt = f"""
+        You are the Senior Technical Architect at DAV Cloud Solutions assisting the Core Engineering Team.
+        Analyze this incoming client/student inquiry (Requested by: {user_role.upper()} Specialist):
+
+        Client Name: {lead_name}
+        Track: {category}
+        Scope/Requirements: {message}
+
+        Provide a concise technical assessment formatted in clean Markdown with:
+        1. **Lead Score & Feasibility**: (High / Medium / Low) with 1-line justification.
+        2. **Recommended Tech Architecture**: (e.g. Scalable Microservices, Cloud Data, React, Applied ML).
+        3. **Estimated Delivery Timeline**: (e.g. 3-5 days, 1 week).
+        4. **Suggested Price Quote (₹)**: (e.g. ₹3,500 - ₹6,000).
+        5. **Next Technical Actions**: Concrete engineering steps and response draft for the client.
+        """
+
         api_key = os.environ.get("GEMINI_API_KEY", "")
         if not api_key:
             return jsonify({
@@ -1050,37 +1050,37 @@ def api_dav_ai_analyze_lead():
 @admin_or_team_required
 def api_dav_ai_generate_scope():
     """Live AI endpoint: System architecture blueprint, schema design, and viva defense questions."""
-    data = request.get_json() or {}
-    title = data.get("title", "").strip()
-    category = data.get("category", "Student Academic Project").strip()
-    
-    requirements = (
-        data.get("requirements")
-        or data.get("message")
-        or data.get("description")
-        or data.get("req")
-        or "Standard production architecture with authentication, API routes, and cloud database integration."
-    ).strip()
-
-    if not title:
-        return jsonify({"success": False, "error": "Project title is required."}), 400
-
-    prompt = f"""
-    You are the Lead Systems Architect at DAV Cloud Solutions.
-    Generate a complete technical project scope and delivery blueprint for:
-
-    - Project Title: {title}
-    - Domain Track: {category}
-    - Scope Requirements: {requirements}
-
-    Provide a structured technical blueprint in clean Markdown:
-    1. **System Architecture Overview** (Frontend, Backend API layer, Cloud Database)
-    2. **Core Functional Modules** (4-6 key features)
-    3. **Suggested Data Schema & Document Structure** (Collections/Tables and fields)
-    4. **Top 5 Viva Defense / Technical Interview Questions** (with complete technical answers for university examiners)
-    """
-
     try:
+        data = request.get_json() or {}
+        title = data.get("title", "").strip()
+        category = data.get("category", "Student Academic Project").strip()
+        
+        requirements = (
+            data.get("requirements")
+            or data.get("message")
+            or data.get("description")
+            or data.get("req")
+            or "Standard production architecture with authentication, API routes, and cloud database integration."
+        ).strip()
+
+        if not title:
+            return jsonify({"success": False, "error": "Project title is required."}), 400
+
+        prompt = f"""
+        You are the Lead Systems Architect at DAV Cloud Solutions.
+        Generate a complete technical project scope and delivery blueprint for:
+
+        - Project Title: {title}
+        - Domain Track: {category}
+        - Scope Requirements: {requirements}
+
+        Provide a structured technical blueprint in clean Markdown:
+        1. **System Architecture Overview** (Frontend, Backend API layer, Cloud Database)
+        2. **Core Functional Modules** (4-6 key features)
+        3. **Suggested Data Schema & Document Structure** (Collections/Tables and fields)
+        4. **Top 5 Viva Defense / Technical Interview Questions** (with complete technical answers for university examiners)
+        """
+
         api_key = os.environ.get("GEMINI_API_KEY", "")
         if not api_key:
             return jsonify({
@@ -1105,29 +1105,29 @@ def api_dav_ai_generate_scope():
 @admin_or_team_required
 def api_dav_ai_code_audit():
     """Live AI endpoint: Security and optimization audit on code snippets."""
-    data = request.get_json() or {}
-    code_snippet = data.get("code", "").strip()
-
-    if not code_snippet:
-        return jsonify(
-            {"success": False, "error": "Code snippet is required for audit."}
-        ), 400
-
-    prompt = f"""
-    You are the Lead Code Reviewer at DAV Cloud Solutions.
-    Perform an automated security, efficiency, and cleanliness audit on the following code snippet:
-
-    ```python
-    {code_snippet}
-    ```
-
-    Evaluate and return in clean Markdown:
-    1. **Security Vulnerabilities** (Injection risks, auth flaws, exposed secrets)
-    2. **Performance Bottlenecks** (Redundant data queries, execution load)
-    3. **Production Recommendations** (API structuring, robust error handlers, modularity)
-    """
-
     try:
+        data = request.get_json() or {}
+        code_snippet = data.get("code", "").strip()
+
+        if not code_snippet:
+            return jsonify(
+                {"success": False, "error": "Code snippet is required for audit."}
+            ), 400
+
+        prompt = f"""
+        You are the Lead Code Reviewer at DAV Cloud Solutions.
+        Perform an automated security, efficiency, and cleanliness audit on the following code snippet:
+
+        ```python
+        {code_snippet}
+        ```
+
+        Evaluate and return in clean Markdown:
+        1. **Security Vulnerabilities** (Injection risks, auth flaws, exposed secrets)
+        2. **Performance Bottlenecks** (Redundant data queries, execution load)
+        3. **Production Recommendations** (API structuring, robust error handlers, modularity)
+        """
+
         api_key = os.environ.get("GEMINI_API_KEY", "")
         if not api_key:
             return jsonify({
