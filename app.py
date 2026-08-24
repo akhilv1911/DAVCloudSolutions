@@ -7,6 +7,7 @@ File: app.py
 """
 
 import os
+import time
 from datetime import datetime, timezone
 from functools import wraps
 from bson.objectid import ObjectId
@@ -966,8 +967,29 @@ def admin_delete_team_member(member_id):
 
 
 # ==============================================================================
-# LIVE DAV AI INTERNAL AGENT ENDPOINTS (GEMINI POWERED - ADMIN & TEAM ACCESS)
+# LIVE DAV AI INTERNAL AGENT ENDPOINTS (GEMINI POWERED WITH FALLBACK)
 # ==============================================================================
+
+def call_gemini_with_fallback(client, prompt):
+    """Helper to safely call Gemini with fallback models if 503 unavailable occurs."""
+    models_to_try = ["gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.6-flash"]
+    
+    last_error = None
+    for model_name in models_to_try:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+            text_output = getattr(response, "text", None) or str(response)
+            if text_output:
+                return text_output
+        except Exception as e:
+            last_error = e
+            time.sleep(1)
+            continue
+            
+    raise Exception(f"All Gemini models busy. Last error: {str(last_error)}")
 
 
 @app.route("/api/dav-ai/analyze-lead", methods=["POST"])
@@ -1016,11 +1038,7 @@ def api_dav_ai_analyze_lead():
             }), 500
 
         client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model="gemini-3.7-flash",
-            contents=prompt,
-        )
-        analysis_text = getattr(response, "text", None) or str(response)
+        analysis_text = call_gemini_with_fallback(client, prompt)
         return jsonify({"success": True, "analysis": analysis_text})
     except Exception as e:
         return jsonify(
@@ -1071,11 +1089,7 @@ def api_dav_ai_generate_scope():
             }), 500
 
         client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model="gemini-3.7-flash",
-            contents=prompt,
-        )
-        scope_text = getattr(response, "text", None) or str(response)
+        scope_text = call_gemini_with_fallback(client, prompt)
         return jsonify({
             "success": True,
             "scope": scope_text,
@@ -1122,11 +1136,7 @@ def api_dav_ai_code_audit():
             }), 500
 
         client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model="gemini-3.7-flash",
-            contents=prompt,
-        )
-        audit_text = getattr(response, "text", None) or str(response)
+        audit_text = call_gemini_with_fallback(client, prompt)
         return jsonify({"success": True, "audit": audit_text})
     except Exception as e:
         return jsonify(

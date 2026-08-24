@@ -18,35 +18,42 @@ class CodeAuditor:
     """
 
     def __init__(self):
-        # Known security vulnerability patterns
+        # Known security vulnerability patterns with automated remediation hints
         self.security_patterns = [
             {
                 "id": "SEC001",
                 "name": "Hardcoded Secret / API Key",
                 "pattern": r"(?i)(secret_key|api_key|password|auth_token)\s*=\s*['\"](?!.*(?:os\.environ|config))[^'\"]{8,}['\"]",
                 "severity": "HIGH",
-                "recommendation": "Move secrets into environment variables (.env) or App Config."
+                "recommendation": "Move secrets into environment variables (.env) or App Config using os.environ.get()."
             },
             {
                 "id": "SEC002",
-                "name": "Potential MongoDB Injection",
+                "name": "Potential MongoDB / NoSQL Injection",
                 "pattern": r"\.find\(\s*\{\s*['\"][^'\"]+['\"]\s*:\s*request\.(args|form|json)",
-                "severity": "MEDIUM",
-                "recommendation": "Sanitize request input parameters before passing to PyMongo queries."
+                "severity": "HIGH",
+                "recommendation": "Sanitize and cast request parameters (e.g. str(), int()) before querying PyMongo collections."
             },
             {
                 "id": "SEC003",
                 "name": "Debug Mode Enabled in Code",
                 "pattern": r"app\.run\([^)]*debug\s*=\s*True",
                 "severity": "MEDIUM",
-                "recommendation": "Ensure debug=False in production deployments."
+                "recommendation": "Ensure debug=False or use environment config in production deployments."
             },
             {
                 "id": "SEC004",
                 "name": "Insecure Evaluation (eval/exec)",
                 "pattern": r"\b(eval|exec)\s*\(",
                 "severity": "CRITICAL",
-                "recommendation": "Avoid using eval() or exec() as it allows arbitrary code execution."
+                "recommendation": "Avoid using eval() or exec() as it allows arbitrary remote code execution."
+            },
+            {
+                "id": "SEC005",
+                "name": "Plain Text Password Comparison",
+                "pattern": r"user\['password'\]\s*==\s*request\.",
+                "severity": "CRITICAL",
+                "recommendation": "Use Werkzeug generate_password_hash() and check_password_hash() for secure credentials."
             }
         ]
 

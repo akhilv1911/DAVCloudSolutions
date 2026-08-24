@@ -38,10 +38,42 @@ class ScopeGenerator:
             }
         }
 
+    def _generate_viva_defense_qa(self, project_title: str, category: str) -> List[Dict[str, str]]:
+        """
+        Generates tailored IEEE-compliant viva defense questions and model answers for academic reviews.
+        """
+        common_qa = [
+            {
+                "question": f"What was the primary architectural motivation behind selecting Python Flask for '{project_title}'?",
+                "answer": "Flask provides a lightweight WSGI micro-framework model with absolute structural flexibility, allowing rapid routing, modular blueprint configuration, and clean integration with PyMongo without heavy overhead."
+            },
+            {
+                "question": "How does the application manage database persistence and connection safety?",
+                "answer": "We utilize PyMongo connection clients bound with Flask's application teardown context ('app.teardown_appcontext'), ensuring database sockets close correctly after request handling to prevent connection leaks."
+            },
+            {
+                "question": "How are user passwords and sensitive credentials secured within the system?",
+                "answer": "Passwords are never stored in plain text. We use Werkzeug security hashing ('generate_password_hash' and 'check_password_hash') using secure salt algorithms."
+            }
+        ]
+
+        if "Data Science" in category or "ML" in category or "Machine Learning" in project_title:
+            common_qa.append({
+                "question": "How is the machine learning model integrated with the backend web pipeline?",
+                "answer": "Trained predictive artifacts (.pkl or joblib files) are loaded into memory during app initialization, exposing a clean inference route that accepts form parameters and returns real-time predictions to Jinja templates."
+            })
+        else:
+            common_qa.append({
+                "question": "How does role-based access control (RBAC) restrict unauthorized endpoint access?",
+                "answer": "We use custom decorator wrappers (e.g., '@login_required' and '@role_required') that inspect session tokens before executing route logic, returning 403 authorization rejections if privilege levels mismatch."
+            })
+
+        return common_qa
+
     def generate_scope(self, project_title: str, category: str, requirements_text: str) -> Dict[str, Any]:
         """
         Generates a comprehensive scope document with architecture recommendations,
-        timeline estimates, and pricing options.
+        timeline estimates, pricing options, and IEEE academic viva defense Q&A.
         """
         text_lower = requirements_text.lower()
         
@@ -72,6 +104,7 @@ class ScopeGenerator:
             base_price += 2000
 
         total_days = base_days + complexity_additions
+        viva_qa = self._generate_viva_defense_qa(project_title, category)
 
         return {
             "project_title": project_title,
@@ -81,7 +114,8 @@ class ScopeGenerator:
             "recommended_stack": recommended_stack,
             "scope_modules": recommended_modules,
             "database_collections_suggested": ["users", "projects", "inquiries", "activity_logs"],
-            "summary": f"Estimated delivery in {total_days} days with {len(recommended_modules)} primary modules."
+            "academic_viva_defense": viva_qa,
+            "summary": f"Estimated delivery in {total_days} days with {len(recommended_modules)} primary modules and complete IEEE viva prep."
         }
 
 

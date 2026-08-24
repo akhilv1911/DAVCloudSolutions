@@ -3,7 +3,7 @@ DAV Cloud Solutions - Private Internal AI Core (dav_ai)
 Module: lead_analyzer.py
 Founder: Akhil V & Core Engineering Team
 
-Automated inquiry analyzer for evaluating Web3Forms guest messages,
+Automated inquiry analyzer for evaluating guest messages,
 scoring lead quality, detecting tech stack signals, and categorizing requirements.
 """
 
@@ -39,10 +39,36 @@ class LeadAnalyzer:
             "html", "css", "api", "rest", "ml", "machine learning", "bootstrap"
         ]
 
+    def _extract_budget_and_timeline(self, text: str) -> Dict[str, Any]:
+        """
+        Automatically parses budget estimates and timeline constraints from raw text.
+        """
+        text_lower = text.lower()
+        
+        # Default fallback estimations
+        estimated_budget = "₹3,500 - ₹12,000 (Standard Tier)"
+        estimated_timeline = "5 - 7 business days"
+
+        # Budget regex checks (e.g., numbers followed by rs, inr, k, ₹, $)
+        budget_match = re.search(r'(?:₹|rs\.?|inr|\$)?\s*(\d{1,6}(?:,\d{3})*(?:\.\d+)?)\s*(?:k|thousand|rs|inr)?', text_lower)
+        if budget_match and any(curr in text_lower for curr in ['₹', 'rs', 'inr', '$', 'budget', 'cost', 'price']):
+            raw_val = budget_match.group(0).strip()
+            estimated_budget = f"Custom Cited: {raw_val}"
+
+        # Timeline regex checks (e.g., 3 days, 2 weeks)
+        timeline_match = re.search(r'(\d+)\s*(day|days|week|weeks|month|months)', text_lower)
+        if timeline_match:
+            estimated_timeline = timeline_match.group(0)
+
+        return {
+            "suggested_budget_range": estimated_budget,
+            "estimated_turnaround": estimated_timeline
+        }
+
     def analyze_message(self, name: str, email: str, message_text: str) -> Dict[str, Any]:
         """
         Analyzes raw message text to score lead priority, identify project domain,
-        and extract technical requirements.
+        extract technical requirements, and estimate budget/timelines.
         """
         text_lower = message_text.lower()
         word_count = len(message_text.split())
@@ -65,19 +91,16 @@ class LeadAnalyzer:
         # 3. Lead Quality Score Calculation (Base 100)
         score = 40  # Base initial score
 
-        # Detail length signal
         if word_count >= 50:
             score += 25
         elif word_count >= 20:
             score += 15
 
-        # Domain/Tech clarity signal
         if len(detected_stack) >= 2:
             score += 20
         elif len(detected_stack) == 1:
             score += 10
 
-        # High priority indicators (urgency/budget)
         if any(w in text_lower for w in ["urgent", "deadline", "budget", "quote", "hire"]):
             score += 15
 
@@ -89,6 +112,9 @@ class LeadAnalyzer:
         else:
             priority = "LOW"
 
+        # 5. Extract Financial & Timeline Estimates
+        estimates = self._extract_budget_and_timeline(message_text)
+
         return {
             "client_name": name,
             "client_email": email,
@@ -97,13 +123,14 @@ class LeadAnalyzer:
             "lead_score": min(100, score),
             "priority": priority,
             "word_count": word_count,
-            "summary": f"{priority} priority inquiry for {detected_category} with score {score}/100."
+            "financial_estimates": estimates,
+            "summary": f"{priority} priority inquiry for {detected_category} with score {score}/100. Timeline: {estimates['estimated_turnaround']}."
         }
 
 
 def analyze_inquiry(name: str, email: str, message_text: str) -> Dict[str, Any]:
     """
-    Public entry point helper for analyzing Web3Forms inquiry leads.
+    Public entry point helper for analyzing inquiry leads.
     """
     analyzer = LeadAnalyzer()
     return analyzer.analyze_message(name, email, message_text)
