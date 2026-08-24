@@ -84,6 +84,7 @@
     transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
     box-sizing: border-box;
     min-width: 0;
+    transform: translateZ(0);
 }
 
 .metric-card:hover {
@@ -301,15 +302,25 @@
     100% { background-position: -200% 0; }
 }
 
-/* AI Command & Output Drawer */
+/* AI Command & Output Drawer (Jitter-Isolated) */
 .dav-ai-command-box {
     position: relative;
     box-sizing: border-box;
     width: 100%;
 }
 
-#ai-live-output-container pre,
+#ai-live-output-container,
+#team-ai-output-box {
+    min-height: 200px;
+    contain: layout paint;
+    transform: translateZ(0);
+}
+
+#ai-output-body,
 #team-ai-output-content {
+    min-height: 120px;
+    overflow-y: auto;
+    word-break: break-word;
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
 }
@@ -446,7 +457,7 @@
         display: block !important;
         margin-top: 8px;
         padding-top: 8px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid var(--border-color);
     }
 
     .hide-mobile {

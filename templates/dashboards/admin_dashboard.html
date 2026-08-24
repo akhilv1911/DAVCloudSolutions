@@ -118,7 +118,7 @@
             </div>
 
             <!-- Live Output Drawer Container -->
-            <div id="ai-live-output-container" class="glass-card margin-top-md" style="display: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(99, 102, 241, 0.35); padding: 20px;">
+            <div id="ai-live-output-container" class="glass-card margin-top-md" style="display: none; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(99, 102, 241, 0.35); padding: 20px; min-height: 200px; transform: translateZ(0);">
                 <div class="flex-between align-center border-bottom-glass padding-bottom-sm">
                     <h4 id="ai-output-title" style="color: var(--accent-cyan, #06b6d4);"><i class="fa-solid fa-terminal"></i> Live DAV AI Output</h4>
                     <div class="flex-align-center gap-xs">
@@ -126,7 +126,7 @@
                         <button type="button" class="btn btn-sm btn-ghost magnetic-btn" onclick="document.getElementById('ai-live-output-container').style.display='none'"><i class="fa-solid fa-xmark"></i> Close</button>
                     </div>
                 </div>
-                <div id="ai-output-body" style="white-space: pre-wrap; font-family: monospace; font-size: 0.88rem; line-height: 1.6; margin-top: 14px; max-height: 380px; overflow-y: auto; color: #f8fafc;">
+                <div id="ai-output-body" style="white-space: pre-wrap; font-family: monospace; font-size: 0.88rem; line-height: 1.6; margin-top: 14px; max-height: 420px; overflow-y: auto; color: #f8fafc; min-height: 120px; word-break: break-word;">
                     <!-- Real-time AI response rendered here -->
                 </div>
             </div>
@@ -270,7 +270,7 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- 5. PROJECT DISPATCH & DELIVERABLES ENGINE                 -->
+        <!-- 5. PROJECT DISPATCH & MASTER CRUD ENGINE                  -->
         <!-- ========================================================= -->
         <div class="glass-card margin-bottom-lg hover-glow">
             <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
@@ -723,8 +723,8 @@
             modalTitle.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-primary"></i> Project Scope & Viva Blueprint';
             formContainer.innerHTML = `
                 <div class="form-group">
-                    <label class="fs-sm">Project Title</label>
-                    <input type="text" id="ai-scope-title" class="form-input" placeholder="e.g. AgriPredict ML Platform">
+                    <label class="fs-sm">Project Title *</label>
+                    <input type="text" id="ai-scope-title" class="form-input" placeholder="e.g. AgriPredict ML Platform" required>
                 </div>
                 <div class="form-group">
                     <label class="fs-sm">Domain Track</label>
@@ -736,15 +736,15 @@
                 </div>
                 <div class="form-group">
                     <label class="fs-sm">Scope Description / Base Idea</label>
-                    <textarea id="ai-scope-req" class="form-input" rows="4" placeholder="Describe the desired core features, target algorithms, and database expectations..."></textarea>
+                    <textarea id="ai-scope-req" class="form-input" rows="4" placeholder="Describe desired core features, target algorithms, and database expectations..."></textarea>
                 </div>
             `;
         } else if (agentType === 'audit') {
             modalTitle.innerHTML = '<i class="fa-solid fa-shield-halved text-primary"></i> Code Quality & Security Audit';
             formContainer.innerHTML = `
                 <div class="form-group">
-                    <label class="fs-sm">Python / Flask Code Snippet</label>
-                    <textarea id="ai-audit-code" class="form-input" rows="7" style="font-family: monospace;" placeholder="Paste Flask route, ML inference function, or MongoDB query snippet to audit..."></textarea>
+                    <label class="fs-sm">Python / Flask Code Snippet *</label>
+                    <textarea id="ai-audit-code" class="form-input" rows="7" style="font-family: monospace;" placeholder="Paste Flask route, ML inference function, or MongoDB query snippet to audit..." required></textarea>
                 </div>
             `;
         }
@@ -764,20 +764,23 @@
         }, 100);
     }
 
+    // Hardware-accelerated, jitter-free text streamer
     function streamAIResponse(targetElement, fullText) {
         targetElement.innerText = '';
         let index = 0;
-        const speed = 12;
+        const chunkSize = 8;
+        const speed = 16;
 
-        function typeChunk() {
+        function typeNextChunk() {
             if (index < fullText.length) {
-                const chunk = fullText.substr(index, 3);
-                targetElement.innerText += chunk;
-                index += 3;
-                setTimeout(typeChunk, speed);
+                targetElement.innerText += fullText.substr(index, chunkSize);
+                index += chunkSize;
+                requestAnimationFrame(() => {
+                    setTimeout(typeNextChunk, speed);
+                });
             }
         }
-        typeChunk();
+        typeNextChunk();
     }
 
     async function executeLiveAIAgent() {
@@ -797,16 +800,36 @@
             };
         } else if (currentAgent === 'scope') {
             endpoint = '/api/dav-ai/generate-scope';
+            const titleVal = document.getElementById('ai-scope-title')?.value.trim();
+            if (!titleVal) {
+                if (typeof showToast === 'function') {
+                    showToast('Please enter a project title.', 'warning');
+                } else {
+                    alert('Please enter a project title.');
+                }
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Execute Live Analysis';
+                return;
+            }
             payload = {
-                title: document.getElementById('ai-scope-title')?.value || '',
-                category: document.getElementById('ai-scope-cat')?.value || '',
-                requirements: document.getElementById('ai-scope-req')?.value || ''
+                title: titleVal,
+                category: document.getElementById('ai-scope-cat')?.value || 'Data Science & ML',
+                requirements: document.getElementById('ai-scope-req')?.value || 'Standard production architecture with authentication and cloud database.'
             };
         } else if (currentAgent === 'audit') {
             endpoint = '/api/dav-ai/code-audit';
-            payload = {
-                code: document.getElementById('ai-audit-code')?.value || ''
-            };
+            const codeVal = document.getElementById('ai-audit-code')?.value.trim();
+            if (!codeVal) {
+                if (typeof showToast === 'function') {
+                    showToast('Please paste a code snippet to audit.', 'warning');
+                } else {
+                    alert('Please paste a code snippet to audit.');
+                }
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Execute Live Analysis';
+                return;
+            }
+            payload = { code: codeVal };
         }
 
         try {
@@ -824,10 +847,11 @@
             outputContainer.style.display = 'block';
 
             if (data.success) {
-                const resultText = data.analysis || data.scope || data.audit || 'No response generated.';
+                const resultText = data.scope || data.analysis || data.audit || 'Analysis generated successfully.';
+                outputContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 streamAIResponse(outputBody, resultText);
                 if (typeof showToast === 'function') {
-                    showToast('DAV AI Assessment successfully generated!', 'success');
+                    showToast('DAV AI Assessment generated successfully!', 'success');
                 }
             } else {
                 outputBody.innerText = 'Error: ' + (data.error || 'Failed to process request.');
@@ -835,8 +859,6 @@
                     showToast(data.error || 'AI generation error', 'danger');
                 }
             }
-
-            outputContainer.scrollIntoView({ behavior: 'smooth' });
         } catch (err) {
             if (typeof showToast === 'function') {
                 showToast('Execution error: ' + err.message, 'danger');

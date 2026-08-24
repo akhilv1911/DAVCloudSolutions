@@ -699,6 +699,8 @@ def team_dashboard():
         }).sort("created_at", -1)
     )
 
+    all_system_projects = list(db.projects.find().sort("created_at", -1))
+
     assigned_inquiries = list(
         db.inquiries.find({
             "$or": [
@@ -711,6 +713,7 @@ def team_dashboard():
     return render_template(
         "dashboards/team_dashboard.html",
         projects=assigned_projects,
+        all_projects=all_system_projects,
         inquiries=assigned_inquiries,
     )
 
@@ -756,7 +759,7 @@ def admin_dashboard():
     """Admin Command Center - Master operational controls."""
     db = get_db()
     all_users = list(db.users.find())
-    all_projects = list(db.projects.find())
+    all_projects = list(db.projects.find().sort("created_at", -1))
     all_inquiries = list(db.inquiries.find().sort("created_at", -1))
     all_team = list(db.team.find().sort("created_at", 1))
 
@@ -853,6 +856,17 @@ def admin_update_project(project_id):
         {"_id": ObjectId(project_id)}, {"$set": update_fields}
     )
     flash("Project record updated successfully.", "success")
+    return redirect(url_for("admin_dashboard"))
+
+
+@app.route("/admin/delete-project/<project_id>", methods=["POST"])
+@login_required
+@role_required("admin")
+def admin_delete_project(project_id):
+    """Allows Admin to permanently delete a project record from MongoDB."""
+    db = get_db()
+    db.projects.delete_one({"_id": ObjectId(project_id)})
+    flash("Project record permanently deleted from system.", "info")
     return redirect(url_for("admin_dashboard"))
 
 
@@ -1020,7 +1034,15 @@ def api_dav_ai_generate_scope():
     data = request.get_json() or {}
     title = data.get("title", "").strip()
     category = data.get("category", "Student Academic Project").strip()
-    requirements = data.get("requirements", "").strip()
+    
+    # Check all possible payload keys sent by admin/team frontend forms
+    requirements = (
+        data.get("requirements")
+        or data.get("message")
+        or data.get("description")
+        or data.get("req")
+        or "Standard production architecture with authentication, API routes, and cloud database integration."
+    ).strip()
 
     if not title:
         return jsonify({"success": False, "error": "Project title is required."}), 400
@@ -1036,8 +1058,8 @@ def api_dav_ai_generate_scope():
     Provide a structured technical blueprint in clean Markdown:
     1. **System Architecture Overview** (Frontend, Backend API layer, Cloud Database)
     2. **Core Functional Modules** (4-6 key features)
-    3. **Suggested Data Schema & Document Structure**
-    4. **Top 3 Viva Defense / Technical Interview Questions** that evaluators will ask the student.
+    3. **Suggested Data Schema & Document Structure** (Collections/Tables and fields)
+    4. **Top 5 Viva Defense / Technical Interview Questions** (with complete technical answers for university examiners)
     """
 
     try:
@@ -1053,7 +1075,11 @@ def api_dav_ai_generate_scope():
             model="gemini-3.6-flash",
             contents=prompt,
         )
-        return jsonify({"success": True, "scope": response.text})
+        return jsonify({
+            "success": True,
+            "scope": response.text,
+            "analysis": response.text  # Universal fallback key mapping
+        })
     except Exception as e:
         return jsonify(
             {"success": False, "error": f"DAV AI Engine Error: {str(e)}"}
