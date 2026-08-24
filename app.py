@@ -37,6 +37,11 @@ from utils.auth import (
 from utils.db import close_db_connection, get_db, init_admin, init_db
 from utils.mailer import send_admin_inquiry_notification, send_verification_email
 
+# Import local robust AI core fallbacks
+from dav_ai.lead_analyzer import analyze_inquiry
+from dav_ai.scope_generator import generate_scope_estimate
+from dav_ai.code_auditor import audit_codebase
+
 # Initialize Flask Application
 app = Flask(__name__)
 
@@ -50,6 +55,10 @@ app.teardown_appcontext(close_db_connection)
 # Initialize Database Indexes & Master Admin
 init_db(app)
 init_admin(app)
+
+# Initialize Modern GenAI Client
+api_key = os.environ.get("GEMINI_API_KEY", "")
+ai_client = genai.Client(api_key=api_key) if api_key else None
 
 
 # ==============================================================================
@@ -967,17 +976,20 @@ def admin_delete_team_member(member_id):
 
 
 # ==============================================================================
-# LIVE DAV AI INTERNAL AGENT ENDPOINTS (GEMINI POWERED WITH FALLBACK & TRY-CATCH)
+# LIVE DAV AI INTERNAL AGENT ENDPOINTS (USING OFFICIAL GOOGLE GENAI CLIENT)
 # ==============================================================================
 
-def call_gemini_with_fallback(client, prompt):
-    """Helper to safely call Gemini with fallback models if 503 unavailable occurs."""
-    models_to_try = ["gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.6-flash"]
+def call_genai_client_safe(prompt):
+    """Safely calls the modern google-genai client with fallback models."""
+    if not ai_client:
+        raise Exception("GEMINI_API_KEY is not configured in environment.")
     
+    models_to_try = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash"]
     last_error = None
+    
     for model_name in models_to_try:
         try:
-            response = client.models.generate_content(
+            response = ai_client.models.generate_content(
                 model=model_name,
                 contents=prompt,
             )
@@ -986,10 +998,10 @@ def call_gemini_with_fallback(client, prompt):
                 return text_output
         except Exception as e:
             last_error = e
-            time.sleep(1)
+            time.sleep(0.5)
             continue
             
-    raise Exception(f"All Gemini models busy. Last error: {str(last_error)}")
+    raise Exception(f"All GenAI models busy. Last error: {str(last_error)}")
 
 
 @app.route("/api/dav-ai/analyze-lead", methods=["POST"])
@@ -1012,38 +1024,31 @@ def api_dav_ai_analyze_lead():
                 category = inquiry.get("user_category", category)
                 message = inquiry.get("message", message)
 
-        user_role = session.get("role", "team")
+        try:
+            user_role = session.get("role", "team")
+            prompt = f"""
+            You are the Senior Technical Architect at DAV Cloud Solutions assisting the Core Engineering Team.
+            Analyze this incoming client/student inquiry (Requested by: {user_role.upper()} Specialist):
 
-        prompt = f"""
-        You are the Senior Technical Architect at DAV Cloud Solutions assisting the Core Engineering Team.
-        Analyze this incoming client/student inquiry (Requested by: {user_role.upper()} Specialist):
+            Client Name: {lead_name}
+            Track: {category}
+            Scope/Requirements: {message}
 
-        Client Name: {lead_name}
-        Track: {category}
-        Scope/Requirements: {message}
+            Provide a concise technical assessment formatted in clean Markdown with:
+            1. **Lead Score & Feasibility**: (High / Medium / Low) with 1-line justification.
+            2. **Recommended Tech Architecture**: (e.g. Scalable Microservices, Cloud Data, React, Applied ML).
+            3. **Estimated Delivery Timeline**: (e.g. 3-5 days, 1 week).
+            4. **Suggested Price Quote (₹)**: (e.g. ₹3,500 - ₹6,000).
+            5. **Next Technical Actions**: Concrete engineering steps and response draft for the client.
+            """
+            analysis_text = call_genai_client_safe(prompt)
+        except Exception:
+            local_res = analyze_inquiry(lead_name, "client@domain.com", message)
+            analysis_text = f"### Lead Analysis (Local AI Core Fallback)\n\n- **Priority:** {local_res['priority']}\n- **Score:** {local_res['lead_score']}/100\n- **Detected Category:** {local_res['detected_category']}\n- **Recommended Stack:** {', '.join(local_res['detected_stack'])}"
 
-        Provide a concise technical assessment formatted in clean Markdown with:
-        1. **Lead Score & Feasibility**: (High / Medium / Low) with 1-line justification.
-        2. **Recommended Tech Architecture**: (e.g. Scalable Microservices, Cloud Data, React, Applied ML).
-        3. **Estimated Delivery Timeline**: (e.g. 3-5 days, 1 week).
-        4. **Suggested Price Quote (₹)**: (e.g. ₹3,500 - ₹6,000).
-        5. **Next Technical Actions**: Concrete engineering steps and response draft for the client.
-        """
-
-        api_key = os.environ.get("GEMINI_API_KEY", "")
-        if not api_key:
-            return jsonify({
-                "success": False,
-                "error": "GEMINI_API_KEY is not configured in environment.",
-            }), 500
-
-        client = genai.Client(api_key=api_key)
-        analysis_text = call_gemini_with_fallback(client, prompt)
         return jsonify({"success": True, "analysis": analysis_text})
     except Exception as e:
-        return jsonify(
-            {"success": False, "error": f"DAV AI Engine Error: {str(e)}"}
-        ), 500
+        return jsonify({"success": False, "error": f"DAV AI Engine Error: {str(e)}"}), 200
 
 
 @app.route("/api/dav-ai/generate-scope", methods=["POST"])
@@ -1064,41 +1069,36 @@ def api_dav_ai_generate_scope():
         ).strip()
 
         if not title:
-            return jsonify({"success": False, "error": "Project title is required."}), 400
+            return jsonify({"success": False, "error": "Project title is required."}), 200
 
-        prompt = f"""
-        You are the Lead Systems Architect at DAV Cloud Solutions.
-        Generate a complete technical project scope and delivery blueprint for:
+        try:
+            prompt = f"""
+            You are the Lead Systems Architect at DAV Cloud Solutions.
+            Generate a complete technical project scope and delivery blueprint for:
 
-        - Project Title: {title}
-        - Domain Track: {category}
-        - Scope Requirements: {requirements}
+            - Project Title: {title}
+            - Domain Track: {category}
+            - Scope Requirements: {requirements}
 
-        Provide a structured technical blueprint in clean Markdown:
-        1. **System Architecture Overview** (Frontend, Backend API layer, Cloud Database)
-        2. **Core Functional Modules** (4-6 key features)
-        3. **Suggested Data Schema & Document Structure** (Collections/Tables and fields)
-        4. **Top 5 Viva Defense / Technical Interview Questions** (with complete technical answers for university examiners)
-        """
+            Provide a structured technical blueprint in clean Markdown:
+            1. **System Architecture Overview** (Frontend, Backend API layer, Cloud Database)
+            2. **Core Functional Modules** (4-6 key features)
+            3. **Suggested Data Schema & Document Structure** (Collections/Tables and fields)
+            4. **Top 5 Viva Defense / Technical Interview Questions** (with complete technical answers for university examiners)
+            """
+            scope_text = call_genai_client_safe(prompt)
+        except Exception:
+            local_scope = generate_scope_estimate(title, category, requirements)
+            viva_str = "\n".join([f"Q: {q['question']}\nA: {q['answer']}" for q in local_scope['academic_viva_defense']])
+            scope_text = f"### Technical Blueprint & Scope (Local AI Core Fallback)\n\n**Project:** {title}\n**Timeline:** {local_scope['estimated_delivery_days']} days\n**Estimated Cost:** ₹{local_scope['estimated_cost_inr']}\n\n**Modules:** {', '.join(local_scope['scope_modules'])}\n\n**Viva Q&A:**\n{viva_str}"
 
-        api_key = os.environ.get("GEMINI_API_KEY", "")
-        if not api_key:
-            return jsonify({
-                "success": False,
-                "error": "GEMINI_API_KEY is not configured in environment.",
-            }), 500
-
-        client = genai.Client(api_key=api_key)
-        scope_text = call_gemini_with_fallback(client, prompt)
         return jsonify({
             "success": True,
             "scope": scope_text,
             "analysis": scope_text
         })
     except Exception as e:
-        return jsonify(
-            {"success": False, "error": f"DAV AI Engine Error: {str(e)}"}
-        ), 500
+        return jsonify({"success": False, "error": f"DAV AI Engine Error: {str(e)}"}), 200
 
 
 @app.route("/api/dav-ai/code-audit", methods=["POST"])
@@ -1110,38 +1110,31 @@ def api_dav_ai_code_audit():
         code_snippet = data.get("code", "").strip()
 
         if not code_snippet:
-            return jsonify(
-                {"success": False, "error": "Code snippet is required for audit."}
-            ), 400
+            return jsonify({"success": False, "error": "Code snippet is required for audit."}), 200
 
-        prompt = f"""
-        You are the Lead Code Reviewer at DAV Cloud Solutions.
-        Perform an automated security, efficiency, and cleanliness audit on the following code snippet:
+        try:
+            prompt = f"""
+            You are the Lead Code Reviewer at DAV Cloud Solutions.
+            Perform an automated security, efficiency, and cleanliness audit on the following code snippet:
 
-        ```python
-        {code_snippet}
-        ```
+            ```python
+            {code_snippet}
+            ```
 
-        Evaluate and return in clean Markdown:
-        1. **Security Vulnerabilities** (Injection risks, auth flaws, exposed secrets)
-        2. **Performance Bottlenecks** (Redundant data queries, execution load)
-        3. **Production Recommendations** (API structuring, robust error handlers, modularity)
-        """
+            Evaluate and return in clean Markdown:
+            1. **Security Vulnerabilities** (Injection risks, auth flaws, exposed secrets)
+            2. **Performance Bottlenecks** (Redundant data queries, execution load)
+            3. **Production Recommendations** (API structuring, robust error handlers, modularity)
+            """
+            audit_text = call_genai_client_safe(prompt)
+        except Exception:
+            local_audit = audit_codebase(code_snippet)
+            findings_str = "\n".join([f"- **{f['name']}** ({f['severity']}): {f['recommendation']}" for f in local_audit['findings']])
+            audit_text = f"### Code Audit Report (Local AI Core Fallback)\n\n- **Syntax Valid:** {local_audit['syntax_valid']}\n- **Quality Score:** {local_audit['quality_score']}/100\n- **Status:** {local_audit['status']}\n\n**Findings:**\n{findings_str}"
 
-        api_key = os.environ.get("GEMINI_API_KEY", "")
-        if not api_key:
-            return jsonify({
-                "success": False,
-                "error": "GEMINI_API_KEY is not configured in environment.",
-            }), 500
-
-        client = genai.Client(api_key=api_key)
-        audit_text = call_gemini_with_fallback(client, prompt)
         return jsonify({"success": True, "audit": audit_text})
     except Exception as e:
-        return jsonify(
-            {"success": False, "error": f"DAV AI Engine Error: {str(e)}"}
-        ), 500
+        return jsonify({"success": False, "error": f"DAV AI Engine Error: {str(e)}"}), 200
 
 
 # ==============================================================================
