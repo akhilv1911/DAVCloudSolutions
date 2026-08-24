@@ -1182,14 +1182,22 @@ code, pre {
         --navbar-height: 64px;
     }
 
-    /* Disable expensive blur filters on mobile */
+    /* Disable blur filters on mobile while preserving dynamic Light/Dark theme backgrounds */
     .glass-card,
     .dashboard-welcome-card,
-    .metric-card,
+    .metric-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: var(--bg-card) !important;
+    }
+
     .navbar-header {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        background: rgba(11, 15, 25, 0.96) !important;
+        background: var(--bg-main) !important;
+        height: auto !important;
+        min-height: var(--navbar-height) !important;
+        padding: 8px 0 !important;
     }
 
     .particle-canvas {
@@ -1202,12 +1210,6 @@ code, pre {
 
     .section-padding { padding: 48px 16px; }
     .padding-xl { padding: 20px 16px; }
-
-    .navbar-header {
-        height: auto !important;
-        min-height: var(--navbar-height) !important;
-        padding: 8px 0 !important;
-    }
 
     .nav-container {
         display: flex !important;
@@ -1262,6 +1264,7 @@ code, pre {
         font-size: 1.2rem !important;
     }
 
+    /* Dynamic Theme-Aware Mobile Navigation Drawer */
     .nav-links {
         display: none;
         position: fixed;
@@ -1271,12 +1274,12 @@ code, pre {
         width: 100vw;
         max-height: calc(100vh - var(--navbar-height));
         overflow-y: auto;
-        background: #0b0f19;
+        background: var(--bg-main) !important;
         padding: 20px;
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
-        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
         border-bottom: 1px solid var(--border-color);
         z-index: 999;
     }
@@ -1299,7 +1302,8 @@ code, pre {
         display: block;
         padding: 10px 0;
         font-size: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--text-main) !important;
+        border-bottom: 1px solid var(--border-color);
     }
 
     .services-grid, 
