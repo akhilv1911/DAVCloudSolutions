@@ -32,14 +32,14 @@
     --text-muted: #9ca3af;
     --text-inverse: #030712;
 
-    /* Layout & Glassmorphism Spec */
+    /* Layout & Performance-Tuned Glassmorphism Spec */
     --navbar-height: 76px;
     --radius-sm: 8px;
     --radius-md: 14px;
     --radius-lg: 20px;
     --radius-full: 9999px;
     
-    --glass-backdrop: blur(16px);
+    --glass-backdrop: blur(6px);
     --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.3);
     --shadow-glow: 0 0 25px var(--primary-glow);
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -69,6 +69,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
 }
 
 html {
@@ -227,11 +228,12 @@ code, pre {
     position: fixed;
     top: 0;
     left: 0;
-    height: 3.5px;
+    height: 3px;
     width: 0%;
     background: linear-gradient(90deg, var(--primary), var(--accent-purple), var(--accent-cyan));
     z-index: 9999;
-    transition: width 0.1s ease-out;
+    will-change: width;
+    transform: translateZ(0);
     box-shadow: 0 0 10px var(--primary-glow);
 }
 
@@ -244,7 +246,8 @@ code, pre {
     height: 100vh;
     z-index: -2;
     pointer-events: none;
-    opacity: 0.65;
+    opacity: 0.55;
+    transform: translateZ(0);
 }
 
 /* Ambient Aurora Glow Mesh */
@@ -257,38 +260,40 @@ code, pre {
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
+    transform: translateZ(0);
 }
 
 .glow-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.32;
+    filter: blur(80px);
+    opacity: 0.25;
     animation: floatMesh 18s ease-in-out infinite alternate;
+    will-change: transform;
 }
 
 .glow-orb-1 {
-    width: 480px;
-    height: 480px;
+    width: 420px;
+    height: 420px;
     background: radial-gradient(circle, #6366f1, transparent 70%);
-    top: -100px;
-    left: -100px;
+    top: -80px;
+    left: -80px;
 }
 
 .glow-orb-2 {
-    width: 540px;
-    height: 540px;
+    width: 480px;
+    height: 480px;
     background: radial-gradient(circle, #8b5cf6, transparent 70%);
-    bottom: -120px;
-    right: -120px;
-    animation-duration: 24s;
+    bottom: -100px;
+    right: -100px;
+    animation-duration: 22s;
     animation-delay: -6s;
 }
 
 @keyframes floatMesh {
     0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(70px, 50px) scale(1.15); }
-    100% { transform: translate(-50px, 90px) scale(0.92); }
+    50% { transform: translate(50px, 35px) scale(1.1); }
+    100% { transform: translate(-35px, 60px) scale(0.95); }
 }
 
 /* Radar Pulse Indicator */
@@ -329,8 +334,8 @@ code, pre {
 /* Scroll-Triggered Fade & Slide Reveals */
 .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(26px);
-    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
 }
 
@@ -351,7 +356,7 @@ code, pre {
 
 @keyframes floatBadge {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-4px); }
 }
 
 .pulse-icon {
@@ -360,7 +365,7 @@ code, pre {
 
 @keyframes pulseIcon {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.15); opacity: 0.85; }
+    50% { transform: scale(1.1); opacity: 0.85; }
 }
 
 /* Shimmering Card Border Beam */
@@ -398,7 +403,7 @@ code, pre {
 
 @keyframes auraPulse {
     to {
-        box-shadow: 0 0 0 18px rgba(99, 102, 241, 0);
+        box-shadow: 0 0 0 16px rgba(99, 102, 241, 0);
     }
 }
 
@@ -413,9 +418,9 @@ code, pre {
     position: absolute;
     top: var(--mouse-y, -1000px);
     left: var(--mouse-x, -1000px);
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.18), transparent 70%);
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.16), transparent 70%);
     transform: translate(-50%, -50%);
     border-radius: 50%;
     pointer-events: none;
@@ -447,6 +452,7 @@ code, pre {
     gap: 20px;
     width: max-content;
     animation: marqueeScroll 32s linear infinite;
+    will-change: transform;
 }
 
 .marquee-wrapper:hover .marquee-track {
@@ -505,6 +511,7 @@ code, pre {
     transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
     width: 100%;
     overflow: hidden;
+    transform: translateZ(0);
 }
 
 .glass-card:hover {
@@ -594,12 +601,13 @@ code, pre {
     transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
     transform-style: preserve-3d;
     perspective: 1000px;
+    will-change: transform;
 }
 
 .tilt-card:hover {
-    transform: translateY(-8px) scale(1.015);
+    transform: translateY(-6px) scale(1.01);
     border-color: rgba(99, 102, 241, 0.45);
-    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 16px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.2);
 }
 
 /* Buttons */
@@ -757,6 +765,7 @@ code, pre {
     backdrop-filter: var(--glass-backdrop);
     -webkit-backdrop-filter: var(--glass-backdrop);
     border-bottom: 1px solid var(--border-color);
+    transform: translateZ(0);
 }
 
 .nav-container {
@@ -1173,6 +1182,24 @@ code, pre {
         --navbar-height: 64px;
     }
 
+    /* Disable expensive blur filters on mobile */
+    .glass-card,
+    .dashboard-welcome-card,
+    .metric-card,
+    .navbar-header {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(11, 15, 25, 0.96) !important;
+    }
+
+    .particle-canvas {
+        display: none !important;
+    }
+
+    .ambient-glow-mesh {
+        display: none !important;
+    }
+
     .section-padding { padding: 48px 16px; }
     .padding-xl { padding: 20px 16px; }
 
@@ -1281,7 +1308,7 @@ code, pre {
     .team-grid, 
     .grid-2-col, 
     .grid-3-col, 
-    .grid-4-col,
+    .grid-4-col, 
     .pipeline-grid {
         grid-template-columns: 1fr;
         gap: 16px;

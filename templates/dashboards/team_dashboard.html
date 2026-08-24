@@ -181,11 +181,19 @@
                 <!-- Assigned Deliverables List -->
                 <div class="glass-card hover-glow">
                     <div class="card-header-bar flex-between align-center wrap-mobile gap-sm">
-                        <h2><i class="fa-solid fa-laptop-code text-primary"></i> Assigned Project Deliverables</h2>
-                        <span class="badge-tech">{{ projects | length if projects else 0 }} Active Tasks</span>
+                        <h2><i class="fa-solid fa-laptop-code text-primary"></i> Project Tasks & Deliverables</h2>
+                        <div class="flex-align-center gap-xs">
+                            <button type="button" class="btn btn-sm btn-primary filter-tab active magnetic-btn" id="btn-show-my-tasks" onclick="toggleTaskView('my')">
+                                My Assigned ({{ projects | length if projects else 0 }})
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline filter-tab magnetic-btn" id="btn-show-all-tasks" onclick="toggleTaskView('all')">
+                                All System Builds ({{ all_projects | length if all_projects else (projects | length if projects else 0) }})
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="projects-list-wrapper margin-top-md">
+                    <!-- My Tasks View Container -->
+                    <div class="projects-list-wrapper margin-top-md" id="team-my-tasks-wrapper">
                         {% if projects %}
                             {% for proj in projects %}
                                 <div class="glass-card margin-bottom-md hover-glow" style="padding: 20px; background: rgba(255, 255, 255, 0.02);">
@@ -212,7 +220,7 @@
                                         {% endif %}
                                     </div>
 
-                                    <!-- Update Task Form -->
+                                    <!-- Update Task Form (Scoped Update without delete) -->
                                     <form action="{{ url_for('team_update_task', project_id=proj._id) }}" method="POST" class="margin-top-md padding-top-sm border-top-glass">
                                         <div class="grid-2-col" style="gap: 12px;">
                                             <div class="form-group">
@@ -257,6 +265,31 @@
                             </div>
                         {% endif %}
                     </div>
+
+                    <!-- All System Tasks View Container (Read-Only) -->
+                    <div class="projects-list-wrapper margin-top-md" id="team-all-tasks-wrapper" style="display: none;">
+                        {% set system_projects = all_projects if all_projects is defined else projects %}
+                        {% if system_projects %}
+                            {% for sp in system_projects %}
+                                <div class="glass-card margin-bottom-sm hover-glow" style="padding: 16px; background: rgba(255, 255, 255, 0.02);">
+                                    <div class="flex-between align-center wrap-mobile">
+                                        <div>
+                                            <span class="badge-tech">{{ sp.category }}</span>
+                                            <h4 class="margin-top-xs">{{ sp.title }}</h4>
+                                            <p class="text-muted fs-sm" style="margin: 0;">Assigned to: <strong>{{ sp.assigned_to_name or 'Unassigned' }}</strong></p>
+                                        </div>
+                                        <div class="status-badge-wrapper margin-top-mobile">
+                                            <span class="status-pill status-{{ sp.status | lower | replace(' ', '-') }}">
+                                                {{ sp.status }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-center text-muted fs-sm padding-md">No system projects logged in database.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
@@ -293,6 +326,29 @@
 
 {% block extra_js %}
 <script>
+function toggleTaskView(viewType) {
+    const myWrapper = document.getElementById('team-my-tasks-wrapper');
+    const allWrapper = document.getElementById('team-all-tasks-wrapper');
+    const myBtn = document.getElementById('btn-show-my-tasks');
+    const allBtn = document.getElementById('btn-show-all-tasks');
+
+    if (viewType === 'my') {
+        if (myWrapper) myWrapper.style.display = 'block';
+        if (allWrapper) allWrapper.style.display = 'none';
+        myBtn.classList.add('btn-primary', 'active');
+        myBtn.classList.remove('btn-outline');
+        allBtn.classList.add('btn-outline');
+        allBtn.classList.remove('btn-primary', 'active');
+    } else {
+        if (myWrapper) myWrapper.style.display = 'none';
+        if (allWrapper) allWrapper.style.display = 'block';
+        allBtn.classList.add('btn-primary', 'active');
+        allBtn.classList.remove('btn-outline');
+        myBtn.classList.add('btn-outline');
+        myBtn.classList.remove('btn-primary', 'active');
+    }
+}
+
 function switchTeamAITab(tabName) {
     document.querySelectorAll('.ai-tool-panel').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.filter-tabs-wrapper .filter-tab').forEach(btn => {

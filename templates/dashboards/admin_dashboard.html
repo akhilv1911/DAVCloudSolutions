@@ -327,16 +327,25 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline btn-edit-proj magnetic-btn" 
-                                                data-id="{{ proj._id }}"
-                                                data-title="{{ proj.title }}"
-                                                data-category="{{ proj.category }}"
-                                                data-status="{{ proj.status }}"
-                                                data-amount="{{ proj.amount_charged | default(0) }}"
-                                                data-link="{{ proj.deliverables_link | default('') }}"
-                                                data-assigned="{{ proj.assigned_to_id | default('') }}">
-                                            <i class="fa-solid fa-pen"></i> Update
-                                        </button>
+                                        <div class="flex-align-center gap-xs">
+                                            <button class="btn btn-sm btn-outline btn-edit-proj magnetic-btn" 
+                                                    data-id="{{ proj._id }}"
+                                                    data-title="{{ proj.title }}"
+                                                    data-category="{{ proj.category }}"
+                                                    data-status="{{ proj.status }}"
+                                                    data-amount="{{ proj.amount_charged | default(0) }}"
+                                                    data-link="{{ proj.deliverables_link | default('') }}"
+                                                    data-assigned="{{ proj.assigned_to_id | default('') }}">
+                                                <i class="fa-solid fa-pen"></i> Update
+                                            </button>
+                                            
+                                            <!-- Delete Project Action -->
+                                            <form action="{{ url_for('admin_delete_project', project_id=proj._id) }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete this project record?');" style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-ghost magnetic-btn" style="color: var(--accent-rose, #f43f5e);" title="Delete Project">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}
