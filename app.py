@@ -1003,7 +1003,7 @@ def api_dav_ai_analyze_lead():
 
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.6-flash",
             contents=prompt,
         )
         return jsonify({"success": True, "analysis": response.text})
@@ -1050,7 +1050,7 @@ def api_dav_ai_generate_scope():
 
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.6-flash",
             contents=prompt,
         )
         return jsonify({"success": True, "scope": response.text})
@@ -1096,7 +1096,7 @@ def api_dav_ai_code_audit():
 
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.6-flash",
             contents=prompt,
         )
         return jsonify({"success": True, "audit": response.text})
