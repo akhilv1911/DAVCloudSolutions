@@ -39,7 +39,7 @@
 <body class="bg-main text-main">
 
     <!-- ========================================================= -->
-    <!-- 1. TOP SCROLL PROGRESS BAR INDICATOR                      -->
+    <!-- 1. TOP SCROLL PROGRESS BAR INDICATOR                     -->
     <!-- ========================================================= -->
     <div id="scroll-progress-bar" class="scroll-progress-indicator"></div>
 
@@ -102,6 +102,11 @@
                             <i class="fa-solid fa-layer-group"></i> Catalog
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url_for('careers_page') }}" class="nav-item {% if request.endpoint == 'careers_page' %}active{% endif %}">
+                            <i class="fa-solid fa-briefcase"></i> Careers
+                        </a>
+                    </li>
                     <!-- Dedicated Mobile Drawer Logout Item -->
                     <li class="mobile-drawer-logout">
                         <a href="{{ url_for('logout') }}" class="nav-item text-danger" style="color: var(--accent-rose, #f43f5e) !important;">
@@ -148,6 +153,7 @@
                     <li><a href="{{ url_for('team_page') }}" class="nav-item {% if request.endpoint == 'team_page' %}active{% endif %}"><i class="fa-solid fa-user-group"></i> Team</a></li>
                     <li><a href="{{ url_for('projects_page') }}" class="nav-item {% if request.endpoint == 'projects_page' %}active{% endif %}"><i class="fa-solid fa-layer-group"></i> Projects</a></li>
                     <li><a href="{{ url_for('business_catalog') }}" class="nav-item {% if request.endpoint == 'business_catalog' %}active{% endif %}"><i class="fa-solid fa-store"></i> Catalog</a></li>
+                    <li><a href="{{ url_for('careers_page') }}" class="nav-item {% if request.endpoint == 'careers_page' %}active{% endif %}"><i class="fa-solid fa-briefcase"></i> Careers</a></li>
                     <li><a href="{{ url_for('home') }}#contact" class="nav-item"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
                 </ul>
 
@@ -227,6 +233,7 @@
                     <li><a href="{{ url_for('about_page') }}"><i class="fa-solid fa-chevron-right"></i> Founder & Vision</a></li>
                     <li><a href="{{ url_for('projects_page') }}"><i class="fa-solid fa-chevron-right"></i> Verified Projects</a></li>
                     <li><a href="{{ url_for('team_page') }}"><i class="fa-solid fa-chevron-right"></i> Specialist Team</a></li>
+                    <li><a href="{{ url_for('careers_page') }}"><i class="fa-solid fa-chevron-right"></i> Careers & Jobs</a></li>
                 </ul>
             </div>
 
