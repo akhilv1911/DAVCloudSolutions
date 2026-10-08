@@ -1,49 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Careers | DAV Cloud Solutions</title>
-    <!-- Include your global styles/head links here -->
-</head>
-<body class="bg-dark text-light">
-    <div class="container py-5">
-        <div class="text-center margin-bottom-xl">
-            <h1 class="text-primary font-bold">Join Our Growing Team</h1>
-            <p class="text-muted">Explore open freelance, graduate, and full-time positions.</p>
+{% extends "base.html" %}
+{% block title %}Careers & Openings | DAV Cloud Solutions{% endblock %}
+
+{% block content %}
+<section class="section-padding relative-container" style="min-height: 80vh; padding-top: 60px;">
+    <div class="container" style="max-width: 1000px; margin: 0 auto;">
+        
+        <!-- Header Banner -->
+        <div class="text-center margin-bottom-xxl animate-fade-in">
+            <div class="badge-tech inline-block margin-bottom-sm">
+                <i class="fa-solid fa-sparkles text-primary"></i> We Are Expanding
+            </div>
+            <h1 class="display-title font-bold text-main" style="font-size: 2.75rem; letter-spacing: -0.02em;">
+                Join Our <span class="text-gradient">Core Engineering</span> Team
+            </h1>
+            <p class="text-muted fs-md margin-top-sm" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+                Build your portfolio and drive high-impact growth with DAV Cloud Solutions. Explore our open freelance, graduate, and full-time opportunities.
+            </p>
         </div>
 
-        <div class="grid-2-col" style="gap: 20px;">
+        <!-- Job Listings Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
             {% if jobs %}
                 {% for job in jobs %}
-                <div class="glass-card p-4">
-                    <div class="flex-between align-center">
-                        <span class="badge-tech">{{ job.department }}</span>
-                        <span class="text-muted fs-sm">{{ job.job_type }}</span>
-                    </div>
-                    <h3 class="margin-top-sm">{{ job.title }}</h3>
+                <div class="glass-card highlight-border-card p-4 transition-card" style="display: flex; flex-direction: column; justify-content: space-between; border-radius: 16px; background: var(--bg-card, rgba(255, 255, 255, 0.03)); border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08)); backdrop-filter: blur(12px);">
                     
-                    <h4 class="fs-sm text-primary margin-top-md">Key Responsibilities:</h4>
-                    <ul class="margin-top-xs text-muted fs-sm" style="padding-left: 20px;">
-                        {% for resp in job.responsibilities %}
-                            <li>{{ resp }}</li>
-                        {% endfor %}
-                    </ul>
+                    <div>
+                        <!-- Card Meta Bar -->
+                        <div class="flex-between align-center margin-bottom-md">
+                            <span class="badge-tech" style="background: rgba(59, 130, 246, 0.12); color: var(--accent-blue, #3b82f6); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                                <i class="fa-solid fa-layer-group"></i> {{ job.department }}
+                            </span>
+                            <span class="text-muted fs-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+                                <i class="fa-solid fa-clock"></i> {{ job.job_type }}
+                            </span>
+                        </div>
+                        
+                        <!-- Job Title -->
+                        <h2 class="text-main font-bold" style="font-size: 1.25rem; margin-bottom: 16px; line-height: 1.4;">
+                            {{ job.title }}
+                        </h2>
+                        
+                        <!-- Responsibilities Header -->
+                        <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-blue, #3b82f6); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                            <i class="fa-solid fa-list-check"></i> Key Responsibilities
+                        </div>
 
-                    <!-- WhatsApp Apply Button (Replace 919948685064 with your actual WhatsApp phone number including country code) -->
-                    <a href="https://wa.me/919948685064?text=Hi,%20I%20am%20interested%20in%20applying%20for%20the%20%5B{{ job.title }}%5D%20position.%20Here%20is%20my%20resume%20and%20details:" 
-                       target="_blank" 
-                       class="btn btn-success btn-sm margin-top-lg" 
-                       style="background: #25D366; color: #fff; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 16px; border-radius: 6px; font-weight: bold;">
-                        <i class="fa-brands fa-whatsapp"></i> Apply via WhatsApp
-                    </a>
+                        <!-- Responsibilities List -->
+                        <ul class="text-muted fs-sm" style="padding-left: 18px; margin-bottom: 24px; line-height: 1.6;">
+                            {% for resp in job.responsibilities %}
+                                <li style="margin-bottom: 6px;">{{ resp }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Direct WhatsApp Apply Button -->
+                    <div style="margin-top: auto; border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.06)); padding-top: 16px;">
+                        <a href="https://wa.me/919876543210?text=Hi,%20I%20am%20interested%20in%20applying%20for%20the%20%5B{{ job.title }}%5D%20position.%20Here%20is%20my%20resume%20and%20details:" 
+                           target="_blank" 
+                           class="magnetic-btn"
+                           style="background: #25D366; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                            <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Apply via WhatsApp
+                        </a>
+                    </div>
+
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="text-center col-span-2 py-5">
-                    <p class="text-muted">No open positions at the moment. Check back soon!</p>
+                <!-- Empty State -->
+                <div class="glass-card text-center col-span-2 py-5" style="grid-column: 1 / -1; padding: 60px 20px; border-radius: 16px;">
+                    <i class="fa-solid fa-briefcase text-muted" style="font-size: 3rem; margin-bottom: 16px; opacity: 0.4;"></i>
+                    <h3 class="text-main font-bold" style="font-size: 1.2rem; margin-bottom: 8px;">No Open Positions Right Now</h3>
+                    <p class="text-muted fs-sm">We're always looking for exceptional talent. Check back soon or visit our admin dashboard to publish a new opening!</p>
                 </div>
             {% endif %}
         </div>
+
     </div>
-</body>
-</html>
+</section>
+{% endblock %}
