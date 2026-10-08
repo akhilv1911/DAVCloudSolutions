@@ -688,6 +688,39 @@
         </form>
     </div>
 </div>
+<div class="glass-card margin-bottom-lg">
+    <div class="card-header-bar flex-between align-center">
+        <h2><i class="fa-solid fa-briefcase text-primary"></i> Careers & Job Postings Management</h2>
+        <span class="badge-tech">Dynamic Portal</span>
+    </div>
+
+    <!-- Post New Job Form -->
+    <form action="{{ url_for('admin_add_job') }}" method="POST" class="margin-top-md">
+        <div class="grid-2-col" style="gap: 14px;">
+            <div class="form-group">
+                <label class="fs-sm">Job Title</label>
+                <input type="text" name="title" class="form-input" placeholder="e.g. Freelance Marketing Associate (MBA)" required>
+            </div>
+            <div class="form-group">
+                <label class="fs-sm">Department</label>
+                <input type="text" name="department" class="form-input" placeholder="e.g. Marketing & Growth" required>
+            </div>
+        </div>
+        <div class="grid-2-col" style="gap: 14px;">
+            <div class="form-group">
+                <label class="fs-sm">Employment Type</label>
+                <input type="text" name="job_type" class="form-input" placeholder="e.g. Freelance / Remote" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="fs-sm">Responsibilities (Put each on a new line)</label>
+            <textarea name="responsibilities" class="form-input" rows="3" placeholder="Drive digital outreach campaigns&#10;Manage social media engagement&#10;Conduct market research" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-plus"></i> Publish Job Opening
+        </button>
+    </form>
+</div>
 {% endblock %}
 
 {% block extra_js %}

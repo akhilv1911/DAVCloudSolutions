@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Careers | DAV Cloud Solutions</title>
+    <!-- Include your global styles/head links here -->
+</head>
+<body class="bg-dark text-light">
+    <div class="container py-5">
+        <div class="text-center margin-bottom-xl">
+            <h1 class="text-primary font-bold">Join Our Growing Team</h1>
+            <p class="text-muted">Explore open freelance, graduate, and full-time positions.</p>
+        </div>
+
+        <div class="grid-2-col" style="gap: 20px;">
+            {% if jobs %}
+                {% for job in jobs %}
+                <div class="glass-card p-4">
+                    <div class="flex-between align-center">
+                        <span class="badge-tech">{{ job.department }}</span>
+                        <span class="text-muted fs-sm">{{ job.job_type }}</span>
+                    </div>
+                    <h3 class="margin-top-sm">{{ job.title }}</h3>
+                    
+                    <h4 class="fs-sm text-primary margin-top-md">Key Responsibilities:</h4>
+                    <ul class="margin-top-xs text-muted fs-sm" style="padding-left: 20px;">
+                        {% for resp in job.responsibilities %}
+                            <li>{{ resp }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- WhatsApp Apply Button (Replace 919948685064 with your actual WhatsApp phone number including country code) -->
+                    <a href="https://wa.me/919948685064?text=Hi,%20I%20am%20interested%20in%20applying%20for%20the%20%5B{{ job.title }}%5D%20position.%20Here%20is%20my%20resume%20and%20details:" 
+                       target="_blank" 
+                       class="btn btn-success btn-sm margin-top-lg" 
+                       style="background: #25D366; color: #fff; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 16px; border-radius: 6px; font-weight: bold;">
+                        <i class="fa-brands fa-whatsapp"></i> Apply via WhatsApp
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center col-span-2 py-5">
+                    <p class="text-muted">No open positions at the moment. Check back soon!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

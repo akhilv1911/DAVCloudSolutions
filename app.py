@@ -973,7 +973,57 @@ def admin_delete_team_member(member_id):
     db.team.delete_one({"_id": ObjectId(member_id)})
     flash("Team member removed from active directory.", "info")
     return redirect(url_for("admin_dashboard"))
+@app.route("/careers")
+def careers_page():
+    """Public Careers Page - Fetches active job openings from MongoDB."""
+    db = get_db()
+    jobs = list(db.careers.find().sort("created_at", -1))
+    return render_template("pages/careers.html", jobs=jobs)
 
+
+@app.route("/admin/add-job", methods=["POST"])
+@login_required
+@role_required("admin")
+def admin_add_job():
+    """Allows Admin to post a new job opening."""
+    db = get_db()
+    title = request.form.get("title", "").strip()
+    department = request.form.get("department", "Marketing").strip()
+    job_type = request.form.get("job_type", "Freelance / Remote").strip()
+    responsibilities_raw = request.form.get("responsibilities", "").strip()
+
+    if not title:
+        flash("Job title is required.", "danger")
+        return redirect(url_for("admin_dashboard"))
+
+    responsibilities = [
+        r.strip() 
+        for r in responsibilities_raw.replace("\r", "").split("\n") 
+        if r.strip()
+    ]
+
+    job_doc = {
+        "title": title,
+        "department": department,
+        "job_type": job_type,
+        "responsibilities": responsibilities,
+        "created_at": datetime.now(timezone.utc),
+    }
+
+    db.careers.insert_one(job_doc)
+    flash(f"Job posting '{title}' published successfully!", "success")
+    return redirect(url_for("admin_dashboard"))
+
+
+@app.route("/admin/delete-job/<job_id>", methods=["POST"])
+@login_required
+@role_required("admin")
+def admin_delete_job(job_id):
+    """Allows Admin to remove a job posting."""
+    db = get_db()
+    db.careers.delete_one({"_id": ObjectId(job_id)})
+    flash("Job posting removed successfully.", "info")
+    return redirect(url_for("admin_dashboard"))
 
 # ==============================================================================
 # LIVE DAV AI INTERNAL AGENT ENDPOINTS (USING OFFICIAL GOOGLE GENAI CLIENT)
